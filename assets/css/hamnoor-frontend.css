@@ -1,0 +1,1752 @@
+/*
+ * Hamnoor frontend visual system 2.5.16
+ * Every rule is scoped to a Hamnoor wrapper or modal.
+ */
+
+/* 1. Variables and visual modes */
+.hamnoor-wrap,
+.hamnoor-modal {
+    --hamnoor-primary: var(--hamnoor-config-primary, #14407f);
+    --hamnoor-secondary: var(--hamnoor-config-secondary, #1f63c3);
+    --hamnoor-accent: var(--hamnoor-config-accent, #d6a84f);
+    --hamnoor-success: var(--hamnoor-config-success, #15803d);
+    --hamnoor-warning: var(--hamnoor-config-warning, #b45309);
+    --hamnoor-danger: var(--hamnoor-config-danger, #b91c1c);
+    --hamnoor-text: var(--hamnoor-config-text, #1f2937);
+    --hamnoor-muted: var(--hamnoor-config-muted, #667085);
+    --hamnoor-surface: var(--hamnoor-config-card, #fff);
+    --hamnoor-bg: var(--hamnoor-config-bg, #f6f8fc);
+    --hamnoor-soft: #eef3f9;
+    --hamnoor-border: var(--hamnoor-config-border, #e5e7eb);
+    --hamnoor-radius: var(--hamnoor-config-radius, 18px);
+    --hamnoor-radius-sm: 12px;
+    --hamnoor-shadow: var(--hamnoor-config-shadow, 0 10px 30px rgba(15, 23, 42, .08));
+    --hamnoor-shadow-raised: 0 18px 50px rgba(15, 23, 42, .14);
+    --hamnoor-max: var(--hamnoor-config-max, 1120px);
+    --hamnoor-font: var(--hamnoor-config-font, inherit);
+    --hamnoor-focus: rgba(20, 64, 127, .28);
+    --hamnoor-space-1: .375rem;
+    --hamnoor-space-2: .625rem;
+    --hamnoor-space-3: 1rem;
+    --hamnoor-space-4: 1.5rem;
+    --hamnoor-space-5: 2rem;
+}
+
+/* Featured khatms 2.7.0 - scoped to Hamnoor surfaces */
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-khatm-card--featured {
+    background: linear-gradient(145deg, var(--hamnoor-surface), var(--hamnoor-soft));
+    border-color: var(--hamnoor-primary);
+    box-shadow: var(--hamnoor-shadow-raised);
+}
+
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-khatm-card--pinned {
+    background: linear-gradient(145deg, var(--hamnoor-surface), var(--hamnoor-soft));
+    border: 2px solid var(--hamnoor-accent);
+    box-shadow: var(--hamnoor-shadow-raised);
+}
+
+.hamnoor-wrap .hamnoor-featured-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    min-height: 1.75rem;
+    padding: .2rem .65rem;
+    overflow-wrap: anywhere;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-accent);
+    border-radius: 999px;
+    font-size: .82em;
+    font-weight: 700;
+}
+
+.hamnoor-wrap .hamnoor-featured-notice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .65rem;
+    min-width: 0;
+    padding: .8rem 1rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-inline-start: 4px solid var(--hamnoor-primary);
+    border-radius: var(--hamnoor-radius);
+}
+
+.hamnoor-wrap .hamnoor-featured-notice--pinned {
+    border-inline-start-color: var(--hamnoor-accent);
+}
+
+.hamnoor-wrap .hamnoor-feature-request {
+    display: grid;
+    gap: .6rem;
+    min-width: 0;
+    margin: -.35rem 0 .75rem;
+    padding: .75rem;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius);
+}
+
+.hamnoor-wrap .hamnoor-dashboard-khatm-item {
+    display: grid;
+    gap: .35rem;
+    min-width: 0;
+}
+
+.hamnoor-wrap .hamnoor-feature-request details,
+.hamnoor-wrap .hamnoor-feature-request-form,
+.hamnoor-wrap .hamnoor-feature-request-form label {
+    display: grid;
+    gap: .6rem;
+    min-width: 0;
+}
+
+.hamnoor-wrap .hamnoor-feature-request summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.hamnoor-wrap .hamnoor-feature-request summary::-webkit-details-marker {
+    display: none;
+}
+
+.hamnoor-wrap .hamnoor-feature-request textarea {
+    width: 100%;
+    resize: vertical;
+}
+
+.hamnoor-wrap .hamnoor-feature-request-status,
+.hamnoor-wrap .hamnoor-feature-request-rejected,
+.hamnoor-wrap .hamnoor-feature-request-message {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.hamnoor-wrap .hamnoor-feature-request-message {
+    white-space: pre-wrap;
+}
+
+.hamnoor-wrap .hamnoor-feature-request-status.is-pending {
+    color: var(--hamnoor-warning);
+    font-weight: 700;
+}
+
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-khatm-card.hamnoor-khatm-card--featured,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-khatm-card.hamnoor-khatm-card--pinned,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-featured-notice,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-feature-request {
+    background: transparent;
+    box-shadow: none;
+}
+
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-featured-badge {
+    min-height: 1.5rem;
+    padding: .1rem .5rem;
+    background: transparent;
+}
+
+.hamnoor-wrap.hamnoor-mode-theme-aware,
+.hamnoor-modal.hamnoor-mode-theme-aware {
+    --hamnoor-primary: var(--wp--preset--color--primary, var(--hamnoor-config-primary, #14407f));
+    --hamnoor-secondary: var(--wp--preset--color--secondary, var(--hamnoor-config-secondary, #1f63c3));
+    --hamnoor-text: currentColor;
+    --hamnoor-muted: #667085;
+    --hamnoor-surface: var(--wp--preset--color--base, #fff);
+    --hamnoor-bg: transparent;
+    --hamnoor-radius: clamp(12px, var(--hamnoor-config-radius, 18px), 20px);
+    --hamnoor-shadow: 0 4px 18px rgba(15, 23, 42, .06);
+    --hamnoor-max: 100%;
+    --hamnoor-font: inherit;
+}
+
+.hamnoor-wrap.hamnoor-mode-hamnoor,
+.hamnoor-modal.hamnoor-mode-hamnoor {
+    --hamnoor-shadow: var(--hamnoor-config-shadow, 0 10px 30px rgba(15, 23, 42, .08));
+    --hamnoor-radius: var(--hamnoor-config-radius, 20px);
+}
+
+.hamnoor-wrap.hamnoor-mode-minimal,
+.hamnoor-modal.hamnoor-mode-minimal {
+    --hamnoor-primary: var(--wp--preset--color--primary, var(--hamnoor-config-primary, #14407f));
+    --hamnoor-text: currentColor;
+    --hamnoor-muted: #667085;
+    --hamnoor-surface: transparent;
+    --hamnoor-bg: transparent;
+    --hamnoor-radius: 8px;
+    --hamnoor-radius-sm: 6px;
+    --hamnoor-shadow: none;
+    --hamnoor-shadow-raised: 0 8px 24px rgba(15, 23, 42, .08);
+    --hamnoor-max: 100%;
+    --hamnoor-font: inherit;
+}
+
+@supports (color: color-mix(in srgb, #000 50%, transparent)) {
+    .hamnoor-wrap,
+    .hamnoor-modal {
+        --hamnoor-muted: color-mix(in srgb, var(--hamnoor-text) 65%, transparent);
+        --hamnoor-soft: color-mix(in srgb, var(--hamnoor-primary) 7%, transparent);
+        --hamnoor-border: color-mix(in srgb, var(--hamnoor-text) 14%, transparent);
+        --hamnoor-focus: color-mix(in srgb, var(--hamnoor-primary) 28%, transparent);
+    }
+}
+
+/* 2. Base wrapper */
+.hamnoor-wrap {
+    direction: rtl;
+    width: 100%;
+    max-width: var(--hamnoor-max);
+    margin-inline: auto;
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    color: var(--hamnoor-text);
+    font-family: var(--hamnoor-font);
+    font-size: inherit;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+}
+
+.hamnoor-wrap.hamnoor-mode-theme-aware,
+.hamnoor-wrap.hamnoor-mode-minimal {
+    padding-inline: 0;
+    background: transparent;
+}
+
+.hamnoor-wrap.hamnoor-mode-hamnoor {
+    background: var(--hamnoor-bg);
+    border-radius: calc(var(--hamnoor-radius) + 6px);
+}
+
+.hamnoor-wrap,
+.hamnoor-wrap *,
+.hamnoor-modal,
+.hamnoor-modal * {
+    box-sizing: border-box;
+}
+
+.hamnoor-wrap img,
+.hamnoor-modal img {
+    max-width: 100%;
+    height: auto;
+}
+
+.hamnoor-wrap a {
+    color: var(--hamnoor-primary);
+    text-decoration-thickness: .08em;
+    text-underline-offset: .16em;
+}
+
+.hamnoor-wrap a:hover {
+    text-decoration: underline;
+}
+
+.hamnoor-wrap :where(h1, h2, h3, h4, p):first-child,
+.hamnoor-modal :where(h1, h2, h3, h4, p):first-child {
+    margin-top: 0;
+}
+
+.hamnoor-wrap :where(h1, h2, h3, h4),
+.hamnoor-modal :where(h1, h2, h3, h4) {
+    color: inherit;
+    line-height: 1.45;
+}
+
+.hamnoor-wrap :where(input, select, textarea, button),
+.hamnoor-modal :where(input, select, textarea, button) {
+    max-width: 100%;
+    font: inherit;
+}
+
+.hamnoor-wrap .hamnoor-card,
+.hamnoor-wrap .hamnoor-khatm-header,
+.hamnoor-wrap .hamnoor-progress-card,
+.hamnoor-wrap .hamnoor-primary-actions,
+.hamnoor-wrap .hamnoor-share-panel,
+.hamnoor-wrap .hamnoor-part-filter-panel,
+.hamnoor-wrap .hamnoor-khatm-card,
+.hamnoor-wrap .hamnoor-part-card,
+.hamnoor-wrap .hamnoor-auth-card {
+    min-width: 0;
+    padding: clamp(1rem, 2.2vw, 1.25rem);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius);
+    box-shadow: var(--hamnoor-shadow);
+}
+
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-card,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-khatm-header,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-progress-card,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-primary-actions,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-share-panel,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-part-filter-panel,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-khatm-card,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-part-card,
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-auth-card {
+    background: transparent;
+}
+
+.hamnoor-wrap .hamnoor-section-head {
+    margin: 0 0 var(--hamnoor-space-4);
+}
+
+.hamnoor-wrap .hamnoor-section-head p {
+    margin-bottom: 0;
+    color: var(--hamnoor-muted);
+}
+
+.hamnoor-wrap .hamnoor-auth-card {
+    max-width: 560px;
+    margin-inline: auto;
+}
+
+.hamnoor-wrap .hamnoor-auth-switch {
+    margin: 1rem 0 0;
+    color: var(--hamnoor-muted);
+    text-align: center;
+}
+
+.hamnoor-wrap .hamnoor-empty {
+    margin: var(--hamnoor-space-3) 0;
+    padding: 1rem;
+    color: var(--hamnoor-muted);
+    background: var(--hamnoor-soft);
+    border: 1px dashed var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    text-align: center;
+}
+
+/* 3. Buttons */
+.hamnoor-wrap .hamnoor-btn,
+.hamnoor-modal .hamnoor-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    min-height: 42px;
+    min-width: 0;
+    padding: .625rem 1rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    box-shadow: none;
+    font-weight: 700;
+    line-height: 1.35;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: none;
+    cursor: pointer;
+    transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.hamnoor-wrap .hamnoor-btn:hover,
+.hamnoor-modal .hamnoor-btn:hover {
+    color: var(--hamnoor-text);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, .08);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.hamnoor-wrap .hamnoor-btn:active,
+.hamnoor-modal .hamnoor-btn:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.hamnoor-wrap .hamnoor-btn:focus-visible,
+.hamnoor-modal .hamnoor-btn:focus-visible,
+.hamnoor-wrap .hamnoor-link-button:focus-visible,
+.hamnoor-wrap .hamnoor-dashboard-tabs button:focus-visible,
+.hamnoor-modal .hamnoor-modal-close:focus-visible {
+    outline: 3px solid var(--hamnoor-focus);
+    outline-offset: 2px;
+}
+
+.hamnoor-wrap .hamnoor-btn-primary,
+.hamnoor-modal .hamnoor-btn-primary {
+    color: #fff;
+    background: var(--hamnoor-primary);
+    border-color: var(--hamnoor-primary);
+}
+
+.hamnoor-wrap .hamnoor-btn-primary:hover,
+.hamnoor-modal .hamnoor-btn-primary:hover,
+.hamnoor-wrap .hamnoor-btn-primary:focus,
+.hamnoor-modal .hamnoor-btn-primary:focus {
+    color: #fff;
+    filter: brightness(.94);
+}
+
+.hamnoor-wrap .hamnoor-btn-secondary,
+.hamnoor-modal .hamnoor-btn-secondary {
+    color: var(--hamnoor-primary);
+    background: var(--hamnoor-soft);
+    border-color: var(--hamnoor-border);
+}
+
+.hamnoor-wrap .hamnoor-btn-secondary:hover,
+.hamnoor-modal .hamnoor-btn-secondary:hover,
+.hamnoor-wrap .hamnoor-btn-secondary:focus,
+.hamnoor-modal .hamnoor-btn-secondary:focus {
+    color: var(--hamnoor-primary);
+}
+
+.hamnoor-wrap .hamnoor-btn-success,
+.hamnoor-modal .hamnoor-btn-success {
+    color: #fff;
+    background: var(--hamnoor-success);
+    border-color: var(--hamnoor-success);
+}
+
+.hamnoor-wrap .hamnoor-btn-danger,
+.hamnoor-modal .hamnoor-btn-danger {
+    color: #fff;
+    background: var(--hamnoor-danger);
+    border-color: var(--hamnoor-danger);
+}
+
+.hamnoor-wrap .hamnoor-btn-success:hover,
+.hamnoor-modal .hamnoor-btn-success:hover,
+.hamnoor-wrap .hamnoor-btn-danger:hover,
+.hamnoor-modal .hamnoor-btn-danger:hover {
+    color: #fff;
+}
+
+.hamnoor-wrap .hamnoor-btn:disabled,
+.hamnoor-wrap .hamnoor-btn[disabled],
+.hamnoor-wrap .hamnoor-btn.is-disabled,
+.hamnoor-modal .hamnoor-btn:disabled,
+.hamnoor-modal .hamnoor-btn[disabled] {
+    opacity: .62;
+    box-shadow: none;
+    filter: saturate(.7);
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+}
+
+.hamnoor-wrap .hamnoor-action-buttons,
+.hamnoor-wrap .hamnoor-dashboard-actions,
+.hamnoor-wrap .hamnoor-share-actions,
+.hamnoor-modal .hamnoor-modal-actions,
+.hamnoor-modal .hamnoor-claim-success-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .625rem;
+}
+
+/* 4. Forms */
+.hamnoor-wrap .hamnoor-form,
+.hamnoor-wrap .hamnoor-inline-form,
+.hamnoor-wrap .hamnoor-track-form,
+.hamnoor-wrap .hamnoor-part-filters,
+.hamnoor-modal .hamnoor-form {
+    display: grid;
+    min-width: 0;
+    gap: .875rem;
+}
+
+.hamnoor-wrap .hamnoor-form label,
+.hamnoor-wrap .hamnoor-inline-form label,
+.hamnoor-wrap .hamnoor-track-form label,
+.hamnoor-wrap .hamnoor-part-filters label,
+.hamnoor-modal .hamnoor-form label {
+    display: grid;
+    min-width: 0;
+    gap: .375rem;
+    font-weight: 700;
+}
+
+.hamnoor-wrap .hamnoor-form :where(input, select, textarea),
+.hamnoor-wrap .hamnoor-inline-form :where(input, select, textarea),
+.hamnoor-wrap .hamnoor-track-form :where(input, select, textarea),
+.hamnoor-wrap .hamnoor-part-filters :where(input, select, textarea),
+.hamnoor-wrap .hamnoor-share-box input,
+.hamnoor-modal .hamnoor-form :where(input, select, textarea) {
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: .625rem .75rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-surface, #fff);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    box-shadow: none;
+    line-height: 1.5;
+}
+
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-form :where(input, select, textarea),
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-track-form :where(input, select, textarea),
+.hamnoor-wrap.hamnoor-mode-minimal .hamnoor-part-filters :where(input, select, textarea),
+.hamnoor-modal.hamnoor-mode-minimal .hamnoor-form :where(input, select, textarea) {
+    background: #fff;
+}
+
+.hamnoor-wrap .hamnoor-form textarea,
+.hamnoor-modal .hamnoor-form textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.hamnoor-wrap .hamnoor-form :where(input, select, textarea):focus,
+.hamnoor-wrap .hamnoor-inline-form :where(input, select, textarea):focus,
+.hamnoor-wrap .hamnoor-track-form :where(input, select, textarea):focus,
+.hamnoor-wrap .hamnoor-part-filters :where(input, select, textarea):focus,
+.hamnoor-wrap .hamnoor-share-box input:focus,
+.hamnoor-modal .hamnoor-form :where(input, select, textarea):focus {
+    border-color: var(--hamnoor-primary);
+    box-shadow: 0 0 0 3px var(--hamnoor-focus);
+    outline: 0;
+}
+
+.hamnoor-wrap .hamnoor-form :where(input, select, textarea):disabled,
+.hamnoor-modal .hamnoor-form :where(input, select, textarea):disabled {
+    opacity: .7;
+    background: var(--hamnoor-soft);
+    cursor: not-allowed;
+}
+
+.hamnoor-wrap .hamnoor-field-has-error :where(input, select, textarea),
+.hamnoor-modal .hamnoor-field-has-error :where(input, select, textarea) {
+    border-color: var(--hamnoor-danger);
+    box-shadow: 0 0 0 3px rgba(185, 28, 28, .1);
+}
+
+.hamnoor-wrap .hamnoor-field-error,
+.hamnoor-modal .hamnoor-field-error {
+    display: block;
+    margin-top: .25rem;
+    color: var(--hamnoor-danger);
+    font-size: .9em;
+    font-weight: 650;
+}
+
+.hamnoor-wrap .hamnoor-help,
+.hamnoor-modal .hamnoor-help {
+    color: var(--hamnoor-muted);
+    font-size: .94em;
+}
+
+.hamnoor-wrap .hamnoor-check,
+.hamnoor-modal .hamnoor-check {
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    font-weight: 500;
+}
+
+.hamnoor-wrap .hamnoor-check input,
+.hamnoor-modal .hamnoor-check input {
+    flex: 0 0 auto;
+    width: auto;
+    min-height: auto;
+    margin-top: .35rem;
+}
+
+.hamnoor-wrap .hamnoor-wizard .hamnoor-choice {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: .65rem;
+    width: 100%;
+    padding: .75rem .85rem;
+    border: 1px solid var(--hamnoor-border);
+    border-radius: calc(var(--hamnoor-radius) * .6);
+    cursor: pointer;
+    font-weight: 500;
+    transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+
+.hamnoor-wrap .hamnoor-wizard .hamnoor-choice input[type="checkbox"],
+.hamnoor-wrap .hamnoor-wizard .hamnoor-choice input[type="radio"] {
+    flex: 0 0 auto;
+    width: 1.1rem;
+    height: 1.1rem;
+    min-height: 0;
+    margin: .15rem 0 0;
+}
+
+.hamnoor-wrap .hamnoor-wizard .hamnoor-choice:focus-within {
+    border-color: var(--hamnoor-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--hamnoor-primary) 18%, transparent);
+}
+
+.hamnoor-wrap .hamnoor-wizard .hamnoor-choice:has(input:checked) {
+    border-color: var(--hamnoor-primary);
+    background: color-mix(in srgb, var(--hamnoor-primary) 8%, var(--hamnoor-card));
+}
+
+.hamnoor-wrap .hamnoor-wizard .hamnoor-choice-text {
+    flex: 1 1 auto;
+}
+
+.hamnoor-wrap .hamnoor-hp,
+.hamnoor-modal .hamnoor-hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.hamnoor-wrap .hamnoor-date-input,
+.hamnoor-wrap .hamnoor-jalali-input,
+.hamnoor-wrap input[name="starts_at_jalali"],
+.hamnoor-wrap input[name="ends_at_jalali"] {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: plaintext;
+}
+
+/* 5. Notices, badges and states */
+.hamnoor-wrap .hamnoor-notice,
+.hamnoor-modal .hamnoor-notice,
+.hamnoor-wrap .hamnoor-ajax-message,
+.hamnoor-modal .hamnoor-ajax-message {
+    width: 100%;
+    margin: .875rem 0;
+    padding: .75rem .875rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-inline-start-width: 4px;
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-notice-success,
+.hamnoor-modal .hamnoor-notice-success {
+    color: #166534;
+    background: #ecfdf3;
+    border-color: #86efac;
+}
+
+.hamnoor-wrap .hamnoor-notice-error,
+.hamnoor-modal .hamnoor-notice-error {
+    color: #991b1b;
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+
+.hamnoor-wrap .hamnoor-notice-warning,
+.hamnoor-modal .hamnoor-notice-warning {
+    color: #92400e;
+    background: #fffbeb;
+    border-color: #fcd34d;
+}
+
+.hamnoor-wrap .hamnoor-notice-info,
+.hamnoor-modal .hamnoor-notice-info {
+    color: #1e40af;
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.hamnoor-wrap .hamnoor-ajax-message:empty,
+.hamnoor-modal .hamnoor-ajax-message:empty,
+.hamnoor-modal .hamnoor-modal-feedback:empty {
+    display: none;
+}
+
+.hamnoor-wrap .hamnoor-status-row,
+.hamnoor-wrap .hamnoor-card-topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .5rem;
+}
+
+.hamnoor-wrap .hamnoor-badge,
+.hamnoor-wrap .hamnoor-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    padding: .2rem .625rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 999px;
+    font-size: .8em;
+    font-weight: 800;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.hamnoor-wrap .hamnoor-status-active,
+.hamnoor-wrap .hamnoor-status-available {
+    color: #1e40af;
+    background: #eff6ff;
+    border-color: #93c5fd;
+}
+
+.hamnoor-wrap .hamnoor-status-completed,
+.hamnoor-wrap .hamnoor-status-done {
+    color: #166534;
+    background: #ecfdf3;
+    border-color: #86efac;
+}
+
+.hamnoor-wrap .hamnoor-status-claimed,
+.hamnoor-wrap .hamnoor-status-no-free {
+    color: #9a3412;
+    background: #fff7ed;
+    border-color: #fdba74;
+}
+
+.hamnoor-wrap .hamnoor-status-private,
+.hamnoor-wrap .hamnoor-status-closed,
+.hamnoor-wrap .hamnoor-status-archived,
+.hamnoor-wrap .hamnoor-status-failed {
+    color: #374151;
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+/* 6. Progress */
+.hamnoor-wrap .hamnoor-progress-card {
+    display: grid;
+    grid-template-columns: minmax(88px, 120px) minmax(0, 1fr);
+    align-items: center;
+    gap: 1.125rem;
+    margin: var(--hamnoor-space-3) 0;
+}
+
+.hamnoor-wrap .hamnoor-progress-number strong {
+    display: block;
+    color: var(--hamnoor-primary);
+    font-size: clamp(1.65rem, 4vw, 2.15rem);
+    line-height: 1.2;
+}
+
+.hamnoor-wrap .hamnoor-progress-number span {
+    color: var(--hamnoor-muted);
+    font-size: .9em;
+}
+
+.hamnoor-wrap .hamnoor-progress {
+    width: 100%;
+    height: 11px;
+    overflow: hidden;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 999px;
+}
+
+.hamnoor-wrap .hamnoor-progress > span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--hamnoor-primary), var(--hamnoor-secondary));
+    border-radius: inherit;
+    transition: width .25s ease;
+}
+
+.hamnoor-wrap .hamnoor-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-top: .5rem;
+    color: var(--hamnoor-muted);
+    font-size: .92em;
+}
+
+/* 7. Khatm header, cards and sharing */
+.hamnoor-wrap .hamnoor-khatm-header {
+    display: grid;
+    grid-template-columns: minmax(180px, 230px) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--hamnoor-space-4);
+    margin-bottom: var(--hamnoor-space-3);
+}
+
+.hamnoor-wrap .hamnoor-khatm-header h1 {
+    margin-bottom: .5rem;
+    font-size: clamp(1.55rem, 4vw, 2.25rem);
+}
+
+.hamnoor-wrap .hamnoor-cover,
+.hamnoor-wrap .hamnoor-khatm-card-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    background: var(--hamnoor-soft);
+    border-radius: calc(var(--hamnoor-radius) - 3px);
+}
+
+.hamnoor-wrap .hamnoor-cover-placeholder {
+    min-height: 180px;
+    background: linear-gradient(135deg, var(--hamnoor-soft), rgba(214, 168, 79, .18));
+}
+
+.hamnoor-wrap .hamnoor-intention,
+.hamnoor-wrap .hamnoor-khatm-card-intention,
+.hamnoor-wrap .hamnoor-card-meta {
+    color: var(--hamnoor-muted);
+}
+
+.hamnoor-wrap .hamnoor-primary-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--hamnoor-space-3);
+    margin: var(--hamnoor-space-3) 0;
+    background: var(--hamnoor-soft);
+}
+
+.hamnoor-wrap.hamnoor-mode-hamnoor .hamnoor-primary-actions {
+    border-color: rgba(20, 64, 127, .2);
+    background: linear-gradient(135deg, rgba(20, 64, 127, .08), rgba(214, 168, 79, .1));
+}
+
+.hamnoor-wrap .hamnoor-primary-actions :where(h2, p) {
+    margin-bottom: 0;
+}
+
+.hamnoor-wrap .hamnoor-share-panel,
+.hamnoor-wrap .hamnoor-part-filter-panel,
+.hamnoor-wrap .hamnoor-parts-section {
+    margin: var(--hamnoor-space-3) 0;
+}
+
+.hamnoor-wrap .hamnoor-share-panel h2,
+.hamnoor-wrap .hamnoor-part-filter-panel h2,
+.hamnoor-wrap .hamnoor-parts-section h2 {
+    font-size: 1.25em;
+}
+
+.hamnoor-wrap .hamnoor-share-box {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: .5rem;
+}
+
+.hamnoor-wrap .hamnoor-share-box label {
+    grid-column: 1 / -1;
+    font-weight: 700;
+}
+
+.hamnoor-wrap .hamnoor-share-box input,
+.hamnoor-wrap .hamnoor-row-card code {
+    direction: ltr;
+    text-align: left;
+}
+
+.hamnoor-wrap .hamnoor-share-actions {
+    margin-top: .625rem;
+}
+
+.hamnoor-wrap .hamnoor-part-filters {
+    grid-template-columns: repeat(4, minmax(140px, 1fr));
+    align-items: end;
+}
+
+.hamnoor-wrap .hamnoor-part-filters .hamnoor-check {
+    padding-bottom: .625rem;
+}
+
+.hamnoor-wrap .hamnoor-khatm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: var(--hamnoor-space-3);
+}
+
+.hamnoor-wrap .hamnoor-khatm-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.hamnoor-wrap.hamnoor-mode-hamnoor .hamnoor-khatm-card:hover {
+    border-color: var(--hamnoor-primary);
+    box-shadow: var(--hamnoor-shadow-raised);
+    transform: translateY(-2px);
+}
+
+.hamnoor-wrap .hamnoor-khatm-card-media {
+    display: block;
+    aspect-ratio: 1200 / 630;
+    overflow: hidden;
+    background: var(--hamnoor-soft);
+}
+
+.hamnoor-wrap .hamnoor-khatm-card-media .hamnoor-khatm-card-cover {
+    height: 100%;
+    border-radius: 0;
+}
+
+.hamnoor-wrap .hamnoor-khatm-card-body {
+    display: grid;
+    flex: 1;
+    gap: .625rem;
+    padding: var(--hamnoor-space-3);
+}
+
+.hamnoor-wrap .hamnoor-khatm-card h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.hamnoor-wrap .hamnoor-khatm-card-intention {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.hamnoor-wrap .hamnoor-khatm-card .hamnoor-btn {
+    align-self: end;
+    width: 100%;
+    margin-top: auto;
+}
+
+.hamnoor-wrap .hamnoor-khatm-completed {
+    opacity: .92;
+}
+
+.hamnoor-wrap .hamnoor-khatm-no-free-parts {
+    border-style: dashed;
+}
+
+/* 8. Part cards and pagination */
+.hamnoor-wrap .hamnoor-parts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--hamnoor-part-min, 170px)), 1fr));
+    gap: .75rem;
+}
+
+.hamnoor-wrap .hamnoor-part-card {
+    display: grid;
+    align-content: space-between;
+    gap: .75rem;
+    min-height: 0;
+    padding: .875rem;
+    box-shadow: none;
+    border-inline-start-width: 4px;
+}
+
+.hamnoor-wrap .hamnoor-part-available {
+    border-inline-start-color: var(--hamnoor-primary);
+}
+
+.hamnoor-wrap .hamnoor-part-claimed {
+    border-inline-start-color: var(--hamnoor-warning);
+    background: var(--hamnoor-surface);
+}
+
+.hamnoor-wrap .hamnoor-part-done {
+    border-inline-start-color: var(--hamnoor-success);
+    background: var(--hamnoor-surface);
+}
+
+.hamnoor-wrap.hamnoor-mode-hamnoor .hamnoor-part-claimed {
+    color: #1f2937;
+    background: #fffcf7;
+}
+
+.hamnoor-wrap.hamnoor-mode-hamnoor .hamnoor-part-done {
+    color: #1f2937;
+    background: #f7fdf9;
+}
+
+.hamnoor-wrap .hamnoor-part-card-main {
+    min-width: 0;
+}
+
+.hamnoor-wrap .hamnoor-part-title {
+    margin-bottom: .375rem;
+    font-size: 1em;
+    font-weight: 800;
+}
+
+.hamnoor-wrap .hamnoor-part-khatm-title,
+.hamnoor-wrap .hamnoor-participant {
+    display: block;
+    max-width: 100%;
+    margin-bottom: .25rem;
+}
+
+.hamnoor-wrap .hamnoor-participant {
+    overflow: hidden;
+    color: var(--hamnoor-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hamnoor-wrap .hamnoor-part-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+.hamnoor-wrap .hamnoor-part-actions form {
+    display: contents;
+}
+
+.hamnoor-wrap .hamnoor-part-actions .hamnoor-btn {
+    flex: 1 1 auto;
+    min-height: 38px;
+    padding: .5rem .7rem;
+    font-size: .9em;
+}
+
+.hamnoor-wrap .hamnoor-part-card[data-status="done"] .hamnoor-complete-form {
+    display: none;
+}
+
+.hamnoor-wrap .hamnoor-selected,
+.hamnoor-wrap .hamnoor-more-parts,
+.hamnoor-wrap .hamnoor-completed-message {
+    margin: var(--hamnoor-space-3) 0;
+}
+
+.hamnoor-wrap .hamnoor-parts-page-info {
+    margin: 0 0 .875rem;
+}
+
+.hamnoor-wrap .hamnoor-parts-pagination {
+    margin-top: 1.125rem;
+}
+
+.hamnoor-wrap .hamnoor-parts-pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.hamnoor-wrap .hamnoor-parts-pagination :where(a, span) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 40px;
+    padding: .375rem .625rem;
+    color: var(--hamnoor-primary);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    text-decoration: none;
+}
+
+.hamnoor-wrap .hamnoor-parts-pagination a:hover,
+.hamnoor-wrap .hamnoor-parts-pagination a:focus-visible {
+    color: #fff;
+    background: var(--hamnoor-primary);
+    border-color: var(--hamnoor-primary);
+    text-decoration: none;
+}
+
+.hamnoor-wrap .hamnoor-parts-pagination .current {
+    color: #fff;
+    background: var(--hamnoor-primary);
+    border-color: var(--hamnoor-primary);
+    font-weight: 800;
+}
+
+/* 9. Wizard */
+.hamnoor-wrap .hamnoor-create-card {
+    padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.hamnoor-wrap .hamnoor-wizard-steps {
+    display: flex;
+    gap: .5rem;
+    margin: .75rem 0 1rem;
+    padding: .125rem 0 .5rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+}
+
+.hamnoor-wrap .hamnoor-wizard-steps span {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: .375rem;
+    min-height: 38px;
+    padding: .375rem .75rem;
+    color: var(--hamnoor-muted);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 999px;
+    font-size: .9em;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.hamnoor-wrap .hamnoor-wizard-steps span.is-active {
+    color: #fff;
+    background: var(--hamnoor-primary);
+    border-color: var(--hamnoor-primary);
+}
+
+.hamnoor-wrap .hamnoor-wizard-steps span.is-done {
+    color: #166534;
+    background: #ecfdf3;
+    border-color: #86efac;
+}
+
+.hamnoor-wrap .hamnoor-current-step-title {
+    margin: .75rem 0;
+    color: var(--hamnoor-primary);
+    font-weight: 800;
+}
+
+.hamnoor-wrap .hamnoor-wizard-step {
+    display: grid;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    gap: .875rem;
+}
+
+.hamnoor-wrap .hamnoor-wizard-step legend {
+    width: 100%;
+    margin-bottom: .5rem;
+    font-size: 1.15em;
+    font-weight: 900;
+}
+
+.hamnoor-wrap .hamnoor-wizard .hamnoor-wizard-step[hidden],
+.hamnoor-wrap .hamnoor-wizard.js-ready .hamnoor-wizard-step[hidden],
+.hamnoor-wrap .hamnoor-wizard-nav [hidden],
+.hamnoor-wrap .hamnoor-dashboard-panel[hidden],
+.hamnoor-wrap [data-tab-panel][hidden] {
+    display: none !important;
+}
+
+.hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-repeated) .hamnoor-repeated-surah-fields,
+.hamnoor-wrap .hamnoor-wizard.js-ready.is-repeated .hamnoor-khatm-count-fields,
+.hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-manual-completion) .hamnoor-release-options,
+.hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-release-after-days) .hamnoor-release-after-days,
+.hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-release-fixed-date) .hamnoor-release-fixed-date {
+    display: none !important;
+}
+
+.hamnoor-wrap .hamnoor-wizard-nav {
+    position: sticky;
+    bottom: .5rem;
+    z-index: 5;
+    display: flex;
+    justify-content: flex-end;
+    gap: .625rem;
+    margin-top: 1.25rem;
+    padding: .75rem;
+    background: rgba(255, 255, 255, .94);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .08);
+    backdrop-filter: blur(8px);
+}
+
+.hamnoor-wrap .hamnoor-summary-card,
+.hamnoor-wrap .hamnoor-preview-card,
+.hamnoor-wrap .hamnoor-release-options,
+.hamnoor-wrap .hamnoor-completion-options {
+    display: grid;
+    gap: .75rem;
+    padding: 1rem;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-summary-card p {
+    margin: 0;
+}
+
+.hamnoor-wrap .hamnoor-link-button {
+    padding: .25rem;
+    color: var(--hamnoor-primary);
+    background: transparent;
+    border: 0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.hamnoor-wrap .hamnoor-examples {
+    margin: .75rem 0;
+    padding: .75rem 1rem;
+    background: var(--hamnoor-soft);
+    border: 1px dashed var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-examples summary {
+    color: var(--hamnoor-primary);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.hamnoor-wrap .hamnoor-live-summary {
+    margin: .75rem 0;
+    padding: .75rem 1rem;
+    color: #166534;
+    background: #ecfdf3;
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-current-cover {
+    display: grid;
+    max-width: 360px;
+    gap: .5rem;
+}
+
+.hamnoor-wrap .hamnoor-immutable-reminder {
+    display: inline-block;
+    margin-inline-start: .375rem;
+    color: var(--hamnoor-muted);
+    font-size: .86em;
+}
+
+.hamnoor-wrap .hamnoor-immutable-warning {
+    margin-top: .625rem;
+}
+
+/* 10. Modal */
+.hamnoor-modal[hidden] {
+    display: none !important;
+}
+
+.hamnoor-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    direction: rtl;
+    padding: 1rem;
+    color: var(--hamnoor-text);
+    font-family: var(--hamnoor-font);
+    line-height: 1.75;
+}
+
+.hamnoor-modal.is-open {
+    display: flex;
+}
+
+.hamnoor-modal .hamnoor-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, .58);
+    backdrop-filter: blur(4px);
+}
+
+.hamnoor-modal .hamnoor-modal-dialog {
+    position: relative;
+    width: min(560px, calc(100vw - 2rem));
+    max-width: 560px;
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
+    padding: 1.375rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-surface, #fff);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: calc(var(--hamnoor-radius) + 2px);
+    box-shadow: 0 28px 70px rgba(15, 23, 42, .28);
+    animation: hamnoor-modal-enter .18s ease-out;
+}
+
+.hamnoor-modal.hamnoor-mode-minimal .hamnoor-modal-dialog {
+    background: #fff;
+}
+
+.hamnoor-modal .hamnoor-modal-body,
+.hamnoor-modal .hamnoor-modal-body * {
+    max-width: 100%;
+}
+
+.hamnoor-modal .hamnoor-modal-close {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: -.5rem 0 .5rem auto;
+    padding: 0;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 999px;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.hamnoor-modal .hamnoor-selected-part-title {
+    margin-top: 0;
+    color: var(--hamnoor-muted);
+}
+
+.hamnoor-modal .hamnoor-claim-success,
+.hamnoor-modal .hamnoor-claim-success-card {
+    display: grid;
+    gap: .75rem;
+}
+
+.hamnoor-modal .hamnoor-claim-success-card dl {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: .375rem .75rem;
+    margin: 0;
+}
+
+.hamnoor-modal .hamnoor-claim-success-card dt {
+    color: var(--hamnoor-muted);
+    font-weight: 700;
+}
+
+@keyframes hamnoor-modal-enter {
+    from { opacity: 0; transform: translateY(10px) scale(.99); }
+    to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hamnoor-wrap .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-khatm-card,
+    .hamnoor-wrap .hamnoor-progress > span,
+    .hamnoor-modal .hamnoor-modal-dialog {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* 11. Dashboard and tracking */
+.hamnoor-wrap .hamnoor-dashboard-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--hamnoor-space-3);
+    margin-bottom: var(--hamnoor-space-3);
+}
+
+.hamnoor-wrap .hamnoor-dashboard-head :where(h2, p) {
+    margin-bottom: 0;
+}
+
+.hamnoor-wrap .hamnoor-dashboard-tabs {
+    display: flex;
+    gap: .5rem;
+    margin: 1rem 0 1.25rem;
+    padding: 0 0 .5rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+}
+
+.hamnoor-wrap .hamnoor-dashboard-tabs button,
+.hamnoor-wrap .hamnoor-dashboard-tabs a {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: .5rem .875rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.hamnoor-wrap .hamnoor-dashboard-tabs button.is-active,
+.hamnoor-wrap .hamnoor-dashboard-tabs a.is-active {
+    color: #fff;
+    background: var(--hamnoor-primary);
+    border-color: var(--hamnoor-primary);
+}
+
+.hamnoor-wrap .hamnoor-dashboard-panels,
+.hamnoor-wrap .hamnoor-dashboard-list,
+.hamnoor-wrap .hamnoor-mobile-cards,
+.hamnoor-wrap .hamnoor-track-page,
+.hamnoor-wrap .hamnoor-track-results-inner {
+    display: grid;
+    gap: var(--hamnoor-space-3);
+}
+
+.hamnoor-wrap .hamnoor-stat-grid,
+.hamnoor-wrap .hamnoor-summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: .75rem;
+    margin: 1rem 0;
+}
+
+.hamnoor-wrap .hamnoor-stat-card {
+    padding: 1rem;
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius);
+    box-shadow: var(--hamnoor-shadow);
+}
+
+.hamnoor-wrap .hamnoor-stat-card strong {
+    display: block;
+    color: var(--hamnoor-primary);
+    font-size: 1.75em;
+    line-height: 1.2;
+}
+
+.hamnoor-wrap .hamnoor-row-card {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: .75rem;
+    padding: .75rem;
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-row-card-body {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+    gap: .25rem;
+}
+
+.hamnoor-wrap .hamnoor-row-card code {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--hamnoor-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hamnoor-wrap .hamnoor-dashboard-cover {
+    flex: 0 0 86px;
+    width: 86px;
+    aspect-ratio: 1200 / 630;
+    object-fit: cover;
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-card-actions {
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.hamnoor-wrap .hamnoor-card-actions summary {
+    min-height: 38px;
+    padding: .4rem .6rem;
+    color: var(--hamnoor-primary);
+    border-radius: var(--hamnoor-radius-sm);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.hamnoor-wrap .hamnoor-card-actions[open] {
+    z-index: 10;
+}
+
+.hamnoor-wrap .hamnoor-card-actions a {
+    display: block;
+    padding: .375rem 0;
+}
+
+.hamnoor-wrap .hamnoor-completed-archive {
+    margin-top: 1.25rem;
+}
+
+.hamnoor-wrap .hamnoor-completed-archive details {
+    margin-top: .75rem;
+    padding: .75rem 1rem;
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-completed-archive summary {
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.hamnoor-wrap .hamnoor-track-card {
+    max-width: 760px;
+    margin-inline: auto;
+}
+
+.hamnoor-wrap .hamnoor-track-form {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+}
+
+.hamnoor-wrap .hamnoor-track-results {
+    min-width: 0;
+    margin-top: 1rem;
+}
+
+.hamnoor-wrap .hamnoor-result-count {
+    padding: .625rem .75rem;
+    color: var(--hamnoor-primary);
+    background: var(--hamnoor-soft);
+    border-radius: var(--hamnoor-radius-sm);
+    font-weight: 800;
+}
+
+.hamnoor-wrap .hamnoor-once-help {
+    margin: 0;
+    padding: .75rem;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-wrap .hamnoor-help-list {
+    display: grid;
+    gap: .75rem;
+}
+
+.hamnoor-wrap .hamnoor-help-list :where(dt, dd) {
+    margin: 0;
+}
+
+.hamnoor-wrap .hamnoor-help-list dt {
+    font-weight: 800;
+}
+
+/* 12. Per-khatm visual accents */
+.hamnoor-wrap.hamnoor-style-blue-quran,
+.hamnoor-wrap .hamnoor-style-blue-quran {
+    --hamnoor-primary: #14407f;
+    --hamnoor-secondary: #1f63c3;
+    --hamnoor-accent: #7fb3ff;
+}
+
+.hamnoor-wrap.hamnoor-style-golden,
+.hamnoor-wrap .hamnoor-style-golden {
+    --hamnoor-primary: #7c4a03;
+    --hamnoor-secondary: #b7791f;
+    --hamnoor-accent: #d6a84f;
+}
+
+.hamnoor-wrap.hamnoor-style-memorial,
+.hamnoor-wrap .hamnoor-style-memorial {
+    --hamnoor-primary: #374151;
+    --hamnoor-secondary: #111827;
+    --hamnoor-accent: #9ca3af;
+}
+
+.hamnoor-wrap.hamnoor-style-ramadan,
+.hamnoor-wrap .hamnoor-style-ramadan {
+    --hamnoor-primary: #0f766e;
+    --hamnoor-secondary: #065f46;
+    --hamnoor-accent: #f6c85f;
+}
+
+.hamnoor-wrap.hamnoor-style-heyati,
+.hamnoor-wrap .hamnoor-style-heyati {
+    --hamnoor-primary: #7f1d1d;
+    --hamnoor-secondary: #991b1b;
+    --hamnoor-accent: #111827;
+}
+
+.hamnoor-wrap.hamnoor-style-blue-quran,
+.hamnoor-wrap.hamnoor-style-golden,
+.hamnoor-wrap.hamnoor-style-memorial,
+.hamnoor-wrap.hamnoor-style-ramadan,
+.hamnoor-wrap.hamnoor-style-heyati {
+    border-top: 4px solid var(--hamnoor-accent);
+}
+
+.hamnoor-wrap .hamnoor-preview-card,
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-blue-quran,
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-golden,
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-memorial,
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-ramadan,
+.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-heyati {
+    border-top: 4px solid var(--hamnoor-accent);
+}
+
+/* 13. Responsive */
+@media (max-width: 900px) {
+    .hamnoor-wrap .hamnoor-part-filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 782px) {
+    .hamnoor-wrap {
+        padding-block: 1rem;
+        padding-inline: .75rem;
+    }
+
+    .hamnoor-wrap.hamnoor-mode-theme-aware,
+    .hamnoor-wrap.hamnoor-mode-minimal {
+        padding-inline: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-khatm-header,
+    .hamnoor-wrap .hamnoor-progress-card {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-wrap .hamnoor-khatm-header {
+        align-items: start;
+    }
+
+    .hamnoor-wrap .hamnoor-cover,
+    .hamnoor-wrap .hamnoor-cover-placeholder {
+        max-height: 340px;
+    }
+
+    .hamnoor-wrap .hamnoor-primary-actions,
+    .hamnoor-wrap .hamnoor-dashboard-head {
+        display: grid;
+        align-items: stretch;
+    }
+
+    .hamnoor-wrap .hamnoor-share-box,
+    .hamnoor-wrap .hamnoor-track-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-wrap .hamnoor-action-buttons,
+    .hamnoor-wrap .hamnoor-dashboard-actions,
+    .hamnoor-modal .hamnoor-modal-actions,
+    .hamnoor-modal .hamnoor-claim-success-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        width: 100%;
+    }
+
+    .hamnoor-wrap .hamnoor-action-buttons .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-dashboard-actions .hamnoor-btn,
+    .hamnoor-modal .hamnoor-modal-actions .hamnoor-btn,
+    .hamnoor-modal .hamnoor-claim-success-actions .hamnoor-btn {
+        width: 100%;
+    }
+
+    .hamnoor-wrap .hamnoor-row-card {
+        align-items: flex-start;
+    }
+
+    .hamnoor-wrap .hamnoor-wizard-steps span b {
+        display: none;
+    }
+
+    .hamnoor-wrap .hamnoor-wizard-nav {
+        bottom: .25rem;
+        justify-content: stretch;
+    }
+
+    .hamnoor-wrap .hamnoor-wizard-nav .hamnoor-btn {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .hamnoor-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .hamnoor-modal .hamnoor-modal-dialog {
+        width: 100%;
+        max-width: none;
+        max-height: 90vh;
+        max-height: 90dvh;
+        padding: 1.125rem 1rem calc(1rem + env(safe-area-inset-bottom));
+        border-radius: var(--hamnoor-radius) var(--hamnoor-radius) 0 0;
+    }
+}
+
+@media (max-width: 520px) {
+    .hamnoor-wrap .hamnoor-part-filters,
+    .hamnoor-wrap .hamnoor-parts-grid,
+    .hamnoor-wrap .hamnoor-khatm-grid,
+    .hamnoor-wrap .hamnoor-stat-grid,
+    .hamnoor-wrap .hamnoor-summary-stats {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-wrap .hamnoor-btn,
+    .hamnoor-modal .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-dashboard-tabs button,
+    .hamnoor-wrap .hamnoor-dashboard-tabs a {
+        min-height: 44px;
+    }
+
+    .hamnoor-wrap .hamnoor-part-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-wrap .hamnoor-part-actions .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-share-actions .hamnoor-btn {
+        width: 100%;
+    }
+
+    .hamnoor-wrap .hamnoor-share-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-wrap .hamnoor-progress-meta {
+        display: grid;
+        gap: .25rem;
+    }
+
+    .hamnoor-wrap .hamnoor-row-card {
+        display: grid;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-cover {
+        width: 100%;
+        max-width: 140px;
+    }
+
+    .hamnoor-wrap .hamnoor-wizard-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hamnoor-wrap .hamnoor-wizard-nav .hamnoor-btn:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .hamnoor-modal .hamnoor-claim-success-card dl {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 340px) {
+    .hamnoor-wrap .hamnoor-wizard-nav {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-wrap .hamnoor-wizard-nav .hamnoor-btn:last-child {
+        grid-column: auto;
+    }
+
+    .hamnoor-wrap .hamnoor-parts-pagination :where(a, span) {
+        min-width: 36px;
+        min-height: 36px;
+        padding-inline: .5rem;
+    }
+}

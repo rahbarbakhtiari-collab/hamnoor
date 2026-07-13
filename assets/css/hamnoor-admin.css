@@ -1,0 +1,614 @@
+/* Hamnoor admin UI 2.5.16 - scoped to plugin screens */
+.hamnoor-admin-wrap {
+    --hamnoor-admin-accent: #14407f;
+    --hamnoor-admin-accent-soft: #eef4fb;
+    --hamnoor-admin-border: #dcdcde;
+    --hamnoor-admin-muted: #646970;
+    --hamnoor-admin-surface: #fff;
+    --hamnoor-admin-radius: 10px;
+    direction: rtl;
+    max-width: 1440px;
+}
+
+/* Featured khatms 2.7.0 - scoped to Hamnoor admin */
+.hamnoor-admin-wrap .hamnoor-admin-feature-section th {
+    padding-top: 28px;
+    border-top: 2px solid var(--hamnoor-admin-accent);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-feature-section h3 {
+    margin: 0 0 6px;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-featured-status,
+.hamnoor-admin-wrap .hamnoor-admin-feature-request {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    max-width: 100%;
+    margin: 2px 0;
+    padding: 3px 8px;
+    border: 1px solid var(--hamnoor-admin-border);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-featured-status--featured,
+.hamnoor-admin-wrap .hamnoor-admin-featured-status--pinned,
+.hamnoor-admin-wrap .hamnoor-admin-feature-request {
+    color: #0b4f3c;
+    background: #edf9f3;
+    border-color: #8fd5ba;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-featured-status--expired,
+.hamnoor-admin-wrap .hamnoor-admin-featured-status--rejected {
+    color: #8a2424;
+    background: #fff2f2;
+    border-color: #e7aaaa;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-featured-status--scheduled,
+.hamnoor-admin-wrap .hamnoor-admin-featured-status--pending {
+    color: #7a4b00;
+    background: #fff8e5;
+    border-color: #e7c66a;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-feature-message {
+    max-width: 680px;
+    padding: 10px;
+    white-space: pre-wrap;
+    background: #f6f7f7;
+    border-radius: 6px;
+}
+
+.hamnoor-admin-wrap .hamnoor-field-error {
+    margin: 6px 0 0;
+    color: #b32d2e;
+    font-weight: 600;
+}
+
+.hamnoor-admin-wrap,
+.hamnoor-admin-wrap * {
+    box-sizing: border-box;
+}
+
+.hamnoor-admin-wrap > h1 {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    margin-bottom: 14px;
+}
+
+.hamnoor-admin-wrap > h1::before {
+    width: 4px;
+    height: 28px;
+    margin-left: 10px;
+    background: var(--hamnoor-admin-accent);
+    border-radius: 999px;
+    content: "";
+}
+
+.hamnoor-admin-wrap :where(input, select, textarea, button) {
+    max-width: 100%;
+}
+
+.hamnoor-admin-wrap :where(input, select, textarea):focus {
+    border-color: var(--hamnoor-admin-accent);
+    box-shadow: 0 0 0 1px var(--hamnoor-admin-accent);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0;
+    padding: 12px;
+    background: var(--hamnoor-admin-surface);
+    border: 1px solid var(--hamnoor-admin-border);
+    border-radius: var(--hamnoor-admin-radius);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-filters input,
+.hamnoor-admin-wrap .hamnoor-admin-filters select,
+.hamnoor-admin-wrap .hamnoor-bulk-form > select {
+    min-height: 34px;
+    margin: 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-filters input[type="search"] {
+    flex: 1 1 280px;
+    min-width: min(100%, 260px);
+}
+
+.hamnoor-admin-wrap .hamnoor-bulk-form > select,
+.hamnoor-admin-wrap .hamnoor-bulk-form > .button {
+    margin-block: 8px;
+    vertical-align: middle;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-thumb {
+    display: block;
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    margin-top: 10px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #f3f4f6;
+    border: 1px solid var(--hamnoor-admin-border);
+    border-radius: var(--hamnoor-admin-radius);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-card,
+.hamnoor-admin-wrap .hamnoor-docs,
+.hamnoor-admin-wrap .hamnoor-admin-panel,
+.hamnoor-admin-wrap .hamnoor-text-group {
+    padding: 16px;
+    background: var(--hamnoor-admin-surface);
+    border: 1px solid var(--hamnoor-admin-border);
+    border-radius: var(--hamnoor-admin-radius);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-card {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-card strong {
+    color: #1d2327;
+    font-size: 14px;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 18px 0 14px;
+    padding: 6px;
+    background: #f0f0f1;
+    border-radius: calc(var(--hamnoor-admin-radius) + 2px);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-tabs a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 7px 12px;
+    color: #2c3338;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-tabs a:hover,
+.hamnoor-admin-wrap .hamnoor-admin-tabs a:focus-visible {
+    color: var(--hamnoor-admin-accent);
+    background: #fff;
+    border-color: var(--hamnoor-admin-border);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-tabs a.nav-tab-active {
+    color: #fff;
+    background: var(--hamnoor-admin-accent);
+    border-color: var(--hamnoor-admin-accent);
+    box-shadow: 0 2px 6px rgba(20, 64, 127, .18);
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-panel {
+    padding: 0 18px;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-panel .form-table {
+    margin: 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-panel .form-table tr:not(:last-child) {
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-panel .form-table th,
+.hamnoor-admin-wrap .hamnoor-admin-panel .form-table td {
+    padding-block: 18px;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-panel .form-table th {
+    width: 220px;
+    color: #1d2327;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-panel .description {
+    max-width: 760px;
+    margin-top: 7px;
+    color: var(--hamnoor-admin-muted);
+    line-height: 1.8;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 920px;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    min-width: 0;
+    min-height: 132px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid var(--hamnoor-admin-border);
+    border-radius: var(--hamnoor-admin-radius);
+    cursor: pointer;
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option:hover {
+    border-color: #8c8f94;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option:has(input:checked) {
+    background: var(--hamnoor-admin-accent-soft);
+    border-color: var(--hamnoor-admin-accent);
+    box-shadow: 0 0 0 1px var(--hamnoor-admin-accent);
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option input {
+    flex: 0 0 auto;
+    margin-top: 2px;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option span {
+    display: grid;
+    align-content: start;
+    gap: 7px;
+    min-width: 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option strong {
+    color: #1d2327;
+    font-size: 14px;
+}
+
+.hamnoor-admin-wrap .hamnoor-visual-mode-option small {
+    color: var(--hamnoor-admin-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.hamnoor-admin-wrap .hamnoor-settings-section {
+    display: none;
+}
+
+.hamnoor-admin-wrap .hamnoor-settings-section.is-active {
+    display: block;
+}
+
+.hamnoor-admin-wrap .widefat {
+    overflow: hidden;
+    border-color: var(--hamnoor-admin-border);
+    border-radius: var(--hamnoor-admin-radius);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+}
+
+.hamnoor-admin-wrap .widefat thead th,
+.hamnoor-admin-wrap .widefat tfoot th {
+    color: #1d2327;
+    background: #f6f7f7;
+    font-weight: 700;
+}
+
+.hamnoor-admin-wrap .widefat th,
+.hamnoor-admin-wrap .widefat td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+.hamnoor-admin-wrap .widefat tbody tr:hover td {
+    background: #fbfcfd;
+}
+
+.hamnoor-admin-wrap .widefat code {
+    font-size: 11px;
+    word-break: break-all;
+}
+
+.hamnoor-admin-wrap .hamnoor-badge,
+.hamnoor-admin-wrap .hamnoor-featured-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    padding: 2px 9px;
+    color: #3c434a;
+    background: #f6f7f7;
+    border: 1px solid #c3c4c7;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.hamnoor-admin-wrap .hamnoor-status-active,
+.hamnoor-admin-wrap .hamnoor-status-done,
+.hamnoor-admin-wrap .hamnoor-status-completed {
+    color: #155724;
+    background: #e9f7ef;
+    border-color: #7ad09a;
+}
+
+.hamnoor-admin-wrap .hamnoor-status-claimed {
+    color: #7a4b00;
+    background: #fff7e6;
+    border-color: #f0c36d;
+}
+
+.hamnoor-admin-wrap .hamnoor-status-available {
+    color: #084b8a;
+    background: #eef5ff;
+    border-color: #8bbcff;
+}
+
+.hamnoor-admin-wrap .hamnoor-status-closed,
+.hamnoor-admin-wrap .hamnoor-status-archived,
+.hamnoor-admin-wrap .hamnoor-status-failed {
+    color: #50575e;
+    background: #f6f7f7;
+}
+
+.hamnoor-admin-wrap .hamnoor-featured-badge {
+    color: #3a2d09;
+    background: #f8e7b8;
+    border-color: #d6a84f;
+    font-weight: 700;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-actions {
+    position: relative;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-actions summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 3px 8px;
+    color: var(--hamnoor-admin-accent);
+    background: var(--hamnoor-admin-accent-soft);
+    border: 1px solid #b8cce3;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-actions a {
+    display: block;
+    margin: 5px 0;
+    padding: 2px 0;
+    text-decoration: none;
+}
+
+.hamnoor-admin-wrap .tablenav {
+    height: auto;
+    min-height: 36px;
+    margin: 14px 0;
+}
+
+.hamnoor-admin-wrap .tablenav-pages .page-numbers {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+    margin: 2px;
+    padding: 3px 8px;
+    background: #fff;
+    border: 1px solid var(--hamnoor-admin-border);
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.hamnoor-admin-wrap .tablenav-pages .page-numbers.current {
+    color: #fff;
+    background: var(--hamnoor-admin-accent);
+    border-color: var(--hamnoor-admin-accent);
+}
+
+.hamnoor-admin-wrap .hamnoor-text-search {
+    width: 100%;
+    max-width: 460px;
+    margin: 12px 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-group {
+    margin: 14px 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-group h2 {
+    margin: 0;
+    padding-bottom: 10px;
+    color: #1d2327;
+    border-bottom: 2px solid var(--hamnoor-admin-accent-soft);
+}
+
+.hamnoor-admin-wrap .hamnoor-text-item {
+    padding: 14px 0;
+    border-top: 1px solid #f0f0f1;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-item:first-of-type {
+    border-top: 0;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-item label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-item label strong {
+    color: #1d2327;
+    font-size: 14px;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-item code {
+    color: var(--hamnoor-admin-muted);
+    background: #f6f7f7;
+    font-size: 11px;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-item textarea {
+    width: 100%;
+    margin-top: 6px;
+    line-height: 1.7;
+    resize: vertical;
+}
+
+.hamnoor-admin-wrap .hamnoor-text-desc {
+    margin: .25rem 0;
+    color: var(--hamnoor-admin-muted);
+}
+
+.hamnoor-admin-wrap .hamnoor-text-vars {
+    color: var(--hamnoor-admin-accent);
+    font-size: 12px;
+}
+
+.hamnoor-admin-wrap .hamnoor-admin-form input[name$="_jalali"] {
+    direction: ltr;
+    text-align: left;
+}
+
+.hamnoor-admin-wrap .notice {
+    margin: 12px 0;
+    border-radius: 6px;
+}
+
+.hamnoor-admin-wrap .notice code {
+    display: block;
+    margin-top: 8px;
+    direction: ltr;
+    text-align: left;
+}
+
+.hamnoor-admin-wrap .hamnoor-docs {
+    max-width: 900px;
+    line-height: 1.8;
+}
+
+@media (max-width: 960px) {
+    .hamnoor-admin-wrap .hamnoor-visual-mode-options {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-admin-wrap .hamnoor-visual-mode-option {
+        min-height: 0;
+    }
+}
+
+@media (max-width: 782px) {
+    .hamnoor-admin-wrap {
+        margin-right: 10px;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-tabs a {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-panel {
+        padding: 0 12px;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-panel .form-table th,
+    .hamnoor-admin-wrap .hamnoor-admin-panel .form-table td {
+        display: block;
+        width: 100%;
+        padding-block: 10px;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-panel .form-table th {
+        padding-bottom: 0;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-filters {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-filters > * {
+        width: 100%;
+        margin: 0;
+    }
+
+    .hamnoor-admin-wrap .widefat {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .hamnoor-admin-wrap .widefat thead,
+    .hamnoor-admin-wrap .widefat tfoot {
+        display: none;
+    }
+
+    .hamnoor-admin-wrap .widefat tbody,
+    .hamnoor-admin-wrap .widefat tr,
+    .hamnoor-admin-wrap .widefat td {
+        display: block;
+        width: 100%;
+    }
+
+    .hamnoor-admin-wrap .widefat tr {
+        margin: 12px 0;
+        padding: 8px;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid var(--hamnoor-admin-border);
+        border-radius: var(--hamnoor-admin-radius);
+    }
+
+    .hamnoor-admin-wrap .widefat td {
+        padding: 7px;
+        border: 0;
+        border-bottom: 1px solid #f0f0f1;
+    }
+
+    .hamnoor-admin-wrap .widefat td:last-child {
+        border-bottom: 0;
+    }
+
+    .hamnoor-admin-wrap .hamnoor-admin-actions a {
+        min-height: 36px;
+        padding: 7px 0;
+    }
+
+    .hamnoor-admin-wrap .tablenav-pages {
+        float: none;
+        text-align: center;
+    }
+}
