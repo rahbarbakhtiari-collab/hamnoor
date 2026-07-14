@@ -3,7 +3,7 @@
  * Plugin Name: Hamnoor | هم‌نور
  * Plugin URI: https://www.manahel.ir/
  * Description: افزونه مدیریت ختم جمعی قرآن با لینک اختصاصی، انتخاب سهم، پیگیری مشارکت، خروجی گزارش و ساختار آماده توسعه.
- * Version: 2.7.2
+ * Version: 2.8.0
  * Author: رهبر بختیاری
  * Author URI: https://www.manahel.ir/about/
  * Text Domain: hamnoor
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('HAMNOOR_VERSION', '2.7.2');
+define('HAMNOOR_VERSION', '2.8.0');
 define('HAMNOOR_DB_VERSION', '2.7.2');
 define('HAMNOOR_FILE', __FILE__);
 define('HAMNOOR_PATH', plugin_dir_path(__FILE__));
