@@ -13,12 +13,14 @@ $is_active_without_free_parts = ('active' === (string) $khatm->status && empty($
 $featured_badge = Hamnoor_Featured_Service::badge_data($khatm);
 $url = Hamnoor_Helpers::invite_url($khatm);
 $cover_url = Hamnoor_Helpers::cover_url($khatm);
-$card_class = trim('hamnoor-khatm-card ' . Hamnoor_Helpers::design_class($khatm) . ($is_completed ? ' hamnoor-khatm-completed' : '') . ($is_active_without_free_parts ? ' hamnoor-khatm-no-free-parts' : '') . ($featured_badge ? ' ' . $featured_badge['class'] : ''));
+$creator_name = !empty($khatm->owner_name) ? Hamnoor_Helpers::display_name($khatm->owner_name) : __('کاربر هم‌نور', 'hamnoor');
+$card_context_class = isset($card_context_class) ? sanitize_html_class($card_context_class) : '';
+$card_class = trim('hamnoor-khatm-card ' . Hamnoor_Helpers::design_class($khatm) . ($is_completed ? ' hamnoor-khatm-completed' : '') . ($is_active_without_free_parts ? ' hamnoor-khatm-no-free-parts' : '') . ($featured_badge ? ' ' . $featured_badge['class'] : '') . ($card_context_class ? ' ' . $card_context_class : ''));
 ?>
 <article class="<?php echo esc_attr($card_class); ?>">
     <?php if (!empty($cover_url)) : ?>
         <a class="hamnoor-khatm-card-media" href="<?php echo esc_url($url); ?>">
-            <img class="hamnoor-khatm-card-cover" src="<?php echo esc_url($cover_url); ?>" alt="<?php echo esc_attr($khatm->title); ?>">
+            <img class="hamnoor-khatm-card-cover" src="<?php echo esc_url($cover_url); ?>" alt="<?php echo esc_attr($khatm->title); ?>" width="1200" height="630">
         </a>
     <?php endif; ?>
     <div class="hamnoor-khatm-card-body">
@@ -32,6 +34,7 @@ $card_class = trim('hamnoor-khatm-card ' . Hamnoor_Helpers::design_class($khatm)
         <?php if (!empty($khatm->intention)) : ?>
             <p class="hamnoor-khatm-card-intention"><?php echo esc_html(wp_trim_words(wp_strip_all_tags($khatm->intention), 22)); ?></p>
         <?php endif; ?>
+        <div class="hamnoor-khatm-card-creator"><span><?php esc_html_e('ایجادکننده:', 'hamnoor'); ?></span> <strong><?php echo esc_html($creator_name); ?></strong></div>
         <div class="hamnoor-progress" aria-label="<?php echo esc_attr(sprintf(__('پیشرفت %d درصد', 'hamnoor'), (int) $progress['percent'])); ?>"><span style="width:<?php echo esc_attr($progress['percent']); ?>%"></span></div>
         <div class="hamnoor-card-meta"><?php echo esc_html(sprintf(__('%1$d از %2$d سهم خوانده شده است', 'hamnoor'), (int) $progress['done'], (int) $progress['total'])); ?></div>
         <?php if ($is_active_without_free_parts) : ?>

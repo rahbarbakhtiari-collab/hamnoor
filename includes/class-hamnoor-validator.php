@@ -48,6 +48,7 @@ class Hamnoor_Validator {
         $title = isset($data['title']) ? (string) $data['title'] : '';
         if ('' === trim($title)) { $add('title', 'hamnoor_title_required', __('عنوان ختم الزامی است. لطفاً عنوانی روشن و محترمانه وارد کنید.', 'hamnoor')); }
         if (mb_strlen($title) > 191) { $add('title', 'hamnoor_title_long', __('عنوان ختم بیش از حد طولانی است. لطفاً عنوان را کوتاه‌تر کنید.', 'hamnoor')); }
+        if (!empty($data['_max_repeat_count_invalid'])) { $add('max_repeat_count', 'hamnoor_max_repeat_invalid', __('حد اختصاصی تکرار سوره باید عددی بین ۱ تا ۱۲۰۰۰ باشد یا خالی بماند.', 'hamnoor')); }
         $phone = self::require_mobile(isset($data['owner_phone']) ? $data['owner_phone'] : '', __('شماره موبایل ایجادکننده ختم', 'hamnoor'));
         if (is_wp_error($phone)) { $add('owner_phone', $phone->get_error_code(), $phone->get_error_message()); }
         if (empty($data['owner_email']) || !is_email($data['owner_email'])) { $add('owner_email', 'hamnoor_email_invalid', __('ایمیل ایجادکننده ختم معتبر نیست. لطفاً یک ایمیل صحیح وارد کنید.', 'hamnoor')); }
@@ -65,8 +66,14 @@ class Hamnoor_Validator {
         if ('repeated_surah' === $type) {
             $surah = isset($data['selected_surah_number']) ? (int)$data['selected_surah_number'] : 1;
             $repeat = isset($data['repeat_count']) ? (int)self::normalize_digits($data['repeat_count']) : 0;
+            $max_repeat_count = Hamnoor_Helpers::effective_max_repeat_count();
+            if ((current_user_can('manage_options') || current_user_can('hamnoor_manage_all_khatms')) && !empty($data['max_repeat_count'])) {
+                $max_repeat_count = (int) self::normalize_digits($data['max_repeat_count']);
+            }
+            $max_repeat_count = max(1, min(12000, $max_repeat_count));
+            if (!empty($data['_existing_repeat_count'])) { $max_repeat_count = max($max_repeat_count, (int) $data['_existing_repeat_count']); }
             if ($surah < 1 || $surah > 114) { $add('selected_surah_number', 'hamnoor_surah_invalid', __('لطفاً یک سوره معتبر انتخاب کنید.', 'hamnoor')); }
-            if ($repeat < 1 || $repeat > 1000) { $add('repeat_count', 'hamnoor_repeat_invalid', __('تعداد تکرار باید بین ۱ تا ۱۰۰۰ مرتبه باشد.', 'hamnoor')); }
+            if ($repeat < 1 || $repeat > $max_repeat_count) { $add('repeat_count', 'hamnoor_repeat_invalid', sprintf(__('تعداد تکرار سوره باید بین ۱ تا %d مرتبه باشد.', 'hamnoor'), $max_repeat_count)); }
             $parts_per = max(0, $repeat);
             $khatm_count = 1;
         }

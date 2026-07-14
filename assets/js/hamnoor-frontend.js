@@ -499,7 +499,7 @@
     var typeEl = qs('[name="khatm_type"]', form);
     var type = typeEl ? typeEl.value : 'page';
     var count = parseInt(normalizeDigits((qs('[name="khatm_count"]', form) || {}).value || '1'), 10) || 1;
-    var repeat = parseInt(normalizeDigits((qs('[name="repeat_count"]', form) || {}).value || '100'), 10) || 0;
+    var repeat = parseInt(normalizeDigits((qs('[name="repeat_count"]', form) || {}).value || '0'), 10) || 0;
     var unit = type === 'juz' ? 30 : (type === 'surah' ? 114 : (type === 'repeated_surah' ? repeat : 604));
     return unit * (type === 'repeated_surah' ? 1 : Math.max(1, count));
   }
@@ -639,8 +639,10 @@
     var ok = true;
     var first = null;
     var maxCount = parseInt(form.getAttribute('data-max-khatm-count') || '100', 10) || 100;
+    var maxRepeat = parseInt(form.getAttribute('data-max-repeat-count') || '1000', 10) || 1000;
     var hardLimit = parseInt(form.getAttribute('data-hard-limit') || '12000', 10) || 12000;
     var maxMessage = form.getAttribute('data-max-khatm-message') || ('تعداد ختم کامل قرآن باید بین ۱ تا ' + maxCount + ' باشد.');
+    var maxRepeatMessage = form.getAttribute('data-max-repeat-message') || ('تعداد تکرار سوره باید بین ۱ تا ' + maxRepeat + ' مرتبه باشد.');
     function fail(name, msg){
       var field = qs('[name="' + name + '"]', step) || qs('[name="' + name + '"]', form);
       setFieldError(field, msg);
@@ -659,7 +661,7 @@
       var selectedSurah = parseInt(normalizeDigits((qs('[name="selected_surah_number"]', form) || {}).value || '0'), 10) || 0;
       if (type === 'page' || type === 'juz' || type === 'surah') { if (count < 1 || count > maxCount) { fail('khatm_count', maxMessage); } }
       if (type === 'repeated_surah' && (selectedSurah < 1 || selectedSurah > 114)) { fail('selected_surah_number', 'لطفاً یک سوره معتبر انتخاب کنید.'); }
-      if (type === 'repeated_surah') { if (repeat < 1 || repeat > 1000) { fail('repeat_count', 'تعداد تکرار سوره باید بین ۱ تا ۱۰۰۰ باشد.'); } }
+      if (type === 'repeated_surah') { if (repeat < 1 || repeat > maxRepeat) { fail('repeat_count', maxRepeatMessage); } }
       if (partTotal(form) > hardLimit) { fail(type === 'repeated_surah' ? 'repeat_count' : 'khatm_count', 'تعداد سهم‌های این ختم از حد مجاز پردازش هم‌زمان بیشتر است.'); }
     }
     if (no === 4) {

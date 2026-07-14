@@ -26,7 +26,7 @@ if (is_array($pages)) {
 foreach (array('hamnoor_otps', 'hamnoor_logs', 'hamnoor_parts', 'hamnoor_participants', 'hamnoor_khatms') as $table) {
     $wpdb->query('DROP TABLE IF EXISTS ' . $wpdb->prefix . $table);
 }
-foreach (array('hamnoor_settings', 'hamnoor_pages', 'hamnoor_db_version', 'hamnoor_rewrite_version', 'hamnoor_texts', 'hamnoor_creation_policy_admin_set', 'hamnoor_creation_policy_migrated_251') as $option) {
+foreach (array('hamnoor_settings', 'hamnoor_pages', 'hamnoor_db_version', 'hamnoor_rewrite_version', 'hamnoor_texts', 'hamnoor_creation_policy_admin_set', 'hamnoor_creation_policy_migrated_251', 'hamnoor_repeat_limit_schema_version') as $option) {
     delete_option($option);
 }
 

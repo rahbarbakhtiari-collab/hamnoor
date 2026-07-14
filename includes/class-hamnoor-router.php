@@ -18,6 +18,7 @@ class Hamnoor_Router {
         add_action('init', array($this, 'maybe_flush_rewrite_rules'), 99);
         add_filter('query_vars', array($this, 'query_vars'));
         add_action('template_redirect', array($this, 'prepare_khatm_request'));
+        add_filter('pre_get_shortlink', array($this, 'filter_shortlink'), 10, 4);
         add_filter('the_content', array($this, 'inject_khatm_content'), 20);
         add_filter('template_include', array($this, 'template_include'));
         add_action('admin_notices', array($this, 'empty_base_notice'));
@@ -67,6 +68,26 @@ class Hamnoor_Router {
 
     public function is_hamnoor_request() {
         return (bool) get_query_var('hamnoor_khatm');
+    }
+
+    public function filter_shortlink($shortlink, $id, $context, $allow_slugs) {
+        if (false !== $shortlink || 'query' !== $context || !$this->is_hamnoor_request()) {
+            return $shortlink;
+        }
+
+        $khatm = isset($GLOBALS['hamnoor_current_khatm']) ? $GLOBALS['hamnoor_current_khatm'] : null;
+        if (!is_object($khatm) || empty($khatm->token)) {
+            return $shortlink;
+        }
+
+        $requested_token = Hamnoor_Helpers::sanitize_token(get_query_var('hamnoor_khatm'));
+        $khatm_token = Hamnoor_Helpers::sanitize_token($khatm->token);
+        if (!$requested_token || !$khatm_token || $requested_token !== $khatm_token) {
+            return $shortlink;
+        }
+
+        $url = Hamnoor_Helpers::khatm_url($khatm);
+        return $url ? $url : $shortlink;
     }
 
     public function prepare_khatm_request() {

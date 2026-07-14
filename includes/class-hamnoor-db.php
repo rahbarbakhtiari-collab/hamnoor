@@ -20,6 +20,7 @@ class Hamnoor_DB {
         self::create_roles();
         self::create_pages(true);
         update_option('hamnoor_db_version', HAMNOOR_DB_VERSION, false);
+        if (self::repeat_limit_schema_ready()) { update_option('hamnoor_repeat_limit_schema_version', '1', false); }
     }
 
     public static function maybe_upgrade() {
@@ -32,6 +33,19 @@ class Hamnoor_DB {
             self::cleanup_expired_records();
             update_option('hamnoor_db_version', HAMNOOR_DB_VERSION, false);
         }
+        self::maybe_migrate_repeat_limit();
+    }
+
+    public static function maybe_migrate_repeat_limit() {
+        if ('1' === (string) get_option('hamnoor_repeat_limit_schema_version', '0')) { return; }
+        self::create_tables();
+        if (self::repeat_limit_schema_ready()) { update_option('hamnoor_repeat_limit_schema_version', '1', false); }
+    }
+
+    private static function repeat_limit_schema_ready() {
+        global $wpdb;
+        $columns = $wpdb->get_col('DESC ' . self::table('khatms'), 0);
+        return in_array('max_repeat_count', $columns, true);
     }
 
     public static function create_options() {
@@ -136,6 +150,7 @@ class Hamnoor_DB {
             khatm_type VARCHAR(30) NOT NULL DEFAULT 'page',
             khatm_count SMALLINT(5) UNSIGNED NOT NULL DEFAULT 1,
             max_khatm_count SMALLINT(5) UNSIGNED NULL,
+            max_repeat_count SMALLINT(5) UNSIGNED NULL,
             auto_release_mode VARCHAR(20) NOT NULL DEFAULT 'none',
             auto_release_after_days SMALLINT(5) UNSIGNED NULL,
             auto_release_at DATETIME NULL,
@@ -298,6 +313,11 @@ class Hamnoor_DB {
         $data['selected_surah_number'] = isset($source['selected_surah_number']) ? (int) Hamnoor_Validator::normalize_digits(wp_unslash($source['selected_surah_number'])) : 1;
         $data['repeat_count'] = isset($source['repeat_count']) ? (int) Hamnoor_Validator::normalize_digits(wp_unslash($source['repeat_count'])) : 100;
         $data['max_khatm_count'] = isset($source['max_khatm_count']) && '' !== trim((string) wp_unslash($source['max_khatm_count'])) ? max(1, min(1000, (int) Hamnoor_Validator::normalize_digits(wp_unslash($source['max_khatm_count'])))) : null;
+        $can_set_limits = current_user_can('manage_options') || current_user_can('hamnoor_manage_all_khatms');
+        $data['_can_set_limits'] = $can_set_limits ? 1 : 0;
+        $max_repeat_raw = isset($source['max_repeat_count']) ? trim((string) wp_unslash($source['max_repeat_count'])) : '';
+        $data['max_repeat_count'] = $can_set_limits && '' !== $max_repeat_raw ? Hamnoor_Helpers::normalize_repeat_limit($max_repeat_raw) : null;
+        $data['_max_repeat_count_invalid'] = $can_set_limits && '' !== $max_repeat_raw && !$data['max_repeat_count'] ? 1 : 0;
         $data['privacy'] = isset($source['privacy']) && 'private' === sanitize_key($source['privacy']) ? 'private' : 'public';
         $data['status'] = isset($source['status']) && in_array(sanitize_key($source['status']), array('pending_review','active','completed','closed','archived','failed'), true) ? sanitize_key($source['status']) : '';
         $data['indexable'] = !empty($source['indexable']) ? 1 : 0;
@@ -361,7 +381,7 @@ class Hamnoor_DB {
             'token'=>$token, 'slug'=>$slug, 'title'=>$title, 'intention'=>wp_kses_post($data['intention']), 'description'=>wp_kses_post($data['description']),
             'cover_id'=>isset($data['cover_id']) ? (int)$data['cover_id'] : null, 'cover_url'=>!empty($data['cover_url']) ? esc_url_raw($data['cover_url']) : '',
             'owner_user_id'=>$owner_user_id, 'owner_name'=>$owner_name, 'owner_phone'=>Hamnoor_Validator::normalize_phone($data['owner_phone']), 'owner_email'=>$owner_email,
-            'khatm_type'=>$type, 'khatm_count'=>$khatm_count, 'max_khatm_count'=>!empty($data['max_khatm_count']) ? (int)$data['max_khatm_count'] : null,
+            'khatm_type'=>$type, 'khatm_count'=>$khatm_count, 'max_khatm_count'=>!empty($data['max_khatm_count']) ? (int)$data['max_khatm_count'] : null, 'max_repeat_count'=>!empty($data['max_repeat_count']) ? (int)$data['max_repeat_count'] : null,
             'auto_release_mode'=>isset($data['auto_release_mode']) ? $data['auto_release_mode'] : 'none', 'auto_release_after_days'=>!empty($data['auto_release_after_days']) ? (int)$data['auto_release_after_days'] : null, 'auto_release_at'=>!empty($data['auto_release_at']) ? $data['auto_release_at'] : null,
             'completion_mode'=>isset($data['completion_mode']) && 'auto_done_on_claim' === $data['completion_mode'] ? 'auto_done_on_claim' : 'manual_done',
             'parts_per_khatm'=>$parts_per_khatm, 'total_parts'=>$total_parts,
@@ -371,7 +391,7 @@ class Hamnoor_DB {
             'published_at'=>$is_admin_creator ? $now : null, 'published_by_user_id'=>$is_admin_creator ? get_current_user_id() : null,
             'starts_at'=>!empty($data['starts_at']) ? $data['starts_at'] : null, 'ends_at'=>!empty($data['ends_at']) ? $data['ends_at'] : null,
             'created_at'=>$now, 'updated_at'=>$now,
-        ), array('%s','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s','%d','%d','%s','%d','%s','%s','%d','%d','%s','%s','%s','%s','%d','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s'));
+        ), array('%s','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s','%d','%d','%d','%s','%d','%s','%s','%d','%d','%s','%s','%s','%s','%d','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s'));
         if (!$inserted) {
             $error = $wpdb->last_error ? $wpdb->last_error : 'Unknown database insert error.';
             $wpdb->query('ROLLBACK');
@@ -408,6 +428,7 @@ class Hamnoor_DB {
         $data['khatm_type'] = $khatm->khatm_type;
         $data['khatm_count'] = isset($khatm->khatm_count) ? (int) $khatm->khatm_count : 1;
         $data['repeat_count'] = self::parts_per_khatm($khatm->khatm_type);
+        $data['_existing_repeat_count'] = isset($khatm->parts_per_khatm) ? (int) $khatm->parts_per_khatm : 0;
         if ('repeated_surah' === $khatm->khatm_type) {
             $first_part = self::get_parts((int) $khatm_id, '', array('limit' => 1));
             $data['selected_surah_number'] = !empty($first_part[0]->part_number) ? (int) $first_part[0]->part_number : 1;
@@ -428,6 +449,7 @@ class Hamnoor_DB {
             'intention' => wp_kses_post($data['intention']),
             'description' => wp_kses_post($data['description']),
             'max_khatm_count' => !empty($data['max_khatm_count']) ? (int) $data['max_khatm_count'] : null,
+            'max_repeat_count' => !empty($data['_can_set_limits']) ? (!empty($data['max_repeat_count']) ? (int) $data['max_repeat_count'] : null) : (isset($khatm->max_repeat_count) ? $khatm->max_repeat_count : null),
             'auto_release_mode' => isset($data['auto_release_mode']) ? $data['auto_release_mode'] : (isset($khatm->auto_release_mode) ? $khatm->auto_release_mode : 'none'),
             'auto_release_after_days' => !empty($data['auto_release_after_days']) ? (int) $data['auto_release_after_days'] : null,
             'auto_release_at' => !empty($data['auto_release_at']) ? $data['auto_release_at'] : null,
@@ -1294,7 +1316,7 @@ class Hamnoor_DB {
         $missing = array();
         $columns_missing = array();
         $required_columns = array(
-            self::table('khatms') => array('id','token','title','owner_user_id','owner_phone','khatm_type','khatm_count','max_khatm_count','auto_release_mode','auto_release_after_days','auto_release_at','completion_mode','parts_per_khatm','total_parts','design_style','is_featured','featured_status','featured_starts_at','featured_until','featured_weight','featured_request_status','privacy','status','published_at','published_by_user_id','starts_at','ends_at'),
+            self::table('khatms') => array('id','token','title','owner_user_id','owner_phone','khatm_type','khatm_count','max_khatm_count','max_repeat_count','auto_release_mode','auto_release_after_days','auto_release_at','completion_mode','parts_per_khatm','total_parts','design_style','is_featured','featured_status','featured_starts_at','featured_until','featured_weight','featured_request_status','privacy','status','published_at','published_by_user_id','starts_at','ends_at'),
             self::table('parts') => array('id','khatm_id','participant_id','round_number','part_type','part_number','quran_url','status','released_at','released_by','release_reason'),
             self::table('participants') => array('id','khatm_id','name','phone','email','normalized_phone','tracking_token'),
             self::table('logs') => array('id','khatm_id','action','message','created_at'),

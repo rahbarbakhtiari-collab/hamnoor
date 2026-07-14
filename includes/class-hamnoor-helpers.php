@@ -35,7 +35,18 @@ class Hamnoor_Helpers {
             'admin_parts_per_page' => '30',
             'admin_participants_per_page' => '30',
             'max_khatm_count' => '100',
+            'max_repeat_count' => '1000',
             'max_parts_per_khatm' => '12000',
+            'support_section_enabled' => '0',
+            'support_section_title' => __('حمایت داوطلبانه از هم‌نور', 'hamnoor'),
+            'support_section_description' => __('در صورت تمایل می‌توانید برای توسعه، نگهداری و استمرار خدمات هم‌نور از این سامانه حمایت کنید. ایجاد ختم کاملاً رایگان است و به پرداخت وابسته نیست.', 'hamnoor'),
+            'support_payment_info' => '',
+            'support_button_text' => __('حمایت از هم‌نور', 'hamnoor'),
+            'support_button_url' => '',
+            'repeat_contact_enabled' => '0',
+            'repeat_contact_button_text' => __('ارتباط با مدیر سایت', 'hamnoor'),
+            'repeat_contact_url' => '',
+            'repeat_contact_help' => __('برای درخواست تعداد بیشتر تکرار سوره، با مدیر سایت در ارتباط باشید.', 'hamnoor'),
             'share_text_template' => "📖 {KHATM_TITLE}
 
 🕊 نیت ختم: {KHATM_INTENTION}
@@ -71,6 +82,27 @@ class Hamnoor_Helpers {
         return wp_parse_args(is_array($settings) ? $settings : array(), self::defaults());
     }
 
+    public static function normalize_repeat_limit($value) {
+        $value = Hamnoor_Validator::normalize_digits(trim((string) $value));
+        if (!preg_match('/^\d+$/', $value)) { return 0; }
+        $value = (int) $value;
+        return $value >= 1 && $value <= 12000 ? $value : 0;
+    }
+
+    public static function effective_max_repeat_count($override = null) {
+        if (is_object($override)) {
+            $override = isset($override->max_repeat_count) ? $override->max_repeat_count : null;
+        }
+        $override = self::normalize_repeat_limit($override);
+        if ($override) { return $override; }
+
+        $settings = self::settings();
+        $global = self::normalize_repeat_limit(isset($settings['max_repeat_count']) ? $settings['max_repeat_count'] : '');
+        if ($global) { return $global; }
+
+        return (int) self::defaults()['max_repeat_count'];
+    }
+
     public static function update_settings($data) {
         $old = self::settings();
         $settings = array();
@@ -82,7 +114,7 @@ class Hamnoor_Helpers {
         if (false === strpos($settings['quran_juz_url_pattern'], '{unit}')) { $settings['quran_juz_url_pattern'] = self::defaults()['quran_juz_url_pattern']; }
         if (false === strpos($settings['quran_surah_url_pattern'], '{slug}')) { $settings['quran_surah_url_pattern'] = self::defaults()['quran_surah_url_pattern']; }
         $settings['default_khatm_image_url'] = isset($data['default_khatm_image_url']) ? esc_url_raw(wp_unslash($data['default_khatm_image_url'])) : (isset($old['default_khatm_image_url']) ? $old['default_khatm_image_url'] : '');
-        foreach (array('allow_frontend_registration','auto_grant_manager','rest_api_enabled','track_requires_otp','index_public_khatms','allow_external_cover_url','delete_data_on_uninstall','auto_create_track_page','auto_create_create_page','allow_private_share','hide_admin_bar','ajax_debug_admin','new_khatm_creation_enabled') as $key) {
+        foreach (array('allow_frontend_registration','auto_grant_manager','rest_api_enabled','track_requires_otp','index_public_khatms','allow_external_cover_url','delete_data_on_uninstall','auto_create_track_page','auto_create_create_page','allow_private_share','hide_admin_bar','ajax_debug_admin','new_khatm_creation_enabled','support_section_enabled','repeat_contact_enabled') as $key) {
             if (array_key_exists($key, $data)) {
                 $settings[$key] = !empty($data[$key]) ? '1' : '0';
             } else {
@@ -112,8 +144,19 @@ class Hamnoor_Helpers {
         }
         $max_count = isset($data['max_khatm_count']) ? Hamnoor_Validator::normalize_digits(wp_unslash($data['max_khatm_count'])) : (isset($old['max_khatm_count']) ? $old['max_khatm_count'] : self::defaults()['max_khatm_count']);
         $settings['max_khatm_count'] = (string) max(1, min(1000, (int) $max_count));
+        $max_repeat = isset($data['max_repeat_count']) ? self::normalize_repeat_limit(wp_unslash($data['max_repeat_count'])) : self::effective_max_repeat_count();
+        $settings['max_repeat_count'] = (string) ($max_repeat ? $max_repeat : self::effective_max_repeat_count());
         $max_parts = isset($data['max_parts_per_khatm']) ? Hamnoor_Validator::normalize_digits(wp_unslash($data['max_parts_per_khatm'])) : (isset($old['max_parts_per_khatm']) ? $old['max_parts_per_khatm'] : self::defaults()['max_parts_per_khatm']);
         $settings['max_parts_per_khatm'] = (string) max(604, min(200000, (int) $max_parts));
+        foreach (array('support_section_description','support_payment_info') as $key) {
+            $settings[$key] = isset($data[$key]) ? wp_kses_post(wp_unslash($data[$key])) : (isset($old[$key]) ? $old[$key] : self::defaults()[$key]);
+        }
+        foreach (array('support_section_title','support_button_text','repeat_contact_button_text','repeat_contact_help') as $key) {
+            $settings[$key] = isset($data[$key]) ? sanitize_text_field(wp_unslash($data[$key])) : (isset($old[$key]) ? $old[$key] : self::defaults()[$key]);
+        }
+        foreach (array('support_button_url','repeat_contact_url') as $key) {
+            $settings[$key] = isset($data[$key]) ? esc_url_raw(wp_unslash($data[$key])) : (isset($old[$key]) ? $old[$key] : self::defaults()[$key]);
+        }
         foreach (array('primary_color','secondary_color','accent_color','background_color','card_background','text_color','muted_color','border_color','success_color','warning_color','danger_color') as $key) {
             $color = isset($data[$key]) ? sanitize_hex_color(wp_unslash($data[$key])) : $old[$key];
             $settings[$key] = $color ? $color : self::defaults()[$key];

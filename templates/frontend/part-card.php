@@ -34,7 +34,7 @@ $can_manager_complete = $is_claimed && !$is_done && $can_manage_part && 'single'
         <?php endif; ?>
         <div class="hamnoor-part-title"><?php echo esc_html($part->title); ?></div>
         <span class="hamnoor-status hamnoor-status-<?php echo esc_attr($part->status); ?>"><?php echo esc_html($status_label); ?></span>
-        <?php if ($show_name) : ?><span class="hamnoor-participant<?php echo $is_done ? ' hamnoor-reader-name' : ''; ?>"><?php echo $is_done ? esc_html(sprintf(__('خوانده‌شده توسط: %s', 'hamnoor'), $participant_name)) : esc_html($participant_name); ?></span><?php endif; ?>
+        <?php if ($show_name) : ?><span class="hamnoor-participant<?php echo $is_done ? ' hamnoor-reader-name' : ''; ?>"><?php echo esc_html($participant_name); ?></span><?php endif; ?>
     </div>
     <div class="hamnoor-part-actions">
         <?php if (!empty($part->quran_url)) : ?><a class="hamnoor-btn hamnoor-btn-secondary hamnoor-quran-link" target="_blank" rel="noopener noreferrer" href="<?php echo esc_url($part->quran_url); ?>"><?php esc_html_e('مشاهده قرآن', 'hamnoor'); ?></a><?php endif; ?>

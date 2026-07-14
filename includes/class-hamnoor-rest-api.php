@@ -117,6 +117,7 @@ class Hamnoor_REST_API {
             'khatm_type' => (string) $khatm->khatm_type,
             'khatm_count' => (int) $khatm->khatm_count,
             'max_khatm_count' => !empty($khatm->max_khatm_count) ? (int) $khatm->max_khatm_count : (int) Hamnoor_Helpers::settings()['max_khatm_count'],
+            'max_repeat_count' => Hamnoor_Helpers::effective_max_repeat_count($khatm),
             'parts_per_khatm' => (int) $khatm->parts_per_khatm,
             'total_parts' => (int) $khatm->total_parts,
             'privacy' => (string) $khatm->privacy,
