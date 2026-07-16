@@ -149,6 +149,7 @@ class Hamnoor_DB {
             owner_email VARCHAR(191) NULL,
             khatm_type VARCHAR(30) NOT NULL DEFAULT 'page',
             khatm_count SMALLINT(5) UNSIGNED NOT NULL DEFAULT 1,
+            selected_surah_number TINYINT(3) UNSIGNED NULL,
             max_khatm_count SMALLINT(5) UNSIGNED NULL,
             max_repeat_count SMALLINT(5) UNSIGNED NULL,
             auto_release_mode VARCHAR(20) NOT NULL DEFAULT 'none',
@@ -381,7 +382,7 @@ class Hamnoor_DB {
             'token'=>$token, 'slug'=>$slug, 'title'=>$title, 'intention'=>wp_kses_post($data['intention']), 'description'=>wp_kses_post($data['description']),
             'cover_id'=>isset($data['cover_id']) ? (int)$data['cover_id'] : null, 'cover_url'=>!empty($data['cover_url']) ? esc_url_raw($data['cover_url']) : '',
             'owner_user_id'=>$owner_user_id, 'owner_name'=>$owner_name, 'owner_phone'=>Hamnoor_Validator::normalize_phone($data['owner_phone']), 'owner_email'=>$owner_email,
-            'khatm_type'=>$type, 'khatm_count'=>$khatm_count, 'max_khatm_count'=>!empty($data['max_khatm_count']) ? (int)$data['max_khatm_count'] : null, 'max_repeat_count'=>!empty($data['max_repeat_count']) ? (int)$data['max_repeat_count'] : null,
+            'khatm_type'=>$type, 'khatm_count'=>$khatm_count, 'selected_surah_number'=>'repeated_surah' === $type ? max(1, min(114, (int)$data['selected_surah_number'])) : null, 'max_khatm_count'=>!empty($data['max_khatm_count']) ? (int)$data['max_khatm_count'] : null, 'max_repeat_count'=>!empty($data['max_repeat_count']) ? (int)$data['max_repeat_count'] : null,
             'auto_release_mode'=>isset($data['auto_release_mode']) ? $data['auto_release_mode'] : 'none', 'auto_release_after_days'=>!empty($data['auto_release_after_days']) ? (int)$data['auto_release_after_days'] : null, 'auto_release_at'=>!empty($data['auto_release_at']) ? $data['auto_release_at'] : null,
             'completion_mode'=>isset($data['completion_mode']) && 'auto_done_on_claim' === $data['completion_mode'] ? 'auto_done_on_claim' : 'manual_done',
             'parts_per_khatm'=>$parts_per_khatm, 'total_parts'=>$total_parts,
@@ -391,7 +392,7 @@ class Hamnoor_DB {
             'published_at'=>$is_admin_creator ? $now : null, 'published_by_user_id'=>$is_admin_creator ? get_current_user_id() : null,
             'starts_at'=>!empty($data['starts_at']) ? $data['starts_at'] : null, 'ends_at'=>!empty($data['ends_at']) ? $data['ends_at'] : null,
             'created_at'=>$now, 'updated_at'=>$now,
-        ), array('%s','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s','%d','%d','%d','%s','%d','%s','%s','%d','%d','%s','%s','%s','%s','%d','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s'));
+        ), array('%s','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s','%d','%d','%d','%d','%s','%d','%s','%s','%d','%d','%s','%s','%s','%s','%d','%s','%s','%s','%s','%d','%s','%d','%s','%s','%s','%s'));
         if (!$inserted) {
             $error = $wpdb->last_error ? $wpdb->last_error : 'Unknown database insert error.';
             $wpdb->query('ROLLBACK');
@@ -400,7 +401,7 @@ class Hamnoor_DB {
             return new WP_Error('hamnoor_db_error', __('ایجاد ختم انجام نشد. اطلاعات واردشده حفظ شد؛ لطفاً چند لحظه دیگر دوباره تلاش کنید یا با مدیر سایت تماس بگیرید.', 'hamnoor'));
         }
         $khatm_id = (int) $wpdb->insert_id;
-        $parts_result = self::generate_parts($khatm_id, $type, isset($data['selected_surah_number']) ? (int)$data['selected_surah_number'] : 1, isset($data['repeat_count']) ? (int)$data['repeat_count'] : 100, $khatm_count);
+        $parts_result = $is_admin_creator ? self::generate_parts($khatm_id, $type, isset($data['selected_surah_number']) ? (int)$data['selected_surah_number'] : 1, isset($data['repeat_count']) ? (int)$data['repeat_count'] : 100, $khatm_count) : true;
         if (is_wp_error($parts_result)) {
             $wpdb->update(self::table('khatms'), array('status'=>'failed','updated_at'=>$now), array('id'=>$khatm_id));
             self::log($khatm_id, 0, 0, $owner_user_id, 'khatm_parts_failed', $parts_result->get_error_message());
@@ -431,7 +432,7 @@ class Hamnoor_DB {
         $data['_existing_repeat_count'] = isset($khatm->parts_per_khatm) ? (int) $khatm->parts_per_khatm : 0;
         if ('repeated_surah' === $khatm->khatm_type) {
             $first_part = self::get_parts((int) $khatm_id, '', array('limit' => 1));
-            $data['selected_surah_number'] = !empty($first_part[0]->part_number) ? (int) $first_part[0]->part_number : 1;
+            $data['selected_surah_number'] = !empty($khatm->selected_surah_number) ? (int) $khatm->selected_surah_number : (!empty($first_part[0]->part_number) ? (int) $first_part[0]->part_number : 1);
             $data['repeat_count'] = isset($khatm->parts_per_khatm) ? (int) $khatm->parts_per_khatm : 100;
         }
 
@@ -479,12 +480,31 @@ class Hamnoor_DB {
             $fields['cover_id'] = (int) $data['cover_id'];
             $fields['cover_url'] = esc_url_raw($data['cover_url']);
         }
+        $activating = 'active' === $new_status && 'active' !== (string) $khatm->status;
+        if ($activating) {
+            $wpdb->query('START TRANSACTION');
+            $khatm = $wpdb->get_row($wpdb->prepare('SELECT * FROM ' . self::table('khatms') . ' WHERE id = %d FOR UPDATE', (int) $khatm_id));
+            if ($khatm && 'active' === (string) $khatm->status) {
+                $activating = false;
+                unset($fields['published_at'], $fields['published_by_user_id']);
+                $wpdb->query('COMMIT');
+            } else {
+                $parts_ready = self::ensure_parts_for_activation($khatm);
+                if (is_wp_error($parts_ready)) {
+                    $wpdb->query('ROLLBACK');
+                    self::log_activation_error((int) $khatm_id, $parts_ready);
+                    return $parts_ready;
+                }
+            }
+        }
         do_action('hamnoor_before_update_khatm', (int) $khatm_id, $fields, $khatm);
         $updated = $wpdb->update(self::table('khatms'), $fields, array('id' => (int) $khatm_id));
         if (false === $updated) {
+            if ($activating) { $wpdb->query('ROLLBACK'); }
             self::log($khatm_id, 0, 0, get_current_user_id(), 'khatm_update_db_error', $wpdb->last_error ? $wpdb->last_error : 'Unknown update error');
             return new WP_Error('hamnoor_update_failed', __('ویرایش ختم انجام نشد. لطفاً دوباره تلاش کنید.', 'hamnoor'));
         }
+        if ($activating) { $wpdb->query('COMMIT'); }
         self::log($khatm_id, 0, 0, get_current_user_id(), 'khatm_updated', __('اطلاعات ختم ویرایش شد.', 'hamnoor'));
         $updated_khatm = self::get_khatm((int) $khatm_id);
         do_action('hamnoor_after_update_khatm', (int) $khatm_id, $updated_khatm, $khatm, $fields);
@@ -572,6 +592,40 @@ class Hamnoor_DB {
             return new WP_Error('hamnoor_part_insert_error', $wpdb->last_error ? $wpdb->last_error : __('خطا در ایجاد سهم قرائت.', 'hamnoor'));
         }
         return true;
+    }
+
+    private static function ensure_parts_for_activation($khatm) {
+        global $wpdb;
+        if (!$khatm) { return new WP_Error('hamnoor_not_found', __('ختم پیدا نشد.', 'hamnoor')); }
+        $type = self::normalize_type($khatm->khatm_type);
+        $parts_per_khatm = self::parts_per_khatm($type, (int) $khatm->parts_per_khatm);
+        $khatm_count = self::khatm_count_for_type($type, (int) $khatm->khatm_count);
+        $expected = $parts_per_khatm * $khatm_count;
+        if ((int) $khatm->parts_per_khatm !== $parts_per_khatm || (int) $khatm->total_parts !== $expected) {
+            return new WP_Error('hamnoor_parts_definition_mismatch', __('اطلاعات تعداد سهم‌های این ختم ناسازگار است و فعال‌سازی انجام نشد.', 'hamnoor'));
+        }
+        $existing = (int) $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM ' . self::table('parts') . ' WHERE khatm_id = %d', (int) $khatm->id));
+        if ($existing === $expected) { return true; }
+        if (0 !== $existing) {
+            return new WP_Error('hamnoor_parts_count_mismatch', __('تعداد سهم‌های موجود با تعداد مورد انتظار سازگار نیست و فعال‌سازی انجام نشد.', 'hamnoor'));
+        }
+        $selected_surah = isset($khatm->selected_surah_number) ? (int) $khatm->selected_surah_number : 0;
+        if ('repeated_surah' === $type && ($selected_surah < 1 || $selected_surah > 114)) {
+            return new WP_Error('hamnoor_surah_missing', __('شماره سوره این ختم ذخیره نشده است و امکان تولید ایمن سهم‌ها وجود ندارد.', 'hamnoor'));
+        }
+        $generated = self::generate_parts((int) $khatm->id, $type, $selected_surah, $parts_per_khatm, $khatm_count);
+        if (is_wp_error($generated)) {
+            return new WP_Error('hamnoor_parts_failed', __('تولید سهم‌های ختم انجام نشد و ختم فعال نشد.', 'hamnoor'), $generated);
+        }
+        $created = (int) $wpdb->get_var($wpdb->prepare('SELECT COUNT(*) FROM ' . self::table('parts') . ' WHERE khatm_id = %d', (int) $khatm->id));
+        return $created === $expected ? true : new WP_Error('hamnoor_parts_generation_incomplete', __('تولید سهم‌های ختم کامل نشد و ختم فعال نشد.', 'hamnoor'));
+    }
+
+    private static function log_activation_error($khatm_id, $error) {
+        $detail = $error->get_error_message();
+        $data = $error->get_error_data();
+        if (is_wp_error($data)) { $detail .= ' ' . $data->get_error_message(); }
+        self::log((int) $khatm_id, 0, 0, get_current_user_id(), 'khatm_activation_failed', $detail);
     }
 
     public static function get_khatm($id_or_token) {
@@ -1171,6 +1225,22 @@ class Hamnoor_DB {
         }
         $previous = self::get_khatm((int) $khatm_id);
         if (!$previous) { return new WP_Error('hamnoor_not_found', __('ختم پیدا نشد.', 'hamnoor')); }
+        $activating = 'active' === $status && 'active' !== (string) $previous->status;
+        if ($activating) {
+            $wpdb->query('START TRANSACTION');
+            $previous = $wpdb->get_row($wpdb->prepare('SELECT * FROM ' . self::table('khatms') . ' WHERE id = %d FOR UPDATE', (int) $khatm_id));
+            if ($previous && 'active' === (string) $previous->status) {
+                $activating = false;
+                $wpdb->query('COMMIT');
+            } else {
+                $parts_ready = self::ensure_parts_for_activation($previous);
+                if (is_wp_error($parts_ready)) {
+                    $wpdb->query('ROLLBACK');
+                    self::log_activation_error((int) $khatm_id, $parts_ready);
+                    return $parts_ready;
+                }
+            }
+        }
         $fields = array('status' => $status, 'updated_at' => current_time('mysql'));
         if ('completed' === $status) { $fields['completed_at'] = current_time('mysql'); }
         if ('active' === $status && 'active' !== (string) $previous->status) {
@@ -1178,7 +1248,11 @@ class Hamnoor_DB {
             $fields['published_by_user_id'] = get_current_user_id();
         }
         $updated = $wpdb->update(self::table('khatms'), $fields, array('id' => (int) $khatm_id));
-        if (false === $updated) { return new WP_Error('hamnoor_status_failed', __('تغییر وضعیت انجام نشد.', 'hamnoor')); }
+        if (false === $updated) {
+            if ($activating) { $wpdb->query('ROLLBACK'); }
+            return new WP_Error('hamnoor_status_failed', __('تغییر وضعیت انجام نشد.', 'hamnoor'));
+        }
+        if ($activating) { $wpdb->query('COMMIT'); }
         self::log((int) $khatm_id, 0, 0, get_current_user_id(), 'khatm_status_' . $status, sprintf(__('وضعیت ختم به %s تغییر کرد.', 'hamnoor'), $status));
         if ((string) $previous->status !== $status) {
             $current = self::get_khatm((int) $khatm_id);
