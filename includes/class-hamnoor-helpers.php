@@ -20,6 +20,9 @@ class Hamnoor_Helpers {
             'cover_required_mode' => 'optional',
             'default_khatm_image_url' => '',
             'allow_external_cover_url' => '0',
+            'card_show_part_type' => '1',
+            'card_show_claimed_count' => '1',
+            'card_show_done_count' => '1',
             'delete_data_on_uninstall' => '0',
             'auto_create_track_page' => '1',
             'auto_create_create_page' => '0',
@@ -46,7 +49,7 @@ class Hamnoor_Helpers {
             'repeat_contact_enabled' => '0',
             'repeat_contact_button_text' => __('ارتباط با مدیر سایت', 'hamnoor'),
             'repeat_contact_url' => '',
-            'repeat_contact_help' => __('برای درخواست تعداد بیشتر تکرار سوره، با مدیر سایت در ارتباط باشید.', 'hamnoor'),
+            'repeat_contact_help' => __('برای هماهنگی درباره ایجاد ختم، ظرفیت سهم‌ها یا درخواست‌های ویژه، با مدیر سایت در ارتباط باشید.', 'hamnoor'),
             'share_text_template' => "📖 {KHATM_TITLE}
 
 🕊 نیت ختم: {KHATM_INTENTION}
@@ -114,7 +117,7 @@ class Hamnoor_Helpers {
         if (false === strpos($settings['quran_juz_url_pattern'], '{unit}')) { $settings['quran_juz_url_pattern'] = self::defaults()['quran_juz_url_pattern']; }
         if (false === strpos($settings['quran_surah_url_pattern'], '{slug}')) { $settings['quran_surah_url_pattern'] = self::defaults()['quran_surah_url_pattern']; }
         $settings['default_khatm_image_url'] = isset($data['default_khatm_image_url']) ? esc_url_raw(wp_unslash($data['default_khatm_image_url'])) : (isset($old['default_khatm_image_url']) ? $old['default_khatm_image_url'] : '');
-        foreach (array('allow_frontend_registration','auto_grant_manager','rest_api_enabled','track_requires_otp','index_public_khatms','allow_external_cover_url','delete_data_on_uninstall','auto_create_track_page','auto_create_create_page','allow_private_share','hide_admin_bar','ajax_debug_admin','new_khatm_creation_enabled','support_section_enabled','repeat_contact_enabled') as $key) {
+        foreach (array('allow_frontend_registration','auto_grant_manager','rest_api_enabled','track_requires_otp','index_public_khatms','allow_external_cover_url','delete_data_on_uninstall','auto_create_track_page','auto_create_create_page','allow_private_share','hide_admin_bar','ajax_debug_admin','new_khatm_creation_enabled','support_section_enabled','repeat_contact_enabled','card_show_part_type','card_show_claimed_count','card_show_done_count') as $key) {
             if (array_key_exists($key, $data)) {
                 $settings[$key] = !empty($data[$key]) ? '1' : '0';
             } else {

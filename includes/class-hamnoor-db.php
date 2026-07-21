@@ -328,7 +328,22 @@ class Hamnoor_DB {
         $data['ends_at_jalali'] = isset($source['ends_at_jalali']) ? sanitize_text_field(Hamnoor_Validator::normalize_digits(wp_unslash($source['ends_at_jalali']))) : '';
         $data['starts_at'] = $start_raw !== '' ? Hamnoor_Validator::normalize_datetime(wp_unslash($start_raw), false) : '';
         $data['ends_at'] = $end_raw !== '' ? Hamnoor_Validator::normalize_datetime(wp_unslash($end_raw), true) : '';
-        if (isset($source['cover_url']) && '' !== trim((string) $source['cover_url'])) { $data['cover_url'] = esc_url_raw(wp_unslash($source['cover_url'])); }
+        if (isset($source['cover_url']) && '' !== trim((string) wp_unslash($source['cover_url']))) {
+            $settings = Hamnoor_Helpers::settings();
+            $raw_cover_url = trim((string) wp_unslash($source['cover_url']));
+            if (empty($settings['allow_external_cover_url']) || '1' !== (string) $settings['allow_external_cover_url']) {
+                $data['_external_cover_disabled'] = 1;
+            } else {
+                $cover_url = esc_url_raw($raw_cover_url, array('http', 'https'));
+                $scheme = strtolower((string) wp_parse_url($cover_url, PHP_URL_SCHEME));
+                if (!$cover_url || !in_array($scheme, array('http', 'https'), true) || !wp_http_validate_url($cover_url)) {
+                    $data['_external_cover_invalid'] = 1;
+                } else {
+                    $data['cover_id'] = 0;
+                    $data['cover_url'] = $cover_url;
+                }
+            }
+        }
         if (!empty($source['remove_cover'])) { $data['remove_cover'] = 1; }
         $styles = array('default','blue-quran','golden','memorial','ramadan','heyati');
         $data['design_style'] = isset($source['design_style']) && in_array(sanitize_key($source['design_style']), $styles, true) ? sanitize_key($source['design_style']) : 'default';
@@ -476,7 +491,7 @@ class Hamnoor_DB {
         if (!empty($data['remove_cover'])) {
             $fields['cover_id'] = null;
             $fields['cover_url'] = '';
-        } elseif (isset($data['cover_id']) && isset($data['cover_url'])) {
+        } elseif (array_key_exists('cover_id', $data) && array_key_exists('cover_url', $data)) {
             $fields['cover_id'] = (int) $data['cover_id'];
             $fields['cover_url'] = esc_url_raw($data['cover_url']);
         }

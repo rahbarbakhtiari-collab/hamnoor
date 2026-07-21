@@ -14,6 +14,16 @@ $featured_badge = Hamnoor_Featured_Service::badge_data($khatm);
 $url = Hamnoor_Helpers::invite_url($khatm);
 $cover_url = Hamnoor_Helpers::cover_url($khatm);
 $creator_name = !empty($khatm->owner_name) ? Hamnoor_Helpers::display_name($khatm->owner_name) : __('کاربر هم‌نور', 'hamnoor');
+$settings = Hamnoor_Helpers::settings();
+$card_meta = array();
+if (!empty($settings['card_show_part_type']) && '1' === (string) $settings['card_show_part_type']) {
+    $type_labels = array('page'=>__('صفحه', 'hamnoor'), 'juz'=>__('جزء', 'hamnoor'), 'surah'=>__('سوره', 'hamnoor'), 'repeated_surah'=>__('تکرار سوره', 'hamnoor'));
+    $type_label = isset($type_labels[$khatm->khatm_type]) ? $type_labels[$khatm->khatm_type] : Hamnoor_Helpers::status_label($khatm->khatm_type, 'type');
+    if (in_array((string) $khatm->khatm_type, array('page','juz','surah'), true) && !empty($khatm->khatm_count) && (int) $khatm->khatm_count > 1) { $type_label .= ' × ' . sprintf(__('%d ختم', 'hamnoor'), (int) $khatm->khatm_count); }
+    $card_meta[] = sprintf(__('تقسیم‌بندی: %s', 'hamnoor'), $type_label);
+}
+if (!empty($settings['card_show_claimed_count']) && '1' === (string) $settings['card_show_claimed_count']) { $card_meta[] = sprintf(__('رزروشده: %d', 'hamnoor'), (int) $progress['claimed']); }
+if (!empty($settings['card_show_done_count']) && '1' === (string) $settings['card_show_done_count']) { $card_meta[] = sprintf(__('خوانده‌شده: %1$d از %2$d', 'hamnoor'), (int) $progress['done'], (int) $progress['total']); }
 $card_context_class = isset($card_context_class) ? sanitize_html_class($card_context_class) : '';
 $card_class = trim('hamnoor-khatm-card ' . Hamnoor_Helpers::design_class($khatm) . ($is_completed ? ' hamnoor-khatm-completed' : '') . ($is_active_without_free_parts ? ' hamnoor-khatm-no-free-parts' : '') . ($featured_badge ? ' ' . $featured_badge['class'] : '') . ($card_context_class ? ' ' . $card_context_class : ''));
 ?>
@@ -36,7 +46,7 @@ $card_class = trim('hamnoor-khatm-card ' . Hamnoor_Helpers::design_class($khatm)
         <?php endif; ?>
         <div class="hamnoor-khatm-card-creator"><span><?php esc_html_e('ایجادکننده:', 'hamnoor'); ?></span> <strong><?php echo esc_html($creator_name); ?></strong></div>
         <div class="hamnoor-progress" aria-label="<?php echo esc_attr(sprintf(__('پیشرفت %d درصد', 'hamnoor'), (int) $progress['percent'])); ?>"><span style="width:<?php echo esc_attr($progress['percent']); ?>%"></span></div>
-        <div class="hamnoor-card-meta"><?php echo esc_html(sprintf(__('%1$d از %2$d سهم خوانده شده است', 'hamnoor'), (int) $progress['done'], (int) $progress['total'])); ?></div>
+        <?php if ($card_meta) : ?><div class="hamnoor-card-meta"><?php echo esc_html(implode(' | ', $card_meta)); ?></div><?php endif; ?>
         <?php if ($is_active_without_free_parts) : ?>
             <button type="button" class="hamnoor-btn hamnoor-btn-secondary is-disabled" disabled aria-disabled="true"><?php esc_html_e('سهمی برای انتخاب باقی نمانده', 'hamnoor'); ?></button>
         <?php else : ?>
