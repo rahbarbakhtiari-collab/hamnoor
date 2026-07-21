@@ -909,6 +909,9 @@
     display: -webkit-box;
     margin: 0;
     overflow: hidden;
+    text-align: justify;
+    text-align-last: right;
+    text-justify: inter-word;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }

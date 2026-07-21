@@ -653,6 +653,12 @@
     if (no === 1) {
       var title = qs('[name="title"]', step);
       if (title && !title.value.trim()) { fail('title', 'عنوان ختم الزامی است.'); }
+      var cover = qs('input[type="file"][name="cover_file"]', step);
+      var maxCoverKb = parseInt(form.getAttribute('data-cover-max-size-kb') || '0', 10) || 0;
+      if (cover && cover.files && cover.files[0] && maxCoverKb && cover.files[0].size > maxCoverKb * 1024) {
+        fail('cover_file', 'حجم تصویر انتخاب‌شده بیش از حد مجاز است. لطفاً تصویری کمتر از ' + maxCoverKb + ' کیلوبایت انتخاب کنید.');
+        cover.value = '';
+      }
     }
     if (no === 2) {
       var type = (qs('[name="khatm_type"]', form) || {}).value || 'page';
@@ -675,7 +681,7 @@
     if (no === 5) {
       var st = normalizeDigits((qs('[name="starts_at_jalali"]', form) || {}).value || '');
       var en = normalizeDigits((qs('[name="ends_at_jalali"]', form) || {}).value || '');
-      if (st && en && en < st) { fail('ends_at_jalali', 'تاریخ پایان نباید قبل از تاریخ شروع باشد.'); }
+      if (st && en && en < st) { fail('ends_at_jalali', 'پایان مهلت مشارکت نباید قبل از تاریخ شروع باشد.'); }
     }
     if (no === 6) {
       var completion = qs('[name="completion_mode"]:checked', form);
@@ -706,6 +712,9 @@
     qsa('.hamnoor-surah-search', form).forEach(initSurahSearch);
     var steps = qsa('.hamnoor-wizard-step', form);
     var current = 1;
+    var createAction = qs('input[name="action"][value="hamnoor_create_khatm"]', form);
+    var draftKey = 'hamnoor_create_khatm_draft';
+    var draftLifetime = 6 * 60 * 60 * 1000;
     var initialError = qs('.hamnoor-field-has-error, [aria-invalid="true"]', form);
     if (initialError) {
       var initialStep = closest(initialError, '.hamnoor-wizard-step');
@@ -732,10 +741,57 @@
       if (submitBtn) { submitBtn.hidden = current < steps.length; }
       updateSummary(form);
     }
+    function removeDraft(){
+      try { window.sessionStorage.removeItem(draftKey); } catch (error) { debug('create draft removal unavailable', error); }
+    }
+    function saveDraft(){
+      if (!createAction) { return; }
+      var fields = [];
+      var hadFile = false;
+      qsa('input, textarea, select', form).forEach(function(field, index){
+        var type = (field.type || '').toLowerCase();
+        if (!field.name || field.disabled || type === 'hidden' || type === 'password' || type === 'submit' || type === 'button' || type === 'reset') { return; }
+        if (type === 'file') { hadFile = hadFile || !!(field.files && field.files.length); return; }
+        fields.push({index: index, name: field.name, value: field.value, checked: !!field.checked});
+      });
+      try { window.sessionStorage.setItem(draftKey, JSON.stringify({savedAt: Date.now(), step: current, fields: fields, hadFile: hadFile})); }
+      catch (error) { debug('create draft storage unavailable', error); }
+    }
+    function restoreDraft(){
+      if (!createAction) { return; }
+      var raw;
+      try { raw = window.sessionStorage.getItem(draftKey); } catch (error) { debug('create draft access unavailable', error); return; }
+      if (!raw) { return; }
+      var draft;
+      try { draft = JSON.parse(raw); } catch (error) { removeDraft(); return; }
+      if (!draft || !Array.isArray(draft.fields) || typeof draft.savedAt !== 'number' || !isFinite(draft.savedAt) || draft.fields.some(function(saved){ return !saved || typeof saved.index !== 'number' || typeof saved.name !== 'string'; }) || Date.now() - draft.savedAt > draftLifetime || draft.savedAt > Date.now() + 60000) { removeDraft(); return; }
+      var controls = qsa('input, textarea, select', form);
+      draft.fields.forEach(function(saved){
+        var field = controls[saved.index];
+        if (!field || field.name !== saved.name || field.disabled) { return; }
+        if (field.type === 'checkbox' || field.type === 'radio') { field.checked = !!saved.checked; }
+        else if (field.type !== 'file' && field.type !== 'hidden' && field.type !== 'password') { field.value = saved.value; }
+      });
+      updateTypeFields(form);
+      updateReleaseFields(form);
+      updateSummary(form);
+      var restoredStep = parseInt(draft.step, 10);
+      show(restoredStep >= 1 && restoredStep <= steps.length ? restoredStep : 1, true);
+      var box = ensureMessageBox(form);
+      showNotice(box, 'اطلاعات واردشده بازیابی شد؛ می‌توانید ادامه مراحل ایجاد ختم را انجام دهید.', 'success');
+      if (draft.hadFile && qs('input[type="file"]', form)) {
+        var fileNotice = document.createElement('div');
+        fileNotice.className = 'hamnoor-notice hamnoor-notice-warning';
+        fileNotice.textContent = 'برای ادامه، تصویر انتخاب‌شده را دوباره انتخاب کنید.';
+        box.appendChild(fileNotice);
+      }
+    }
     form.addEventListener('click', function(e){
+      var contact = e.target.closest('[data-hamnoor-create-contact]');
       var next = e.target.closest('[data-next-step], [data-wizard-next]');
       var prev = e.target.closest('[data-prev-step], [data-wizard-prev]');
       var go = e.target.closest('[data-go-step]');
+      if (contact && form.contains(contact)) { saveDraft(); }
       if (next) { e.preventDefault(); var step = closest(next, '.hamnoor-wizard-step') || steps[current - 1]; if (validateStep(form, step)) { show(current + 1); } }
       if (prev) { e.preventDefault(); show(current - 1); }
       if (go) { e.preventDefault(); var requested = parseInt(go.getAttribute('data-go-step'), 10); if (requested <= current || validateStep(form, steps[current - 1])) { show(requested); } }
@@ -752,11 +808,33 @@
         if (submitBtn) { submitBtn.disabled = false; submitBtn.removeAttribute('aria-busy'); }
       }
     });
-    form.addEventListener('input', function(e){ clearSingleFieldError(e.target); updateTypeFields(form); updateReleaseFields(form); updateSummary(form); });
-    form.addEventListener('change', function(e){ clearSingleFieldError(e.target); updateTypeFields(form); updateReleaseFields(form); updateSummary(form); });
+    form.addEventListener('input', function(e){
+      clearSingleFieldError(e.target);
+      if (e.target.matches('[name="cover_url"]') && e.target.value.trim()) {
+        var coverFile = qs('input[type="file"][name="cover_file"]', form);
+        if (coverFile) { coverFile.value = ''; clearSingleFieldError(coverFile); }
+      }
+      updateTypeFields(form); updateReleaseFields(form); updateSummary(form);
+    });
+    form.addEventListener('change', function(e){
+      clearSingleFieldError(e.target);
+      var coverFile = qs('input[type="file"][name="cover_file"]', form);
+      var coverUrl = qs('input[name="cover_url"]', form);
+      if (e.target === coverFile && coverFile.files && coverFile.files.length) {
+        if (coverUrl) { coverUrl.value = ''; clearSingleFieldError(coverUrl); }
+        var maxCoverKb = parseInt(form.getAttribute('data-cover-max-size-kb') || '0', 10) || 0;
+        if (maxCoverKb && coverFile.files[0].size > maxCoverKb * 1024) {
+          setFieldError(coverFile, 'حجم تصویر انتخاب‌شده بیش از حد مجاز است. لطفاً تصویری کمتر از ' + maxCoverKb + ' کیلوبایت انتخاب کنید.');
+          coverFile.value = '';
+        }
+      }
+      if (e.target === coverUrl && coverUrl.value.trim() && coverFile) { coverFile.value = ''; clearSingleFieldError(coverFile); }
+      updateTypeFields(form); updateReleaseFields(form); updateSummary(form);
+    });
     updateTypeFields(form);
     updateReleaseFields(form);
     show(current, true);
+    restoreDraft();
   }
 
   function handleClaimSubmit(e){
@@ -1030,6 +1108,9 @@
 
   document.addEventListener('DOMContentLoaded', function(){
     try {
+      if (new URL(window.location.href).searchParams.get('created_khatm')) {
+        try { window.sessionStorage.removeItem('hamnoor_create_khatm_draft'); } catch (error) { debug('create draft removal unavailable', error); }
+      }
       document.addEventListener('submit', handleClaimSubmit);
       document.addEventListener('submit', handleCompleteSubmit);
       document.addEventListener('submit', handleTrackSubmit);

@@ -35,7 +35,7 @@ class Hamnoor_Validator {
     }
     public static function validate_dates($starts_at, $ends_at) {
         if ($starts_at && $ends_at && strtotime($ends_at) < strtotime($starts_at)) {
-            return new WP_Error('hamnoor_date_order', __('تاریخ پایان نمی‌تواند قبل از تاریخ شروع باشد. لطفاً بازه زمانی ختم را اصلاح کنید.', 'hamnoor'));
+            return new WP_Error('hamnoor_date_order', __('پایان مهلت مشارکت نمی‌تواند قبل از تاریخ شروع باشد. لطفاً بازه زمانی ختم را اصلاح کنید.', 'hamnoor'));
         }
         return true;
     }
@@ -48,6 +48,8 @@ class Hamnoor_Validator {
         $title = isset($data['title']) ? (string) $data['title'] : '';
         if ('' === trim($title)) { $add('title', 'hamnoor_title_required', __('عنوان ختم الزامی است. لطفاً عنوانی روشن و محترمانه وارد کنید.', 'hamnoor')); }
         if (mb_strlen($title) > 191) { $add('title', 'hamnoor_title_long', __('عنوان ختم بیش از حد طولانی است. لطفاً عنوان را کوتاه‌تر کنید.', 'hamnoor')); }
+        if (!empty($data['_external_cover_disabled'])) { $add('cover_url', 'hamnoor_external_cover_disabled', __('استفاده از نشانی تصویر خارجی در تنظیمات سایت مجاز نیست.', 'hamnoor')); }
+        if (!empty($data['_external_cover_invalid'])) { $add('cover_url', 'hamnoor_external_cover_invalid', __('نشانی تصویر خارجی معتبر نیست. لطفاً یک نشانی مستقیم با HTTP یا HTTPS وارد کنید.', 'hamnoor')); }
         if (!empty($data['_max_repeat_count_invalid'])) { $add('max_repeat_count', 'hamnoor_max_repeat_invalid', __('حد اختصاصی تکرار سوره باید عددی بین ۱ تا ۱۲۰۰۰ باشد یا خالی بماند.', 'hamnoor')); }
         $phone = self::require_mobile(isset($data['owner_phone']) ? $data['owner_phone'] : '', __('شماره موبایل ایجادکننده ختم', 'hamnoor'));
         if (is_wp_error($phone)) { $add('owner_phone', $phone->get_error_code(), $phone->get_error_message()); }
@@ -86,7 +88,7 @@ class Hamnoor_Validator {
             $add('starts_at', 'hamnoor_date_format_invalid', __('فرمت تاریخ شروع شمسی معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
         }
         if (!empty($data['ends_at_jalali']) && empty($data['ends_at'])) {
-            $add('ends_at', 'hamnoor_date_format_invalid_end', __('فرمت تاریخ پایان شمسی معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
+            $add('ends_at', 'hamnoor_date_format_invalid_end', __('فرمت پایان مهلت مشارکت معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
         }
         $date_check = self::validate_dates(isset($data['starts_at']) ? $data['starts_at'] : '', isset($data['ends_at']) ? $data['ends_at'] : '');
         if (is_wp_error($date_check)) { $add('ends_at', $date_check->get_error_code(), $date_check->get_error_message()); }
