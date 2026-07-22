@@ -20,7 +20,7 @@ class Hamnoor_Plugin {
         }
         $this->initialized = true;
         Hamnoor_I18n::init();
-        Hamnoor_DB::maybe_upgrade();
+        add_action('init', array('Hamnoor_DB', 'maybe_upgrade'), 1);
         Hamnoor_Router::instance()->init();
         Hamnoor_Frontend::instance()->init();
         Hamnoor_Admin::instance()->init();
