@@ -72,9 +72,6 @@ class Hamnoor_REST_API {
     private static function khatm_args_schema() {
         return array(
             'title'=>array('required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_text_field'),
-            'owner_phone'=>array('required'=>true,'type'=>'string','sanitize_callback'=>array('Hamnoor_Validator','normalize_phone')),
-            'owner_email'=>array('required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_email'),
-            'owner_name'=>array('type'=>'string','sanitize_callback'=>'sanitize_text_field'),
             'khatm_type'=>array('type'=>'string','sanitize_callback'=>'sanitize_key'),
             'khatm_count'=>array('type'=>'integer','sanitize_callback'=>'absint'),
             'selected_surah_number'=>array('type'=>'integer','sanitize_callback'=>'absint'),
@@ -91,7 +88,6 @@ class Hamnoor_REST_API {
             'id'=>array('sanitize_callback'=>'absint'),
             'name'=>array('required'=>true,'type'=>'string','sanitize_callback'=>'sanitize_text_field'),
             'phone'=>array('required'=>true,'type'=>'string','sanitize_callback'=>array('Hamnoor_Validator','normalize_phone')),
-            'email'=>array('type'=>'string','sanitize_callback'=>'sanitize_email'),
         );
         if ($random) { $args['round_number'] = array('type'=>'integer','sanitize_callback'=>'absint'); }
         return $args;
@@ -99,8 +95,8 @@ class Hamnoor_REST_API {
 
     private static function ok($data = array(), $message = '') { return rest_ensure_response(array('success'=>true,'version'=>'v1','message'=>$message,'data'=>$data)); }
     private static function rate($scope, $identity = '', $limit = 20) { return Hamnoor_Helpers::rate_limit('api_' . sanitize_key($scope), $identity, $limit, 10 * MINUTE_IN_SECONDS); }
-    public static function is_logged_in() { return is_user_logged_in(); }
-    public static function can_create() { return is_user_logged_in() && Hamnoor_Permissions::can_create_khatm() && Hamnoor_Permissions::new_khatm_creation_allowed(); }
+    public static function is_logged_in() { return Hamnoor_Mobile_Access::is_logged_in(); }
+    public static function can_create() { return Hamnoor_Mobile_Access::is_logged_in() && Hamnoor_Access_Policy::allows('campaign_create') && Hamnoor_Permissions::can_create_khatm() && Hamnoor_Permissions::new_khatm_creation_allowed(); }
     public static function can_manage_khatm($request) { return Hamnoor_DB::user_can_manage_khatm((int) $request['id']); }
 
     private static function khatm_dto($khatm, $include_parts = false) {
@@ -143,7 +139,6 @@ class Hamnoor_REST_API {
             'part_type' => (string) $part->part_type,
             'part_number' => (int) $part->part_number,
             'title' => (string) $part->title,
-            'quran_url' => esc_url_raw((string) $part->quran_url),
             'status' => (string) $part->status,
             'status_label' => Hamnoor_Export::status_label($part->status),
             'participant_name' => !empty($part->participant_name) ? Hamnoor_Helpers::display_name($part->participant_name) : '',
@@ -161,7 +156,6 @@ class Hamnoor_REST_API {
         );
         if ($include_contacts) {
             $dto['phone'] = (string) $row->phone;
-            $dto['email'] = (string) $row->email;
         }
         return $dto;
     }
@@ -176,23 +170,32 @@ class Hamnoor_REST_API {
     }
 
     public static function create_khatm($request) {
-        if (!Hamnoor_Permissions::new_khatm_creation_allowed()) { return new WP_Error('hamnoor_creation_disabled', __('ایجاد ختم جدید در حال حاضر موقتاً غیرفعال است. لطفاً بعداً مراجعه کنید.', 'hamnoor'), array('status'=>403)); }
-        $data = Hamnoor_DB::sanitize_khatm_data($request->get_params());
+        if (!Hamnoor_Permissions::new_khatm_creation_allowed()) { return new WP_Error('hamnoor_creation_disabled', __('ایجاد پویش جدید در حال حاضر موقتاً غیرفعال است. لطفاً بعداً مراجعه کنید.', 'hamnoor'), array('status'=>403)); }
+        $params = $request->get_params();
+        $user = Hamnoor_Mobile_Access::current_user();
+        if (!$user || !Hamnoor_Mobile_Access::has_sensitive_access((int) $user->id)) { return new WP_Error('hamnoor_sensitive_verification_required', __('برای ایجاد پویش، هویت این نشست را در داشبورد تأیید کنید.', 'hamnoor'), array('status'=>403)); }
+        $params['owner_name'] = (string) $user->display_name;
+        $params['owner_phone'] = (string) $user->phone;
+        $data = Hamnoor_DB::sanitize_khatm_data($params);
         $r = Hamnoor_Khatm_Service::create($data);
-        return is_wp_error($r) ? $r : self::ok(self::khatm_dto(Hamnoor_Khatm_Service::get($r)), __('ختم ایجاد شد.', 'hamnoor'));
+        return is_wp_error($r) ? $r : self::ok(self::khatm_dto(Hamnoor_Khatm_Service::get($r)), __('پویش ایجاد شد.', 'hamnoor'));
     }
 
     public static function get_khatm($request) {
         $token = Hamnoor_Helpers::sanitize_token($request['token']);
         $k = Hamnoor_Khatm_Service::get($token);
-        if (!$k) { return new WP_Error('hamnoor_not_found', __('ختم پیدا نشد.', 'hamnoor'), array('status'=>404)); }
-        if (!Hamnoor_Permissions::can_preview_unpublished_khatm($k)) { return new WP_Error('hamnoor_pending_review', __('این ختم هنوز توسط مدیر سایت منتشر نشده است.', 'hamnoor'), array('status'=>403)); }
-        if ('private' === $k->privacy && !Hamnoor_DB::user_can_manage_khatm((int)$k->id)) { return new WP_Error('hamnoor_private', __('این ختم خصوصی است.', 'hamnoor'), array('status'=>403)); }
+        if (!$k) { return new WP_Error('hamnoor_not_found', __('پویش پیدا نشد.', 'hamnoor'), array('status'=>404)); }
+        if (!Hamnoor_Permissions::can_preview_unpublished_khatm($k)) { return new WP_Error('hamnoor_pending_review', __('این پویش هنوز توسط مدیر سایت منتشر نشده است.', 'hamnoor'), array('status'=>403)); }
+        if ('private' === $k->privacy && !Hamnoor_DB::user_can_manage_khatm((int)$k->id)) { return new WP_Error('hamnoor_private', __('این پویش خصوصی است.', 'hamnoor'), array('status'=>403)); }
         return self::ok(self::khatm_dto($k, true));
     }
 
     public static function claim_part($request) {
-        $data = array('name'=>$request->get_param('name'), 'phone'=>$request->get_param('phone'), 'email'=>$request->get_param('email'));
+        $data = array('name'=>$request->get_param('name'), 'phone'=>$request->get_param('phone'));
+        $access = Hamnoor_Mobile_Access::ensure_and_login_for_claim($data['phone'], $data['name']);
+        if (is_wp_error($access)) { return $access; }
+        $data['name'] = (string) $access->display_name;
+        $data['phone'] = (string) $access->phone;
         $rate = self::rate('claim_part', (int) $request['id'] . '|' . Hamnoor_Validator::normalize_phone($data['phone']), 30);
         if (is_wp_error($rate)) { return $rate; }
         $r = Hamnoor_Part_Service::claim((int)$request['id'], $data);
@@ -202,7 +205,11 @@ class Hamnoor_REST_API {
     }
 
     public static function claim_random($request) {
-        $data = array('name'=>$request->get_param('name'), 'phone'=>$request->get_param('phone'), 'email'=>$request->get_param('email'));
+        $data = array('name'=>$request->get_param('name'), 'phone'=>$request->get_param('phone'));
+        $access = Hamnoor_Mobile_Access::ensure_and_login_for_claim($data['phone'], $data['name']);
+        if (is_wp_error($access)) { return $access; }
+        $data['name'] = (string) $access->display_name;
+        $data['phone'] = (string) $access->phone;
         $rate = self::rate('claim_random', (int) $request['id'] . '|' . Hamnoor_Validator::normalize_phone($data['phone']), 30);
         if (is_wp_error($rate)) { return $rate; }
         $r = Hamnoor_Part_Service::claim_random((int)$request['id'], $data, (int) $request->get_param('round_number'));
@@ -212,7 +219,11 @@ class Hamnoor_REST_API {
     }
 
     public static function claim_next($request) {
-        $data = array('name'=>$request->get_param('name'), 'phone'=>$request->get_param('phone'), 'email'=>$request->get_param('email'));
+        $data = array('name'=>$request->get_param('name'), 'phone'=>$request->get_param('phone'));
+        $access = Hamnoor_Mobile_Access::ensure_and_login_for_claim($data['phone'], $data['name']);
+        if (is_wp_error($access)) { return $access; }
+        $data['name'] = (string) $access->display_name;
+        $data['phone'] = (string) $access->phone;
         $rate = self::rate('claim_next', (int) $request['id'] . '|' . Hamnoor_Validator::normalize_phone($data['phone']), 30);
         if (is_wp_error($rate)) { return $rate; }
         $r = Hamnoor_Part_Service::claim_next((int)$request['id'], $data, (int) $request->get_param('round_number'));
@@ -222,7 +233,7 @@ class Hamnoor_REST_API {
     }
 
     public static function complete_part($request) {
-        $token = Hamnoor_Helpers::sanitize_token((string) $request->get_param('tracking_token'));
+        $token = Hamnoor_Helpers::sanitize_tracking_token((string) $request->get_param('tracking_token'));
         $identity = $token ? $token : ('part_' . (int) $request['id']);
         $rate = self::rate('complete_part', $identity, 20); if (is_wp_error($rate)) { return $rate; }
         $r = Hamnoor_Part_Service::complete((int)$request['id'], $token, false);
@@ -230,21 +241,21 @@ class Hamnoor_REST_API {
     }
 
     public static function me_parts() {
-        $parts = Hamnoor_Participant_Service::get_parts_by_user(get_current_user_id());
+        $parts = Hamnoor_Participant_Service::get_parts_by_user(Hamnoor_Mobile_Access::current_user_id());
         return self::ok(array_map(function($part) { return self::part_dto($part, true); }, $parts));
     }
 
     public static function me_khatms() {
-        $items = Hamnoor_Khatm_Service::query(array('owner_user_id'=>get_current_user_id(), 'limit'=>100));
+        $items = Hamnoor_Khatm_Service::query(array('owner_user_id'=>Hamnoor_Mobile_Access::current_user_id(), 'limit'=>100));
         return self::ok(array_map(array(__CLASS__, 'khatm_dto'), $items));
     }
 
     public static function participants($request) {
         $id = (int) $request['id'];
         $rows = Hamnoor_Participant_Service::get_by_khatm($id, array('limit'=>200));
-        $include_contacts = Hamnoor_Export::can_include_contacts($id, get_current_user_id());
+        $include_contacts = Hamnoor_Export::can_include_contacts($id, Hamnoor_Mobile_Access::current_user_id());
         return self::ok(array_map(function($row) use ($include_contacts) { return self::participant_dto($row, $include_contacts); }, $rows));
     }
     public static function export_link($request) { $id=(int)$request['id']; return self::ok(array('csv'=>wp_nonce_url(admin_url('admin-post.php?action=hamnoor_export_csv&khatm_id='.$id),'hamnoor_export_'.$id), 'xlsx'=>wp_nonce_url(admin_url('admin-post.php?action=hamnoor_export_xlsx&khatm_id='.$id),'hamnoor_export_'.$id))); }
-    public static function docs() { return self::ok(array('auth'=>'Public list/get return safe DTOs only. Claim returns a scoped access URL. Complete via REST requires tracking token, authenticated owner, or khatm manager. The frontend tracking page can complete by matching phone/email contact.', 'routes'=>array('/hamnoor/v1/khatms','/hamnoor/v1/khatms/{token}','/hamnoor/v1/khatms/{id}/claim-random','/hamnoor/v1/khatms/{id}/claim-next','/hamnoor/v1/parts/{id}/claim','/hamnoor/v1/parts/{id}/complete'))); }
+    public static function docs() { return self::ok(array('auth'=>'Public list/get return safe DTOs only. Claim returns a scoped access URL. Complete via REST requires tracking token, authenticated owner, or khatm manager. The frontend tracking page can complete by matching mobile contact.', 'routes'=>array('/hamnoor/v1/khatms','/hamnoor/v1/khatms/{token}','/hamnoor/v1/khatms/{id}/claim-random','/hamnoor/v1/khatms/{id}/claim-next','/hamnoor/v1/parts/{id}/claim','/hamnoor/v1/parts/{id}/complete'))); }
 }

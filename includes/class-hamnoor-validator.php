@@ -21,7 +21,7 @@ class Hamnoor_Validator {
     public static function valid_iran_mobile($phone) { return (bool) preg_match('/^09[0-9]{9}$/', self::normalize_phone($phone)); }
     public static function require_mobile($phone, $label = '') {
         $phone = self::normalize_phone($phone); $label = $label ? $label : __('شماره موبایل', 'hamnoor');
-        if ('' === $phone) { return new WP_Error('hamnoor_mobile_required', sprintf(__('%s الزامی است. لطفاً شماره موبایل را برای پیگیری ختم وارد کنید.', 'hamnoor'), $label)); }
+        if ('' === $phone) { return new WP_Error('hamnoor_mobile_required', sprintf(__('%s الزامی است. لطفاً شماره موبایل را برای پیگیری پویش وارد کنید.', 'hamnoor'), $label)); }
         if (!self::valid_iran_mobile($phone)) { return new WP_Error('hamnoor_mobile_invalid', sprintf(__('%s معتبر نیست. شماره موبایل ایران را مانند 09123456789 وارد کنید.', 'hamnoor'), $label)); }
         return $phone;
     }
@@ -35,33 +35,44 @@ class Hamnoor_Validator {
     }
     public static function validate_dates($starts_at, $ends_at) {
         if ($starts_at && $ends_at && strtotime($ends_at) < strtotime($starts_at)) {
-            return new WP_Error('hamnoor_date_order', __('پایان مهلت مشارکت نمی‌تواند قبل از تاریخ شروع باشد. لطفاً بازه زمانی ختم را اصلاح کنید.', 'hamnoor'));
+            return new WP_Error('hamnoor_date_order', __('پایان پذیرش سهم جدید نمی‌تواند قبل از شروع پذیرش باشد. لطفاً زمان‌بندی پویش را اصلاح کنید.', 'hamnoor'));
         }
         return true;
     }
-    public static function trim_len($value, $max) { return mb_substr((string)$value, 0, (int)$max); }
+    public static function text_length($value) {
+        $value = (string) $value;
+        if (function_exists('mb_strlen')) { return mb_strlen($value, 'UTF-8'); }
+        $count = preg_match_all('/./us', $value, $matches);
+        return false === $count ? strlen($value) : (int) $count;
+    }
+    public static function trim_len($value, $max) {
+        $value = (string) $value;
+        $max = max(0, (int) $max);
+        if (function_exists('mb_substr')) { return mb_substr($value, 0, $max, 'UTF-8'); }
+        if (0 === $max || '' === $value) { return ''; }
+        $matched = preg_match_all('/./us', $value, $matches);
+        if (false === $matched || empty($matches[0])) { return substr($value, 0, $max); }
+        return implode('', array_slice($matches[0], 0, $max));
+    }
     public static function validate_khatm($data) {
         $errors = new WP_Error();
         $add = function($field, $code, $message) use ($errors) {
             $errors->add($code, $message, array('field' => $field));
         };
         $title = isset($data['title']) ? (string) $data['title'] : '';
-        if ('' === trim($title)) { $add('title', 'hamnoor_title_required', __('عنوان ختم الزامی است. لطفاً عنوانی روشن و محترمانه وارد کنید.', 'hamnoor')); }
-        if (mb_strlen($title) > 191) { $add('title', 'hamnoor_title_long', __('عنوان ختم بیش از حد طولانی است. لطفاً عنوان را کوتاه‌تر کنید.', 'hamnoor')); }
-        if (!empty($data['_external_cover_disabled'])) { $add('cover_url', 'hamnoor_external_cover_disabled', __('استفاده از نشانی تصویر خارجی در تنظیمات سایت مجاز نیست.', 'hamnoor')); }
-        if (!empty($data['_external_cover_invalid'])) { $add('cover_url', 'hamnoor_external_cover_invalid', __('نشانی تصویر خارجی معتبر نیست. لطفاً یک نشانی مستقیم با HTTP یا HTTPS وارد کنید.', 'hamnoor')); }
+        if ('' === trim($title)) { $add('title', 'hamnoor_title_required', __('عنوان پویش الزامی است. لطفاً عنوانی روشن و محترمانه وارد کنید.', 'hamnoor')); }
+        if (self::text_length($title) > 191) { $add('title', 'hamnoor_title_long', __('عنوان پویش بیش از حد طولانی است. لطفاً عنوان را کوتاه‌تر کنید.', 'hamnoor')); }
         if (!empty($data['_max_repeat_count_invalid'])) { $add('max_repeat_count', 'hamnoor_max_repeat_invalid', __('حد اختصاصی تکرار سوره باید عددی بین ۱ تا ۱۲۰۰۰ باشد یا خالی بماند.', 'hamnoor')); }
-        $phone = self::require_mobile(isset($data['owner_phone']) ? $data['owner_phone'] : '', __('شماره موبایل ایجادکننده ختم', 'hamnoor'));
+        $phone = self::require_mobile(isset($data['owner_phone']) ? $data['owner_phone'] : '', __('شماره موبایل ایجادکننده پویش', 'hamnoor'));
         if (is_wp_error($phone)) { $add('owner_phone', $phone->get_error_code(), $phone->get_error_message()); }
-        if (empty($data['owner_email']) || !is_email($data['owner_email'])) { $add('owner_email', 'hamnoor_email_invalid', __('ایمیل ایجادکننده ختم معتبر نیست. لطفاً یک ایمیل صحیح وارد کنید.', 'hamnoor')); }
         $type = isset($data['khatm_type']) ? sanitize_key($data['khatm_type']) : 'page';
-        if (!in_array($type, array('page','juz','surah','repeated_surah'), true)) { $add('khatm_type', 'hamnoor_type_invalid', __('نوع ختم معتبر نیست.', 'hamnoor')); }
+        if (!in_array($type, array('page','juz','surah','repeated_surah'), true)) { $add('khatm_type', 'hamnoor_type_invalid', __('نوع پویش معتبر نیست.', 'hamnoor')); }
         $khatm_count = isset($data['khatm_count']) ? (int) self::normalize_digits($data['khatm_count']) : 1;
         $settings = class_exists('Hamnoor_Helpers') ? Hamnoor_Helpers::settings() : array('max_khatm_count' => 100);
         $max_khatm_count = !empty($data['max_khatm_count']) ? (int) self::normalize_digits($data['max_khatm_count']) : (isset($settings['max_khatm_count']) ? (int) $settings['max_khatm_count'] : 100);
         $max_khatm_count = max(1, min(1000, $max_khatm_count));
         if (in_array($type, array('page','juz','surah'), true) && ($khatm_count < 1 || $khatm_count > $max_khatm_count)) {
-            $message = class_exists('Hamnoor_Texts') ? Hamnoor_Texts::get('khatm_count_error', array('MAX' => $max_khatm_count)) : sprintf(__('تعداد ختم کامل قرآن باید بین ۱ تا %d باشد.', 'hamnoor'), $max_khatm_count);
+            $message = class_exists('Hamnoor_Texts') ? Hamnoor_Texts::get('khatm_count_error', array('MAX' => $max_khatm_count)) : sprintf(__('تعداد دور کامل قرآن در پویش باید بین ۱ تا %d باشد.', 'hamnoor'), $max_khatm_count);
             $add('khatm_count', 'hamnoor_khatm_count_invalid', $message);
         }
         $parts_per = ('juz' === $type ? 30 : ('surah' === $type ? 114 : ('repeated_surah' === $type ? 0 : 604)));
@@ -82,33 +93,26 @@ class Hamnoor_Validator {
         $hard_limit = (int) apply_filters('hamnoor_parts_generation_hard_limit', 12000);
         $total_parts = max(0, (int) $parts_per) * max(1, (int) $khatm_count);
         if ($hard_limit > 0 && $total_parts > $hard_limit) {
-            $add('khatm_count', 'hamnoor_parts_too_many', sprintf(__('تعداد سهم‌های این ختم از حد مجاز پردازش هم‌زمان بیشتر است. تعداد سهم‌ها: %1$d، حد مجاز فعلی: %2$d.', 'hamnoor'), $total_parts, $hard_limit));
+            $add('khatm_count', 'hamnoor_parts_too_many', sprintf(__('تعداد سهم‌های این پویش از حد مجاز پردازش هم‌زمان بیشتر است. تعداد سهم‌ها: %1$d، حد مجاز فعلی: %2$d.', 'hamnoor'), $total_parts, $hard_limit));
         }
         if (!empty($data['starts_at_jalali']) && empty($data['starts_at'])) {
-            $add('starts_at', 'hamnoor_date_format_invalid', __('فرمت تاریخ شروع شمسی معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
+            $add('starts_at', 'hamnoor_date_format_invalid', __('فرمت زمان شروع پذیرش سهم معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
         }
         if (!empty($data['ends_at_jalali']) && empty($data['ends_at'])) {
-            $add('ends_at', 'hamnoor_date_format_invalid_end', __('فرمت پایان مهلت مشارکت معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
+            $add('ends_at', 'hamnoor_date_format_invalid_end', __('فرمت زمان پایان پذیرش سهم جدید معتبر نیست. لطفاً مانند ۱۴۰۵/۰۱/۰۱ ۲۱:۳۰ وارد کنید.', 'hamnoor'));
         }
         $date_check = self::validate_dates(isset($data['starts_at']) ? $data['starts_at'] : '', isset($data['ends_at']) ? $data['ends_at'] : '');
         if (is_wp_error($date_check)) { $add('ends_at', $date_check->get_error_code(), $date_check->get_error_message()); }
+        $active_claim_limit = isset($data['max_active_claims_per_participant']) ? (int)self::normalize_digits($data['max_active_claims_per_participant']) : 3;
+        if ($active_claim_limit < 1 || $active_claim_limit > 50) { $add('max_active_claims_per_participant', 'hamnoor_active_claim_limit_invalid', __('سقف سهم ناتمام هم‌زمان هر مشارکت‌کننده باید بین ۱ تا ۵۰ باشد.', 'hamnoor')); }
         $completion_mode = isset($data['completion_mode']) && 'auto_done_on_claim' === sanitize_key($data['completion_mode']) ? 'auto_done_on_claim' : 'manual_done';
         $release_mode = ('manual_done' === $completion_mode && isset($data['auto_release_mode'])) ? sanitize_key($data['auto_release_mode']) : 'none';
         if ('after_days' === $release_mode) {
             $days = isset($data['auto_release_after_days']) ? (int) self::normalize_digits($data['auto_release_after_days']) : 0;
             if ($days < 1) { $add('auto_release_after_days', 'hamnoor_auto_release_days_invalid', __('تعداد روز آزادسازی باید عددی مثبت باشد.', 'hamnoor')); }
-        } elseif ('fixed_date' === $release_mode) {
-            if (empty($data['auto_release_at'])) {
-                $add('auto_release_at', 'hamnoor_auto_release_date_invalid', __('تاریخ آزادسازی سهم‌های خوانده‌نشده معتبر نیست.', 'hamnoor'));
-            } else {
-                $release_ts = strtotime((string) $data['auto_release_at']);
-                $base = !empty($data['_created_at_for_validation']) ? (string) $data['_created_at_for_validation'] : current_time('mysql');
-                $base_ts = strtotime($base);
-                if ($release_ts && $base_ts && $release_ts <= $base_ts) {
-                    $message = !empty($data['_created_at_for_validation']) ? __('تاریخ آزادسازی باید بعد از تاریخ ایجاد ختم باشد.', 'hamnoor') : __('تاریخ آزادسازی باید بعد از زمان فعلی باشد.', 'hamnoor');
-                    $add('auto_release_at', 'hamnoor_auto_release_date_before_create', $message);
-                }
-            }
+        }
+        if (isset($data['completion_grace_days']) && null !== $data['completion_grace_days'] && ((int)$data['completion_grace_days'] < 0 || (int)$data['completion_grace_days'] > 3650)) {
+            $add('completion_grace_days', 'hamnoor_completion_grace_invalid', __('مهلت تکمیل سهم‌های قبلی باید بین صفر تا ۳۶۵۰ روز باشد یا خالی بماند.', 'hamnoor'));
         }
         if ($errors->has_errors()) { return $errors; }
         return true;
@@ -116,7 +120,6 @@ class Hamnoor_Validator {
     public static function validate_claim($data) {
         if (empty($data['name'])) { return new WP_Error('hamnoor_name_required', __('نام شرکت‌کننده الزامی است.', 'hamnoor')); }
         $phone = self::require_mobile(isset($data['phone']) ? $data['phone'] : '', __('شماره موبایل شرکت‌کننده', 'hamnoor')); if (is_wp_error($phone)) { return $phone; }
-        if (!empty($data['email']) && !is_email($data['email'])) { return new WP_Error('hamnoor_email_invalid', __('ایمیل شرکت‌کننده معتبر نیست. اگر ایمیل ندارید، این قسمت را خالی بگذارید.', 'hamnoor')); }
         return true;
     }
 }

@@ -1,0 +1,949 @@
+/*
+ * Hamnoor standalone public-khatm shell — 3.9.45
+ * The public khatm page is owned by the plugin, not by the active WordPress theme.
+ */
+html:has(body.hamnoor-standalone-page) {
+    margin: 0 !important;
+    background: #f4f7fb;
+}
+
+body.hamnoor-standalone-page {
+    margin: 0;
+    min-width: 0;
+    min-height: 100vh;
+    color: #1f2937;
+    background: #f4f7fb;
+    font-family: var(--hamnoor-standalone-font, "IRANSansXFaNum", "IRANSansX", "Vazirmatn", "Vazir", Tahoma, Arial, sans-serif);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+}
+
+body.hamnoor-standalone-page *,
+body.hamnoor-standalone-page *::before,
+body.hamnoor-standalone-page *::after {
+    box-sizing: border-box;
+}
+
+body.hamnoor-standalone-page a {
+    color: inherit;
+}
+
+body.hamnoor-standalone-page img,
+body.hamnoor-standalone-page svg {
+    max-width: 100%;
+}
+
+.hamnoor-app-shell {
+    min-height: 100vh;
+    background: #f4f7fb;
+}
+
+.hamnoor-standalone-topbar {
+    position: sticky;
+    z-index: 50;
+    top: 0;
+    width: 100%;
+    background: rgba(255,255,255,.96);
+    border-bottom: 1px solid #e5e7eb;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.hamnoor-standalone-topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(1120px, 100%);
+    min-height: 64px;
+    margin-inline: auto;
+    padding: .55rem 1rem;
+}
+
+.hamnoor-standalone-brand,
+.hamnoor-standalone-back {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    min-width: 0;
+    color: #14407f;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.hamnoor-standalone-brand-plate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 78px;
+    min-height: 32px;
+    padding: 5px 8px;
+    background: #14407f;
+    border-radius: 10px;
+}
+
+.hamnoor-standalone-brand-plate img {
+    display: block;
+    width: auto;
+    max-width: 62px;
+    height: auto;
+    max-height: 21px;
+    object-fit: contain;
+}
+
+.hamnoor-standalone-back {
+    min-height: 40px;
+    padding: .45rem .75rem;
+    background: #eef3f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: .9rem;
+}
+
+.hamnoor-standalone-main {
+    width: 100%;
+    min-width: 0;
+    padding: 1rem 0 2.5rem;
+}
+
+.hamnoor-standalone-page .hamnoor-wrap {
+    width: min(1120px, calc(100% - 2rem));
+    max-width: 1120px;
+    margin-inline: auto;
+}
+
+/* Theme-independent public page layout. */
+.hamnoor-public-khatm-page .hamnoor-khatm-header,
+.hamnoor-public-khatm-page .hamnoor-progress-card,
+.hamnoor-public-khatm-page .hamnoor-primary-actions,
+.hamnoor-public-khatm-page .hamnoor-share-panel,
+.hamnoor-public-khatm-page .hamnoor-part-filter-panel,
+.hamnoor-public-khatm-page .hamnoor-parts-section {
+    min-width: 0;
+}
+
+@media (max-width: 782px) {
+    .hamnoor-standalone-topbar-inner {
+        min-height: 56px;
+        padding: .45rem .75rem;
+    }
+
+    .hamnoor-standalone-brand-plate {
+        min-width: 68px;
+        min-height: 29px;
+        padding: 4px 7px;
+        border-radius: 9px;
+    }
+
+    .hamnoor-standalone-brand-plate img {
+        max-width: 54px;
+        max-height: 18px;
+    }
+
+    .hamnoor-standalone-back {
+        min-height: 38px;
+        padding: .38rem .62rem;
+        font-size: .82rem;
+    }
+
+    .hamnoor-standalone-main {
+        padding-top: .55rem;
+        padding-bottom: calc(5.75rem + env(safe-area-inset-bottom));
+    }
+
+    .hamnoor-standalone-page .hamnoor-wrap {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        padding: .7rem;
+        border-radius: 0;
+    }
+
+    /* Public khatm is intentionally denser on mobile than the desktop card layout. */
+    .hamnoor-public-khatm-page .hamnoor-khatm-header,
+    .hamnoor-public-khatm-page .hamnoor-progress-card,
+    .hamnoor-public-khatm-page .hamnoor-primary-actions,
+    .hamnoor-public-khatm-page .hamnoor-share-panel,
+    .hamnoor-public-khatm-page .hamnoor-part-filter-panel {
+        margin-bottom: .7rem;
+        border-radius: 18px;
+        box-shadow: 0 6px 18px rgba(15,23,42,.06);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header {
+        gap: .8rem;
+        padding: .8rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-cover,
+    .hamnoor-public-khatm-page .hamnoor-cover-placeholder {
+        width: 100%;
+        max-height: 210px;
+        border-radius: 14px;
+        object-fit: cover;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header h1 {
+        margin-block: .2rem;
+        font-size: 1.25rem;
+        line-height: 1.55;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-progress-card,
+    .hamnoor-public-khatm-page .hamnoor-primary-actions,
+    .hamnoor-public-khatm-page .hamnoor-share-panel,
+    .hamnoor-public-khatm-page .hamnoor-part-filter-panel {
+        padding: .85rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-share-box,
+    .hamnoor-public-khatm-page .hamnoor-share-actions,
+    .hamnoor-public-khatm-page .hamnoor-action-buttons {
+        gap: .5rem;
+    }
+}
+
+/* 3.9.46 — mobile-first public khatm list. The standalone shell stays shared,
+ * while the public participation view becomes intentionally denser on phones. */
+@media (max-width: 782px) {
+    body.hamnoor-public-khatm-page {
+        --hm-khatm-gap: .58rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-standalone-main {
+        padding-top: .35rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-wrap {
+        padding: .55rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header,
+    .hamnoor-public-khatm-page .hamnoor-progress-card,
+    .hamnoor-public-khatm-page .hamnoor-primary-actions,
+    .hamnoor-public-khatm-page .hamnoor-share-panel,
+    .hamnoor-public-khatm-page .hamnoor-part-filter-panel,
+    .hamnoor-public-khatm-page .hamnoor-parts-section {
+        margin-bottom: var(--hm-khatm-gap);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-primary-actions {
+        display: grid;
+        grid-template-columns: minmax(0,1fr);
+        gap: .65rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-primary-actions h2,
+    .hamnoor-public-khatm-page .hamnoor-parts-section > h2 {
+        margin: 0 0 .28rem;
+        font-size: 1rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-primary-actions p {
+        margin: 0;
+        color: var(--hamnoor-muted);
+        font-size: .78rem;
+        line-height: 1.7;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .45rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-action-buttons--claim {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-action-buttons .hamnoor-btn:only-child {
+        grid-column: 1 / -1;
+    }
+
+    /* Share and filters are secondary on phones. JS wraps them in these folds. */
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold {
+        margin: 0 0 var(--hm-khatm-gap);
+        overflow: hidden;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 16px;
+        box-shadow: 0 5px 16px rgba(15,23,42,.045);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold > summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .7rem;
+        min-height: 48px;
+        padding: .65rem .8rem;
+        color: var(--hamnoor-text);
+        font-size: .84rem;
+        font-weight: 900;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold > summary::-webkit-details-marker { display: none; }
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold > summary::after {
+        content: '⌄';
+        color: var(--hamnoor-primary);
+        font-size: 1rem;
+        transition: transform .18s ease;
+    }
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold[open] > summary::after { transform: rotate(180deg); }
+
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold > .hamnoor-share-panel,
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold > .hamnoor-part-filter-panel {
+        margin: 0;
+        padding: .75rem;
+        border: 0;
+        border-top: 1px solid var(--hamnoor-border);
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold .hamnoor-share-panel > h2,
+    .hamnoor-public-khatm-page .hamnoor-mobile-khatm-fold .hamnoor-part-filter-panel > h2 {
+        display: none;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-share-box,
+    .hamnoor-public-khatm-page .hamnoor-share-actions,
+    .hamnoor-public-khatm-page .hamnoor-part-filters {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: .5rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-share-box input,
+    .hamnoor-public-khatm-page .hamnoor-part-filters input,
+    .hamnoor-public-khatm-page .hamnoor-part-filters select,
+    .hamnoor-public-khatm-page .hamnoor-part-filters .hamnoor-btn,
+    .hamnoor-public-khatm-page .hamnoor-share-panel .hamnoor-btn {
+        min-height: 42px;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-section {
+        padding: .35rem 0 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-page-info {
+        margin: 0 0 .55rem;
+        padding: .65rem .75rem;
+        border-radius: 13px;
+        font-size: .74rem;
+        line-height: 1.65;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: .48rem;
+    }
+
+    /* A public part becomes a compact app row rather than a desktop card. */
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card {
+        display: grid;
+        grid-template-columns: minmax(0,1fr) auto;
+        align-items: center;
+        align-content: center;
+        gap: .35rem .65rem;
+        min-height: 70px;
+        padding: .62rem .68rem;
+        border-radius: 15px;
+        border-inline-start-width: 3px;
+        box-shadow: 0 3px 12px rgba(15,23,42,.035);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-card-main {
+        display: grid;
+        grid-template-columns: minmax(0,1fr) auto;
+        grid-template-areas:
+            'title status'
+            'person status';
+        align-items: center;
+        gap: .18rem .45rem;
+        min-width: 0;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-title {
+        grid-area: title;
+        margin: 0;
+        overflow: hidden;
+        font-size: .86rem;
+        line-height: 1.55;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-status {
+        grid-area: status;
+        align-self: center;
+        margin: 0;
+        white-space: nowrap;
+        font-size: .68rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-participant {
+        grid-area: person;
+        margin: 0;
+        font-size: .7rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions {
+        display: block;
+        min-width: 92px;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions .hamnoor-btn {
+        width: 100%;
+        min-width: 92px;
+        min-height: 38px;
+        margin: 0;
+        padding: .42rem .58rem;
+        border-radius: 11px;
+        font-size: .72rem;
+        white-space: nowrap;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card[data-status='claimed'],
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card[data-status='done'] {
+        grid-template-columns: 1fr;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card[data-status='claimed'] .hamnoor-part-actions:empty,
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card[data-status='done'] .hamnoor-part-actions:empty {
+        display: none;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-mobile-parts-more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 44px;
+        margin: .65rem 0 .2rem;
+        padding: .55rem .8rem;
+        color: var(--hamnoor-primary);
+        background: var(--hamnoor-soft);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 13px;
+        font: inherit;
+        font-size: .78rem;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-pagination {
+        margin-top: .75rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-pagination ul {
+        gap: .34rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-pagination :where(a, span) {
+        min-width: 36px;
+        min-height: 36px;
+        padding: .3rem .48rem;
+        border-radius: 11px;
+        font-size: .78rem;
+    }
+}
+
+
+/* 3.9.47 — harden public-khatm mobile rows across every visual style. */
+.hamnoor-claim-label-mobile { display: none; }
+@media (max-width: 782px) {
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card {
+        display: grid !important;
+        grid-template-columns: minmax(0,1fr) auto !important;
+        align-items: center !important;
+        gap: .3rem .55rem !important;
+        min-height: 62px !important;
+        padding: .52rem .6rem !important;
+        border-radius: 14px !important;
+        box-shadow: 0 2px 9px rgba(15,23,42,.035) !important;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card.hamnoor-mobile-part-collapsed {
+        display: none !important;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-card-main {
+        min-width: 0 !important;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-title {
+        font-size: .82rem !important;
+        font-weight: 800 !important;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions {
+        min-width: 74px !important;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions .hamnoor-btn {
+        min-width: 74px !important;
+        min-height: 36px !important;
+        padding: .35rem .5rem !important;
+        border-radius: 10px !important;
+        font-size: .7rem !important;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-claim-label-desktop { display: none; }
+    body.hamnoor-public-khatm-page .hamnoor-claim-label-mobile { display: inline; }
+    body.hamnoor-public-khatm-page .hamnoor-mobile-parts-footer {
+        display: grid;
+        gap: .45rem;
+        margin: .65rem 0 .2rem;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-mobile-parts-count {
+        display: block;
+        color: var(--hamnoor-muted);
+        font-size: .7rem;
+        text-align: center;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-mobile-parts-more {
+        margin: 0;
+    }
+}
+
+
+/* 3.9.51 — use the same mobile bottom nav inside standalone public khatm pages. */
+@media (max-width: 782px) {
+    .hamnoor-standalone-page .hamnoor-wrap .hamnoor-mobile-bottom-nav {
+        z-index: 9990;
+    }
+    .hamnoor-standalone-page .hamnoor-wrap .hamnoor-mobile-nav-spacer {
+        height: calc(78px + env(safe-area-inset-bottom));
+    }
+}
+
+/* 3.9.53 — desktop navigation for standalone public khatm pages. */
+@media (min-width: 783px) {
+    .hamnoor-standalone-topbar-inner {
+        width: min(1180px, calc(100% - 2rem));
+        min-height: 66px;
+        padding: .55rem 0;
+    }
+    .hamnoor-standalone-brand-plate {
+        min-width: 72px;
+        min-height: 34px;
+        padding: 4px 7px;
+    }
+    .hamnoor-standalone-brand-plate img {
+        max-width: 59px;
+        max-height: 20px;
+    }
+    .hamnoor-standalone-desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: .35rem;
+    }
+    .hamnoor-standalone-desktop-nav a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: .45rem .72rem;
+        color: #14407f;
+        background: #eef3f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+    .hamnoor-standalone-desktop-nav a.is-active {
+        background: #fff;
+        border-color: #b8c9df;
+    }
+    .hamnoor-standalone-desktop-nav a.is-primary {
+        color: #fff;
+        background: #14407f;
+        border-color: #14407f;
+    }
+    .hamnoor-standalone-page .hamnoor-wrap {
+        width: min(1180px, calc(100% - 2rem));
+        max-width: 1180px;
+    }
+}
+
+
+/* 3.9.56 — standalone typography + context-aware navigation. */
+body.hamnoor-standalone-page,
+body.hamnoor-standalone-page button,
+body.hamnoor-standalone-page input,
+body.hamnoor-standalone-page select,
+body.hamnoor-standalone-page textarea {
+    font-family: var(--hamnoor-standalone-font, "IRANSansXFaNum", "IRANSansX", "Vazirmatn", "Vazir", Tahoma, Arial, sans-serif);
+}
+body.hamnoor-standalone-page .hamnoor-wrap,
+body.hamnoor-standalone-page .hamnoor-modal {
+    --hamnoor-config-font: var(--hamnoor-standalone-font, "IRANSansXFaNum", "IRANSansX", "Vazirmatn", "Vazir", Tahoma, Arial, sans-serif);
+}
+
+/* These visibility helpers live outside .hamnoor-wrap on standalone pages,
+   so they must not depend on the scoped dashboard helper selectors. */
+.hamnoor-standalone-topbar .hamnoor-mobile-ui { display: none !important; }
+.hamnoor-standalone-topbar .hamnoor-desktop-ui { display: flex; }
+
+.hamnoor-standalone-brand-copy {
+    display: grid;
+    gap: .02rem;
+    min-width: 0;
+    line-height: 1.35;
+}
+.hamnoor-standalone-brand-copy strong {
+    color: #172033;
+    font-size: .94rem;
+    font-weight: 900;
+}
+.hamnoor-standalone-brand-copy small {
+    color: #667085;
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+.hamnoor-public-context-nav {
+    align-items: center;
+    gap: .55rem;
+    margin: 0 0 .8rem;
+    padding: .65rem .8rem;
+    color: #667085;
+    background: rgba(255,255,255,.78);
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: .78rem;
+    line-height: 1.5;
+}
+.hamnoor-public-context-nav a {
+    color: #14407f !important;
+    font-weight: 800;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+.hamnoor-public-context-nav strong {
+    min-width: 0;
+    overflow: hidden;
+    color: #344054;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (min-width: 783px) {
+    .hamnoor-standalone-topbar-inner {
+        justify-content: flex-start;
+    }
+    .hamnoor-standalone-brand {
+        margin-inline-end: auto;
+    }
+    .hamnoor-standalone-desktop-nav {
+        margin: 0;
+    }
+    .hamnoor-standalone-desktop-nav a {
+        min-height: 40px;
+        padding-inline: .82rem;
+    }
+    .hamnoor-standalone-desktop-nav a:not(.is-primary):hover {
+        background: #fff;
+        border-color: #b8c9df;
+    }
+}
+
+@media (max-width: 782px) {
+    .hamnoor-standalone-topbar .hamnoor-desktop-ui { display: none !important; }
+    .hamnoor-standalone-topbar .hamnoor-mobile-ui { display: inline-flex !important; }
+    .hamnoor-standalone-brand-copy { display: none; }
+}
+
+
+/* 3.9.57 — refined desktop public-khatm shell. */
+@media (min-width: 783px) {
+    .hamnoor-standalone-topbar {
+        box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
+    }
+
+    .hamnoor-standalone-topbar-inner {
+        width: min(1180px, calc(100% - 2rem));
+        min-height: 78px;
+        padding: .7rem 0;
+    }
+
+    .hamnoor-standalone-brand {
+        gap: .72rem;
+    }
+
+    .hamnoor-standalone-brand-plate {
+        min-width: 92px;
+        min-height: 40px;
+        padding: 5px 9px;
+        border-radius: 12px;
+        box-shadow: 0 5px 14px rgba(20, 64, 127, .16);
+    }
+
+    .hamnoor-standalone-brand-plate img {
+        max-width: 76px;
+        max-height: 25px;
+    }
+
+    .hamnoor-standalone-brand-copy strong {
+        font-size: 1rem;
+    }
+
+    .hamnoor-standalone-brand-copy small {
+        margin-top: .08rem;
+        font-size: .72rem;
+    }
+
+    .hamnoor-standalone-desktop-nav {
+        gap: .48rem;
+    }
+
+    .hamnoor-standalone-desktop-nav a {
+        min-height: 42px;
+        padding: .52rem .9rem;
+        border-radius: 11px;
+        font-size: .82rem;
+    }
+
+    .hamnoor-standalone-desktop-nav a.is-active {
+        color: #14407f;
+        background: #fff;
+        border-color: #9fb7d4;
+        box-shadow: inset 0 0 0 1px rgba(20,64,127,.04);
+    }
+
+    .hamnoor-standalone-main {
+        padding-top: 1.15rem;
+    }
+
+    .hamnoor-public-backline {
+        display: flex;
+        align-items: center;
+        gap: .45rem;
+        min-height: 30px;
+        margin: 0 0 .55rem;
+        padding: 0 .15rem;
+        color: #7b8798;
+        font-size: .74rem;
+        line-height: 1.5;
+    }
+
+    .hamnoor-public-backline a {
+        display: inline-flex;
+        align-items: center;
+        gap: .25rem;
+        color: #14407f !important;
+        font-weight: 800;
+        text-decoration: none !important;
+        white-space: nowrap;
+    }
+
+    .hamnoor-public-backline a:hover {
+        text-decoration: underline !important;
+        text-underline-offset: 3px;
+    }
+
+    .hamnoor-public-backline-sep {
+        color: #c1c8d2;
+    }
+
+    .hamnoor-public-backline-current {
+        min-width: 0;
+        overflow: hidden;
+        color: #667085;
+        font-weight: 650;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* The old pill breadcrumb is retired on the desktop shell. */
+    .hamnoor-public-context-nav {
+        display: none !important;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header {
+        margin-top: 0;
+    }
+}
+
+/* 3.9.58 — stronger desktop hero for the standalone public khatm page. */
+@media (min-width: 783px) {
+    .hamnoor-public-khatm-page .hamnoor-khatm-header {
+        grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+        align-items: stretch;
+        gap: 1.65rem;
+        padding: 1.35rem;
+        border: 1px solid #e1e7ef;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, .055);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-cover,
+    .hamnoor-public-khatm-page .hamnoor-cover-placeholder {
+        width: 100%;
+        height: 100%;
+        min-height: 220px;
+        max-height: 280px;
+        aspect-ratio: 1200 / 630;
+        object-fit: cover;
+        border-radius: 16px;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header-body {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        justify-content: center;
+        padding-block: .25rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header h1 {
+        margin: .45rem 0 .55rem;
+        font-size: clamp(2rem, 3.2vw, 3rem);
+        line-height: 1.35;
+        letter-spacing: -.025em;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header .hamnoor-intention {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 2;
+    }
+}
+
+@media (min-width: 783px) and (max-width: 1050px) {
+    .hamnoor-public-khatm-page .hamnoor-khatm-header {
+        grid-template-columns: minmax(280px, 34%) minmax(0, 1fr);
+        gap: 1.15rem;
+        padding: 1.1rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-cover,
+    .hamnoor-public-khatm-page .hamnoor-cover-placeholder {
+        min-height: 190px;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-khatm-header h1 {
+        font-size: clamp(1.7rem, 3vw, 2.3rem);
+    }
+}
+
+/* 3.9.6e — desktop public campaign shares use a true row list.
+ * Mobile keeps the existing compact app-card layout. */
+.hamnoor-public-parts-row-head { display: none; }
+@media (min-width: 783px) {
+    .hamnoor-public-khatm-page .hamnoor-public-parts-row-head {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) minmax(170px, .55fr) minmax(250px, .7fr);
+        gap: 16px;
+        align-items: center;
+        margin: .25rem 0 0;
+        padding: 0 16px 8px;
+        color: var(--hamnoor-muted);
+        border-bottom: 1px solid var(--hamnoor-border);
+        font-size: .74rem;
+        font-weight: 800;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid {
+        display: block;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) minmax(170px, .55fr) minmax(250px, .7fr);
+        gap: 16px;
+        align-items: center;
+        width: 100%;
+        min-height: 58px;
+        margin: 0;
+        padding: 10px 16px;
+        border: 0;
+        border-bottom: 1px solid var(--hamnoor-border);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card:hover {
+        background: rgba(20, 64, 127, .025);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card.hamnoor-part-card--mine {
+        background: rgba(20, 64, 127, .045);
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-card-main {
+        grid-column: 1 / span 2;
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) minmax(170px, .55fr);
+        grid-template-areas:
+            'title status'
+            'person status';
+        gap: 2px 16px;
+        align-items: center;
+        min-width: 0;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-title {
+        grid-area: title;
+        margin: 0;
+        overflow: hidden;
+        font-size: .92rem;
+        line-height: 1.55;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-status {
+        grid-area: status;
+        justify-self: start;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-participant {
+        grid-area: person;
+        margin: 0;
+        font-size: .76rem;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions {
+        grid-column: 3;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 6px;
+        flex-wrap: wrap;
+        min-width: 0;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions form {
+        display: block;
+        margin: 0;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions .hamnoor-btn {
+        width: auto;
+        min-width: 0;
+        min-height: 34px;
+        margin: 0;
+        padding: 6px 11px;
+        border-radius: 9px;
+        font-size: .77rem;
+        line-height: 1.25;
+        white-space: nowrap;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card .hamnoor-part-actions > .hamnoor-reading-link {
+        min-width: 112px;
+    }
+
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card[data-status='claimed'],
+    .hamnoor-public-khatm-page .hamnoor-parts-grid > .hamnoor-part-card[data-status='done'] {
+        grid-template-columns: minmax(180px, 1fr) minmax(170px, .55fr) minmax(250px, .7fr);
+    }
+}

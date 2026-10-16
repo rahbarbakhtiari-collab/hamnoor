@@ -1,0 +1,40 @@
+.hamnoor-wrap .hamnoor-personal-quran-reading { --hamnoor-personal-reader-max: 920px; }
+.hamnoor-wrap .hamnoor-personal-quran-reader-head { max-width: var(--hamnoor-personal-reader-max); margin-inline: auto; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:1rem; align-items:center; }
+.hamnoor-wrap .hamnoor-personal-quran-identity { min-width:0; }
+.hamnoor-wrap .hamnoor-personal-quran-identity h1 { margin:.25rem 0; font-size:clamp(1.2rem,3vw,1.75rem); }
+.hamnoor-wrap .hamnoor-personal-quran-location { margin:0; color:var(--hamnoor-muted); }
+.hamnoor-wrap .hamnoor-personal-quran-autosave-note { max-width:var(--hamnoor-personal-reader-max); margin-inline:auto; }
+.hamnoor-wrap .hamnoor-personal-quran-page-nav {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+    align-items: center;
+    gap: .65rem;
+    max-width: var(--hamnoor-personal-reader-max);
+    margin: .9rem auto;
+}
+.hamnoor-wrap .hamnoor-personal-quran-page-nav > :first-child { justify-self: start; }
+.hamnoor-wrap .hamnoor-personal-quran-page-nav > :last-child { justify-self: end; }
+.hamnoor-wrap .hamnoor-personal-quran-page-number,
+.hamnoor-wrap .hamnoor-personal-quran-resume-page {
+    color: var(--hamnoor-muted);
+    font-size: .78rem;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+}
+.hamnoor-wrap .hamnoor-personal-quran-resume-page { color: var(--hamnoor-primary); }
+.hamnoor-wrap .hamnoor-personal-quran-reading .hamnoor-reading-verses,
+.hamnoor-wrap .hamnoor-personal-quran-reading > .hamnoor-notice,
+.hamnoor-wrap .hamnoor-personal-quran-reading .hamnoor-reading-toolbar,
+.hamnoor-wrap .hamnoor-personal-quran-reading .hamnoor-reading-progress { max-width: var(--hamnoor-personal-reader-max); margin-inline: auto; }
+.hamnoor-wrap .hamnoor-personal-quran-page-nav--bottom { margin-top: 1.2rem; padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+.hamnoor-wrap .hamnoor-personal-quran-reading [data-reading-end-marker] { display:block; block-size:2px; inline-size:100%; pointer-events:none; }
+@media (max-width: 700px) {
+    .hamnoor-wrap .hamnoor-personal-quran-reader-head { grid-template-columns:1fr auto; padding:14px; }
+    .hamnoor-wrap .hamnoor-personal-quran-reader-head .hamnoor-reading-status { min-width:72px; }
+    .hamnoor-wrap .hamnoor-personal-quran-location { font-size:.82rem; }
+    .hamnoor-wrap .hamnoor-personal-quran-page-nav { grid-template-columns: 1fr 1fr; }
+    .hamnoor-wrap .hamnoor-personal-quran-page-nav > :nth-child(2) { grid-column: 1 / -1; grid-row: 1; }
+    .hamnoor-wrap .hamnoor-personal-quran-page-nav > :first-child { grid-column: 1; grid-row: 2; width: 100%; }
+    .hamnoor-wrap .hamnoor-personal-quran-page-nav > :last-child { grid-column: 2; grid-row: 2; width: 100%; }
+}

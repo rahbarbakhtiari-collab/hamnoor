@@ -6,8 +6,12 @@
 /* 1. Variables and visual modes */
 .hamnoor-wrap,
 .hamnoor-modal {
-    --hamnoor-primary: var(--hamnoor-config-primary, #14407f);
-    --hamnoor-secondary: var(--hamnoor-config-secondary, #1f63c3);
+    --hamnoor-primary: var(--hamnoor-config-primary, #1f63c3);
+    --hamnoor-primary-hover: #1957ad;
+    --hamnoor-primary-pressed: #15498f;
+    --hamnoor-primary-tint: #eaf2fd;
+    --hamnoor-primary-border: #a9c8f1;
+    --hamnoor-secondary: var(--hamnoor-config-secondary, #1957ad);
     --hamnoor-accent: var(--hamnoor-config-accent, #d6a84f);
     --hamnoor-success: var(--hamnoor-config-success, #15803d);
     --hamnoor-warning: var(--hamnoor-config-warning, #b45309);
@@ -24,7 +28,7 @@
     --hamnoor-shadow-raised: 0 18px 50px rgba(15, 23, 42, .14);
     --hamnoor-max: var(--hamnoor-config-max, 1120px);
     --hamnoor-font: var(--hamnoor-config-font, inherit);
-    --hamnoor-focus: rgba(20, 64, 127, .28);
+    --hamnoor-focus: rgba(31, 99, 195, .3);
     --hamnoor-space-1: .375rem;
     --hamnoor-space-2: .625rem;
     --hamnoor-space-3: 1rem;
@@ -544,18 +548,23 @@
 .hamnoor-wrap .hamnoor-check,
 .hamnoor-modal .hamnoor-check {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: .5rem;
+    min-height: 44px;
+    padding: .45rem .25rem;
     font-weight: 500;
 }
 
 .hamnoor-wrap .hamnoor-check input,
 .hamnoor-modal .hamnoor-check input {
     flex: 0 0 auto;
-    width: auto;
-    min-height: auto;
-    margin-top: .35rem;
+    width: 18px;
+    height: 18px;
+    min-height: 18px;
+    margin: 0;
+    accent-color: var(--hamnoor-primary);
 }
+.hamnoor-wrap .hamnoor-check input:focus-visible,.hamnoor-modal .hamnoor-check input:focus-visible{outline:3px solid var(--hamnoor-focus);outline-offset:3px}
 
 .hamnoor-wrap .hamnoor-wizard .hamnoor-choice {
     display: flex;
@@ -794,6 +803,30 @@
     background: linear-gradient(135deg, var(--hamnoor-soft), rgba(214, 168, 79, .18));
 }
 
+/* 4.0.18 — public campaign hero balance only.
+ * Scoped to public campaign pages so cards, dashboards and ordinary
+ * WordPress/theme content keep their existing presentation. */
+@media (min-width: 783px) {
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-khatm-header {
+        grid-template-columns: minmax(260px, 38%) minmax(0, 1fr);
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-khatm-header > .hamnoor-cover {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        max-height: none;
+        aspect-ratio: auto;
+        object-fit: contain;
+        align-self: center;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-khatm-header h1 {
+        font-size: clamp(1.35rem, 2.15vw, 1.85rem);
+        line-height: 1.5;
+    }
+}
+
 .hamnoor-wrap .hamnoor-intention,
 .hamnoor-wrap .hamnoor-khatm-card-intention,
 .hamnoor-wrap .hamnoor-card-meta {
@@ -909,9 +942,6 @@
     display: -webkit-box;
     margin: 0;
     overflow: hidden;
-    text-align: justify;
-    text-align-last: right;
-    text-justify: inter-word;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
@@ -1157,7 +1187,7 @@
 .hamnoor-wrap .hamnoor-wizard.js-ready.is-repeated .hamnoor-khatm-count-fields,
 .hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-manual-completion) .hamnoor-release-options,
 .hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-release-after-days) .hamnoor-release-after-days,
-.hamnoor-wrap .hamnoor-wizard.js-ready:not(.is-release-fixed-date) .hamnoor-release-fixed-date {
+.hamnoor-wrap .hamnoor-wizard.js-ready:not(.has-participation-end) .hamnoor-completion-grace {
     display: none !important;
 }
 
@@ -1179,6 +1209,10 @@
 
 .hamnoor-wrap .hamnoor-summary-card,
 .hamnoor-wrap .hamnoor-preview-card,
+.hamnoor-wrap .hamnoor-schedule-options { margin-top: 18px; padding: 14px; border: 1px solid var(--hamnoor-border, #d9dee8); border-radius: 14px; }
+.hamnoor-wrap .hamnoor-schedule-options > summary { cursor: pointer; font-weight: 700; }
+.hamnoor-wrap .hamnoor-schedule-options[open] > summary { margin-bottom: 12px; }
+
 .hamnoor-wrap .hamnoor-release-options,
 .hamnoor-wrap .hamnoor-completion-options,
 .hamnoor-wrap .hamnoor-support-section {
@@ -1549,6 +1583,21 @@
     padding: .375rem 0;
 }
 
+.hamnoor-wrap .hamnoor-owner-status-form { margin: 0; }
+.hamnoor-wrap .hamnoor-card-action-button {
+    display: block;
+    width: 100%;
+    padding: .375rem 0;
+    border: 0;
+    background: transparent;
+    color: var(--hamnoor-primary);
+    font: inherit;
+    font-weight: 700;
+    text-align: start;
+    cursor: pointer;
+}
+.hamnoor-wrap .hamnoor-card-action-button.is-danger { color: var(--hamnoor-danger, #b42318); }
+
 .hamnoor-wrap .hamnoor-completed-archive {
     margin-top: 1.25rem;
 }
@@ -1610,60 +1659,7 @@
     font-weight: 800;
 }
 
-/* 12. Per-khatm visual accents */
-.hamnoor-wrap.hamnoor-style-blue-quran,
-.hamnoor-wrap .hamnoor-style-blue-quran {
-    --hamnoor-primary: #14407f;
-    --hamnoor-secondary: #1f63c3;
-    --hamnoor-accent: #7fb3ff;
-}
-
-.hamnoor-wrap.hamnoor-style-golden,
-.hamnoor-wrap .hamnoor-style-golden {
-    --hamnoor-primary: #7c4a03;
-    --hamnoor-secondary: #b7791f;
-    --hamnoor-accent: #d6a84f;
-}
-
-.hamnoor-wrap.hamnoor-style-memorial,
-.hamnoor-wrap .hamnoor-style-memorial {
-    --hamnoor-primary: #374151;
-    --hamnoor-secondary: #111827;
-    --hamnoor-accent: #9ca3af;
-}
-
-.hamnoor-wrap.hamnoor-style-ramadan,
-.hamnoor-wrap .hamnoor-style-ramadan {
-    --hamnoor-primary: #0f766e;
-    --hamnoor-secondary: #065f46;
-    --hamnoor-accent: #f6c85f;
-}
-
-.hamnoor-wrap.hamnoor-style-heyati,
-.hamnoor-wrap .hamnoor-style-heyati {
-    --hamnoor-primary: #7f1d1d;
-    --hamnoor-secondary: #991b1b;
-    --hamnoor-accent: #111827;
-}
-
-.hamnoor-wrap.hamnoor-style-blue-quran,
-.hamnoor-wrap.hamnoor-style-golden,
-.hamnoor-wrap.hamnoor-style-memorial,
-.hamnoor-wrap.hamnoor-style-ramadan,
-.hamnoor-wrap.hamnoor-style-heyati {
-    border-top: 4px solid var(--hamnoor-accent);
-}
-
-.hamnoor-wrap .hamnoor-preview-card,
-.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-blue-quran,
-.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-golden,
-.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-memorial,
-.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-ramadan,
-.hamnoor-wrap .hamnoor-khatm-card.hamnoor-style-heyati {
-    border-top: 4px solid var(--hamnoor-accent);
-}
-
-/* 13. Responsive */
+/* 12. Responsive */
 @media (max-width: 900px) {
     .hamnoor-wrap .hamnoor-part-filters {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1837,4 +1833,1265 @@
         min-height: 36px;
         padding-inline: .5rem;
     }
+}
+.hamnoor-wrap .hamnoor-simple-login,.hamnoor-wrap .hamnoor-mobile-verification{max-width:680px;margin:1rem auto}.hamnoor-wrap [data-otp-phone-step],.hamnoor-wrap [data-otp-code-step]{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.75rem;align-items:end}.hamnoor-wrap [data-otp-phone-step][hidden],.hamnoor-wrap [data-otp-code-step][hidden]{display:none}@media(max-width:600px){.hamnoor-wrap [data-otp-phone-step],.hamnoor-wrap [data-otp-code-step]{grid-template-columns:1fr}}
+
+.hamnoor-wrap .hamnoor-notification-badge{display:inline-flex;align-items:center;justify-content:center;min-width:1.5em;height:1.5em;margin-inline-start:.35rem;padding:0 .35rem;border-radius:999px;background:var(--hamnoor-primary);color:#fff;font-size:.75em}.hamnoor-wrap .hamnoor-dashboard-tabs button.is-active .hamnoor-notification-badge{background:var(--hamnoor-surface);color:var(--hamnoor-primary)}.hamnoor-wrap .hamnoor-notification-list{display:grid;gap:.75rem}.hamnoor-wrap .hamnoor-notification-item{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}.hamnoor-wrap .hamnoor-notification-item.is-unread{border-inline-start:4px solid var(--hamnoor-primary)}.hamnoor-wrap .hamnoor-notification-item p{margin:.4rem 0 0}.hamnoor-wrap .hamnoor-notification-item time{white-space:nowrap;font-size:.85em;opacity:.75}
+
+.hamnoor-wrap .hamnoor-access-gateway {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--hamnoor-space-4);
+    align-items: start;
+}
+.hamnoor-wrap .hamnoor-access-gateway > .hamnoor-card { margin: 0; max-width: none; }
+@media (max-width: 760px) {
+    .hamnoor-wrap .hamnoor-access-gateway { grid-template-columns: minmax(0, 1fr); }
+    .hamnoor-wrap .hamnoor-notification-item { flex-direction: column; }
+}
+
+/* Hamnoor 3.2: compact verification reminder and standalone creation flow */
+.hamnoor-wrap .hamnoor-verification-reminder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .35rem;
+    margin: 0 0 .75rem;
+    color: var(--hamnoor-muted);
+    font-size: .88em;
+}
+.hamnoor-wrap .hamnoor-link-button {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    color: var(--hamnoor-primary);
+    background: transparent;
+    border: 0;
+    font: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+.hamnoor-wrap .hamnoor-link-button:hover,
+.hamnoor-wrap .hamnoor-link-button:focus-visible {
+    color: var(--hamnoor-primary-dark, var(--hamnoor-primary));
+}
+.hamnoor-wrap .hamnoor-create-access-card {
+    max-width: 820px;
+    margin: 1rem auto;
+}
+.hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-dashboard-empty-state {
+    max-width: 900px;
+    margin-inline: auto;
+    text-align: center;
+}
+.hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+.hamnoor-modal .hamnoor-mobile-verification {
+    max-width: none;
+    margin: 0;
+    box-shadow: none;
+}
+@media (max-width: 640px) {
+    .hamnoor-wrap .hamnoor-verification-reminder {
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
+
+/* Hamnoor 3.2.3: locked claim identity and verified mobile change */
+.hamnoor-wrap .hamnoor-profile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+    align-items: center;
+}
+.hamnoor-wrap input[readonly] {
+    cursor: not-allowed;
+    opacity: .86;
+}
+.hamnoor-wrap [data-change-mobile-phone-step],
+.hamnoor-wrap [data-change-mobile-code-step] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: .75rem;
+    align-items: end;
+}
+.hamnoor-wrap [data-change-mobile-phone-step][hidden],
+.hamnoor-wrap [data-change-mobile-code-step][hidden] {
+    display: none;
+}
+@media (max-width: 600px) {
+    .hamnoor-wrap [data-change-mobile-phone-step],
+    .hamnoor-wrap [data-change-mobile-code-step] {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* 3.4.1: cache-safe claim identity */
+.hamnoor-modal .hamnoor-claim-identity {
+    display: grid;
+    gap: .75rem;
+    min-height: 4.5rem;
+}
+
+.hamnoor-modal .hamnoor-identity-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4.5rem;
+    padding: 1rem;
+    color: var(--hamnoor-muted);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    text-align: center;
+}
+
+.hamnoor-modal .hamnoor-identity-card {
+    display: grid;
+    gap: .65rem;
+    padding: 1rem;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+
+.hamnoor-modal .hamnoor-identity-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+}
+
+.hamnoor-modal .hamnoor-identity-row strong {
+    color: var(--hamnoor-text);
+}
+
+.hamnoor-modal .hamnoor-identity-retry {
+    justify-self: start;
+}
+
+
+/* 3.4.2: balanced dashboard participation cards */
+.hamnoor-wrap .hamnoor-my-parts-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;align-items:start;--hamnoor-part-min:280px}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card{align-self:start;align-content:start;height:auto;min-width:0;padding:1rem;border-radius:14px}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card-main{display:grid;gap:.38rem}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-khatm-title{line-height:1.75;overflow-wrap:anywhere}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-title{margin:0;line-height:1.75}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-reading-state{margin-top:.35rem}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-reading-state small{display:block;line-height:1.65}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:.5rem;margin-top:.35rem}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions form{display:block}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions .hamnoor-btn{width:100%;min-height:42px}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--completed{gap:.45rem;padding:.85rem 1rem;background:#f7fdf9}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--completed .hamnoor-part-reading-progress{display:none}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--completed .hamnoor-part-reading-state{margin-top:.15rem}
+.hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-complete-inline-message{width:auto;margin:0;padding:.48rem .65rem;color:#166534;background:#ecfdf3;border:1px solid #86efac;border-radius:10px;font-size:.86rem;font-weight:700;line-height:1.6;text-align:center}
+.hamnoor-modal .hamnoor-identity-row strong[dir="ltr"]{direction:ltr;unicode-bidi:plaintext;letter-spacing:.02em}
+@media(max-width:1100px){.hamnoor-wrap .hamnoor-my-parts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.hamnoor-wrap .hamnoor-my-parts-grid{grid-template-columns:minmax(0,1fr)}}
+
+
+/* 3.5.0: inline OTP step for creating a khatm */
+.hamnoor-wrap .hamnoor-create-code-step{display:grid;gap:1rem;margin-top:.75rem;padding:1rem;background:var(--hamnoor-soft);border:1px solid var(--hamnoor-border);border-radius:var(--hamnoor-radius-sm)}
+.hamnoor-wrap .hamnoor-create-code-step[hidden]{display:none!important}
+.hamnoor-wrap .hamnoor-create-code-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.65rem}
+.hamnoor-wrap .hamnoor-create-code-step small{color:var(--hamnoor-muted)}
+@media(max-width:700px){.hamnoor-wrap .hamnoor-create-code-actions .hamnoor-btn{width:100%}}
+
+/* 3.6.0 — progress center, reminders and recovery */
+.hamnoor-recovery-card{margin-top:18px}.hamnoor-recovery-card label{display:grid;gap:7px}.hamnoor-recovery-card input{max-width:360px}.hamnoor-recovery-card .hamnoor-inline-actions{display:flex;gap:8px;flex-wrap:wrap}
+.hamnoor-part-engagement{display:grid;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(15,55,100,.12)}.hamnoor-reminder-toggle{display:flex!important;align-items:center;gap:7px;font-size:.88rem}.hamnoor-reminder-toggle input{width:auto!important;margin:0}
+.hamnoor-progress-center-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}.hamnoor-progress-khatm-select select{min-width:min(360px,80vw)}.hamnoor-progress-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(100px,1fr));gap:10px;margin:16px 0}.hamnoor-progress-summary-grid>div{display:grid;gap:4px;text-align:center;padding:14px 10px;border:1px solid rgba(15,55,100,.12);border-radius:12px;background:#fff}.hamnoor-progress-summary-grid strong{font-size:1.5rem;color:#174c8f}.hamnoor-progress-summary-grid span{font-size:.86rem}.hamnoor-progress-table-wrap{overflow:auto;border:1px solid rgba(15,55,100,.12);border-radius:14px}.hamnoor-progress-table{width:100%;border-collapse:collapse;min-width:820px;background:#fff}.hamnoor-progress-table th,.hamnoor-progress-table td{padding:11px;border-bottom:1px solid rgba(15,55,100,.1);text-align:right;vertical-align:middle}.hamnoor-progress-table th{background:#f5f8fc}.hamnoor-progress-table td small{display:block;margin-top:4px;color:#65758a}.hamnoor-progress-mini{width:110px;height:7px;background:#e8edf3;border-radius:99px;overflow:hidden}.hamnoor-progress-mini span{display:block;height:100%;background:#2d9d61}.hamnoor-reminder-small{padding:6px 10px!important;font-size:.82rem!important}
+@media(max-width:760px){.hamnoor-progress-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hamnoor-progress-summary-grid>div:last-child{grid-column:1/-1}.hamnoor-progress-table-wrap{border:0;overflow:visible}.hamnoor-progress-table{display:block;min-width:0;background:transparent}.hamnoor-progress-table thead{display:none}.hamnoor-progress-table tbody{display:grid;gap:10px}.hamnoor-progress-table tr{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;border:1px solid rgba(15,55,100,.12);border-radius:12px;background:#fff}.hamnoor-progress-table td{display:block;padding:0;border:0}.hamnoor-progress-table td:first-child,.hamnoor-progress-table td:nth-child(2){grid-column:1/-1}.hamnoor-progress-mini{width:100%}.hamnoor-recovery-card .hamnoor-btn{width:100%}}
+.hamnoor-status-not_started{background:#f1f3f6;color:#55606f}.hamnoor-status-reading{background:#eaf3ff;color:#17529a}.hamnoor-status-ready{background:#fff4db;color:#8a5b00}.hamnoor-notification-action{margin-top:8px!important}
+
+/* 3.7.0 multichannel reminders / Web Push */
+.hamnoor-webpush-card{border:1px solid var(--hamnoor-config-border,#e5e7eb);border-radius:14px;padding:16px;margin-top:14px;background:var(--hamnoor-config-card,#fff)}
+.hamnoor-channel-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.hamnoor-channel-row>div{display:flex;flex-direction:column;gap:3px}.hamnoor-channel-row small{color:var(--hamnoor-config-muted,#667085)}
+.hamnoor-channel-status{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#f3f4f6;color:#475467;font-size:.86rem}.hamnoor-channel-status.is-active{background:#ecfdf3;color:#027a48}
+.hamnoor-channel-priority{margin:12px 0 0;padding:0;list-style:none;counter-reset:hamnoor-channel;display:grid;gap:8px}
+.hamnoor-channel-priority li{counter-increment:hamnoor-channel;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--hamnoor-config-border,#e5e7eb);border-radius:12px}
+.hamnoor-channel-priority li:before{content:counter(hamnoor-channel);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--hamnoor-config-primary,#14407f);color:#fff;font-size:.8rem;font-weight:700;flex:0 0 26px}
+.hamnoor-channel-priority li strong{min-width:110px}.hamnoor-channel-priority li span{color:var(--hamnoor-config-muted,#667085);font-size:.9rem}
+@media(max-width:600px){.hamnoor-channel-priority li{align-items:flex-start;flex-wrap:wrap}.hamnoor-channel-priority li span{width:calc(100% - 36px);margin-inline-start:36px}.hamnoor-reminder-settings .hamnoor-profile-actions{display:grid;grid-template-columns:1fr}}
+
+/* 3.9.5 — Bale channel */
+.hamnoor-bale-channel-card .hamnoor-inline-form{margin-top:10px}.hamnoor-bale-channel-card>.hamnoor-btn{margin-top:10px}
+
+/* 3.9.42: mobile presentation is a separate layer, disabled on desktop. */
+.hamnoor-wrap .hamnoor-mobile-ui { display: none; }
+
+/* Timing-state clarity: keep cards informative after claims close. */
+.hamnoor-khatm-card-state-note,.hamnoor-part-claim-closed-note{display:block;margin:.55rem 0;font-size:.88em;line-height:1.8;opacity:.82;}
+.hamnoor-part-claim-closed-note{max-width:16rem;}
+
+
+/* 3.9.6 — My shares terminology. 3.9.6c — direct, filter-first toolbar; no search/popup. */
+.hamnoor-my-parts-tools{display:flex;align-items:center;gap:7px;min-width:0;margin:10px 0 14px;overflow-x:auto;padding:1px 0 3px;scrollbar-width:none}
+.hamnoor-my-parts-tools::-webkit-scrollbar{display:none}
+.hamnoor-my-parts-tools[hidden]{display:none!important}
+.hamnoor-my-parts-status-filters{display:flex;align-items:center;gap:2px;flex:0 0 auto;padding:3px;border-radius:999px;background:#f3f6fa}
+.hamnoor-my-parts-status-filters button{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:5px 10px;border:0;border-radius:999px;background:transparent;color:var(--hamnoor-muted,#667085);font:inherit;font-size:.78rem;font-weight:750;line-height:1.35;white-space:nowrap;cursor:pointer;transition:background .16s ease,color .16s ease,box-shadow .16s ease}
+.hamnoor-my-parts-status-filters button.is-active{background:#fff;color:var(--hamnoor-primary,#14407f);box-shadow:0 1px 4px rgba(15,23,42,.08)}
+.hamnoor-my-parts-status-filters button:focus-visible,.hamnoor-my-parts-compact-select select:focus-visible{outline:3px solid rgba(20,64,127,.18);outline-offset:2px}
+.hamnoor-filter-label-mobile{display:none}
+.hamnoor-my-parts-inline-filters{display:flex;align-items:center;gap:6px;flex:0 0 auto;margin-inline-start:auto}
+.hamnoor-my-parts-compact-select{display:block;margin:0;min-width:0}
+.hamnoor-my-parts-compact-select select{display:block;width:auto;max-width:190px;min-height:34px;margin:0;padding:5px 9px;border:1px solid #e4e9f0;border-radius:9px;background:#fff;color:var(--hamnoor-text,#243347);font:inherit;font-size:.78rem;font-weight:650;line-height:1.35;cursor:pointer}
+.hamnoor-my-parts-khatm-filter select{max-width:210px}
+.hamnoor-my-parts-result-count{display:block;flex:0 0 auto;padding-inline:2px;color:var(--hamnoor-muted,#667085);font-size:.73rem;line-height:1.4;white-space:nowrap}
+.hamnoor-my-parts-grid>.hamnoor-part-card[hidden]{display:none!important}
+
+
+/* 3.9.6d — desktop "My shares" is a compact row list; mobile keeps the app card presentation. */
+.hamnoor-my-parts-row-head{display:none}
+@media(min-width:783px){
+  .hamnoor-wrap .hamnoor-my-parts-row-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.42fr) minmax(300px,.72fr);gap:14px;align-items:center;margin:6px 0 0;padding:0 14px 7px;color:var(--hamnoor-muted,#667085);font-size:.73rem;font-weight:750;border-bottom:1px solid var(--hamnoor-border,#e5e7eb)}
+  .hamnoor-wrap .hamnoor-my-parts-grid{display:block;--hamnoor-part-min:0}
+  .hamnoor-wrap .hamnoor-my-parts-grid>.hamnoor-part-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.42fr) minmax(300px,.72fr);gap:14px;align-items:center;width:100%;margin:0;padding:11px 14px;border:0;border-bottom:1px solid var(--hamnoor-border,#e5e7eb);border-radius:0;background:transparent;box-shadow:none}
+  .hamnoor-wrap .hamnoor-my-parts-grid>.hamnoor-part-card:hover{background:rgba(20,64,127,.025)}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card-main{grid-column:1 / span 2;display:grid;grid-template-columns:minmax(0,1fr) minmax(170px,.42fr);grid-template-areas:"khatm status" "part progress" "participant progress" "engagement engagement";column-gap:14px;row-gap:2px;align-items:center;min-width:0}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-khatm-title{grid-area:khatm;margin:0;font-size:.82rem;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-title{grid-area:part;margin:0;font-size:.94rem;line-height:1.55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-status{grid-area:status;justify-self:start;align-self:center;white-space:nowrap}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-participant{grid-area:participant;margin:0;font-size:.75rem}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-reading-state{grid-area:progress;margin:.25rem 0 0;max-width:260px}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-reading-state small{font-size:.72rem;line-height:1.45}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-reading-progress{height:4px}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-engagement{grid-area:engagement;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:.25rem 0 0;padding:0;border:0;font-size:.76rem}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions{grid-column:3;display:flex;align-items:center;justify-content:flex-start;gap:6px;flex-wrap:wrap;margin:0;min-width:0}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions form{display:block;margin:0}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions .hamnoor-btn{width:auto;min-width:0;min-height:34px;padding:6px 11px;border-radius:9px;font-size:.77rem;line-height:1.25;white-space:nowrap}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-actions>.hamnoor-reading-link{min-width:112px}
+  .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--completed{padding:11px 14px;background:transparent}
+  .hamnoor-wrap .hamnoor-completed-archive .hamnoor-my-parts-row-head{display:none}
+}
+
+/* 4.0.0 UX pass 1 — reduce decision load in claim + success flows. */
+.hamnoor-wrap .hamnoor-action-buttons--claim {
+    display: grid;
+    justify-items: stretch;
+    min-width: min(100%, 320px);
+}
+
+.hamnoor-wrap .hamnoor-claim-primary {
+    width: 100%;
+    min-height: 50px;
+}
+
+.hamnoor-wrap .hamnoor-claim-more {
+    width: 100%;
+}
+
+.hamnoor-wrap .hamnoor-claim-more > summary,
+.hamnoor-modal .hamnoor-claim-complete-already > summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--hamnoor-primary);
+    font-weight: 800;
+}
+
+.hamnoor-wrap .hamnoor-claim-more-actions {
+    display: grid;
+    gap: .5rem;
+    margin-top: .5rem;
+}
+
+.hamnoor-wrap #hamnoor-parts {
+    scroll-margin-top: 5rem;
+}
+
+.hamnoor-modal .hamnoor-claim-next-step {
+    margin: .85rem 0;
+    padding: .8rem .9rem;
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 14px;
+    background: var(--hamnoor-soft);
+}
+
+.hamnoor-modal .hamnoor-claim-next-step strong,
+.hamnoor-modal .hamnoor-claim-next-step p {
+    margin: 0;
+}
+
+.hamnoor-modal .hamnoor-claim-next-step p {
+    margin-top: .25rem;
+    color: var(--hamnoor-muted);
+}
+
+.hamnoor-modal .hamnoor-claim-success-actions .hamnoor-claim-reading-primary {
+    flex: 1 1 100%;
+    min-height: 50px;
+}
+
+.hamnoor-modal .hamnoor-claim-complete-already {
+    margin-top: .65rem;
+    padding-top: .25rem;
+    border-top: 1px solid var(--hamnoor-border);
+}
+
+.hamnoor-modal .hamnoor-claim-complete-already .hamnoor-complete-form {
+    margin-top: .5rem;
+}
+
+/* 4.0.0 UX Phase 2 — decision cards for campaign type + progressive disclosure for reading controls. */
+.hamnoor-wrap .hamnoor-type-picker {
+    display: grid;
+    gap: .8rem;
+}
+.hamnoor-wrap .hamnoor-type-picker-head {
+    display: grid;
+    gap: .2rem;
+}
+.hamnoor-wrap .hamnoor-type-picker-head > strong {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--hamnoor-text);
+}
+.hamnoor-wrap .hamnoor-type-picker-head > span {
+    color: var(--hamnoor-muted);
+    font-size: .875rem;
+    line-height: 1.75;
+}
+.hamnoor-wrap .hamnoor-type-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.hamnoor-wrap .hamnoor-type-picker-head,
+.hamnoor-wrap .hamnoor-type-picker > .hamnoor-field-error {
+    grid-column: 1 / -1;
+}
+.hamnoor-wrap .hamnoor-type-card {
+    position: relative;
+    display: block;
+    margin: 0;
+    cursor: pointer;
+}
+.hamnoor-wrap .hamnoor-type-card > input {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+.hamnoor-wrap .hamnoor-type-card-body {
+    display: grid;
+    gap: .4rem;
+    min-height: 156px;
+    padding: .9rem;
+    background: var(--hamnoor-surface, #fff);
+    border: 1.5px solid var(--hamnoor-border);
+    border-radius: 16px;
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease, background-color .15s ease;
+}
+.hamnoor-wrap .hamnoor-type-card:hover .hamnoor-type-card-body {
+    border-color: color-mix(in srgb, var(--hamnoor-primary) 35%, var(--hamnoor-border));
+}
+.hamnoor-wrap .hamnoor-type-card > input:focus-visible + .hamnoor-type-card-body {
+    outline: 3px solid color-mix(in srgb, var(--hamnoor-primary) 32%, transparent);
+    outline-offset: 2px;
+}
+.hamnoor-wrap .hamnoor-type-card > input:checked + .hamnoor-type-card-body {
+    border-color: var(--hamnoor-primary);
+    background: color-mix(in srgb, var(--hamnoor-primary) 5%, #fff);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--hamnoor-primary) 10%, transparent);
+}
+.hamnoor-wrap .hamnoor-type-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+}
+.hamnoor-wrap .hamnoor-type-card-top > strong {
+    font-size: 1rem;
+    font-weight: 900;
+}
+.hamnoor-wrap .hamnoor-type-card-body > small,
+.hamnoor-wrap .hamnoor-type-card-desc {
+    color: var(--hamnoor-muted);
+    font-size: .85rem;
+    line-height: 1.7;
+}
+.hamnoor-wrap .hamnoor-type-card-body > small { font-weight: 800; }
+.hamnoor-wrap .hamnoor-type-card-meta {
+    margin-top: auto;
+    padding-top: .35rem;
+    border-top: 1px dashed var(--hamnoor-border);
+    color: var(--hamnoor-muted);
+    font-size: .8rem;
+}
+.hamnoor-wrap .hamnoor-type-card-meta b { color: var(--hamnoor-text); font-size: .95rem; }
+.hamnoor-wrap .hamnoor-type-recommended,
+.hamnoor-wrap .hamnoor-choice-badge,
+.hamnoor-wrap .hamnoor-advanced-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: .15rem .48rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--hamnoor-primary) 10%, #fff);
+    color: var(--hamnoor-primary);
+    font-size: .72rem;
+    font-weight: 900;
+    white-space: nowrap;
+}
+.hamnoor-wrap .hamnoor-choice-recommended {
+    position: relative;
+}
+.hamnoor-wrap .hamnoor-choice-text {
+    min-width: 0;
+}
+.hamnoor-wrap .hamnoor-choice-text > strong,
+.hamnoor-wrap .hamnoor-choice-text > small {
+    display: block;
+}
+.hamnoor-wrap .hamnoor-choice-text > small {
+    margin-top: .18rem;
+    color: var(--hamnoor-muted);
+    font-size: .82rem;
+    font-weight: 500;
+    line-height: 1.7;
+}
+.hamnoor-wrap .hamnoor-reading-advanced {
+    overflow: clip;
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--hamnoor-soft) 38%, #fff);
+}
+.hamnoor-wrap .hamnoor-reading-advanced > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .85rem .95rem;
+    cursor: pointer;
+    list-style: none;
+}
+.hamnoor-wrap .hamnoor-reading-advanced > summary::-webkit-details-marker { display: none; }
+.hamnoor-wrap .hamnoor-reading-advanced > summary > span:first-child {
+    display: grid;
+    gap: .15rem;
+}
+.hamnoor-wrap .hamnoor-reading-advanced > summary strong { font-size: .92rem; }
+.hamnoor-wrap .hamnoor-reading-advanced > summary small {
+    color: var(--hamnoor-muted);
+    font-size: .8rem;
+    line-height: 1.65;
+}
+.hamnoor-wrap .hamnoor-reading-advanced-body {
+    display: grid;
+    gap: .75rem;
+    padding: 0 .85rem .85rem;
+    border-top: 1px solid var(--hamnoor-border);
+}
+.hamnoor-wrap .hamnoor-reading-advanced-body > * { margin-top: .85rem; }
+.hamnoor-wrap .hamnoor-claim-limit-options {
+    display: grid;
+    gap: .65rem;
+    padding: 1rem;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+.hamnoor-wrap .hamnoor-claim-limit-options > :where(h3,p) { margin: 0; }
+
+@media (max-width: 782px) {
+    .hamnoor-wrap .hamnoor-type-picker { grid-template-columns: minmax(0, 1fr); gap: .62rem; }
+    .hamnoor-wrap .hamnoor-type-card-body { min-height: 0; padding: .78rem; }
+    .hamnoor-wrap .hamnoor-type-card-body > small,
+    .hamnoor-wrap .hamnoor-type-card-desc { font-size: .875rem; }
+    .hamnoor-wrap .hamnoor-type-recommended,
+    .hamnoor-wrap .hamnoor-choice-badge,
+    .hamnoor-wrap .hamnoor-advanced-status { font-size: .78rem; }
+    .hamnoor-wrap .hamnoor-reading-advanced > summary { align-items: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hamnoor-wrap .hamnoor-type-card-body { transition: none; }
+}
+
+
+/* UX Phase 3: owner dashboard primary actions + editable confirmation groups */
+.hamnoor-wrap .hamnoor-dashboard-khatm-item > .hamnoor-row-card {
+    align-items: stretch;
+}
+.hamnoor-wrap .hamnoor-owner-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .5rem;
+    align-self: center;
+    min-width: 0;
+    width: 100%;
+}
+.hamnoor-wrap .hamnoor-owner-quick-actions .hamnoor-btn {
+    min-height: 42px;
+    padding-inline: .7rem;
+    white-space: nowrap;
+}
+.hamnoor-wrap .hamnoor-owner-more-actions > summary {
+    list-style: none;
+}
+.hamnoor-wrap .hamnoor-owner-more-actions > summary::after {
+    content: "⋯";
+    margin-inline-start: .35rem;
+    letter-spacing: .12em;
+}
+.hamnoor-wrap .hamnoor-owner-more-actions > summary::-webkit-details-marker { display: none; }
+.hamnoor-wrap .hamnoor-summary-groups {
+    display: grid;
+    gap: .75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+.hamnoor-wrap .hamnoor-summary-group {
+    padding: 1rem;
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+.hamnoor-wrap .hamnoor-summary-group > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .75rem;
+    padding-bottom: .65rem;
+    border-bottom: 1px solid var(--hamnoor-border);
+}
+.hamnoor-wrap .hamnoor-summary-group > header > div {
+    display: grid;
+    gap: .1rem;
+}
+.hamnoor-wrap .hamnoor-summary-group h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+.hamnoor-wrap .hamnoor-summary-step {
+    color: var(--hamnoor-muted);
+    font-size: .8rem;
+    font-weight: 700;
+}
+.hamnoor-wrap .hamnoor-summary-group dl {
+    display: grid;
+    gap: 0;
+    margin: 0;
+}
+.hamnoor-wrap .hamnoor-summary-group dl > div {
+    display: grid;
+    grid-template-columns: minmax(120px, .8fr) minmax(0, 1.6fr);
+    gap: .75rem;
+    padding: .55rem 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--hamnoor-border) 75%, transparent);
+}
+.hamnoor-wrap .hamnoor-summary-group dl > div:last-child { border-bottom: 0; }
+.hamnoor-wrap .hamnoor-summary-group dt {
+    color: var(--hamnoor-muted);
+    font-weight: 700;
+}
+.hamnoor-wrap .hamnoor-summary-group dd {
+    min-width: 0;
+    margin: 0;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+.hamnoor-wrap .hamnoor-summary-group .hamnoor-immutable-reminder {
+    display: block;
+    margin-top: .2rem;
+    color: var(--hamnoor-muted);
+    font-size: .8rem;
+    font-weight: 500;
+}
+@media (max-width: 900px) {
+    .hamnoor-wrap .hamnoor-dashboard-khatm-item > .hamnoor-row-card { display: grid; }
+    .hamnoor-wrap .hamnoor-owner-quick-actions { min-width: 0; width: 100%; }
+    .hamnoor-wrap .hamnoor-owner-more-actions { justify-self: start; }
+}
+@media (max-width: 600px) {
+    .hamnoor-wrap .hamnoor-owner-quick-actions { grid-template-columns: minmax(0, 1fr); }
+    .hamnoor-wrap .hamnoor-owner-quick-actions .hamnoor-btn { width: 100%; }
+    .hamnoor-wrap .hamnoor-summary-group > header { align-items: flex-start; }
+    .hamnoor-wrap .hamnoor-summary-group dl > div { grid-template-columns: minmax(0, 1fr); gap: .2rem; }
+}
+
+/* UX Phase 4: dashboard overflow hardening + publish/discovery controls */
+.hamnoor-wrap .hamnoor-dashboard,
+.hamnoor-wrap .hamnoor-dashboard-panels,
+.hamnoor-wrap .hamnoor-dashboard-panel,
+.hamnoor-wrap .hamnoor-dashboard-list,
+.hamnoor-wrap .hamnoor-dashboard-khatm-item,
+.hamnoor-wrap .hamnoor-dashboard-khatm-item > .hamnoor-row-card,
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-row-card-body {
+    min-width: 0;
+    max-width: 100%;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item > .hamnoor-row-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "body more"
+        "quick quick";
+    gap: .7rem .8rem;
+    overflow: visible;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-row-card-body { grid-area: body; }
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-quick-actions {
+    grid-area: quick;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions {
+    grid-area: more;
+    align-self: start;
+    justify-self: end;
+    min-width: 0;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item :where(strong,small,span,code,a) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-row-card code {
+    width: 100%;
+    max-width: 100%;
+}
+
+.hamnoor-wrap .hamnoor-google-visibility {
+    display: grid;
+    gap: .35rem;
+    padding: .8rem;
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+.hamnoor-wrap .hamnoor-google-visibility.is-private {
+    background: color-mix(in srgb, var(--hamnoor-soft) 72%, #fff);
+    opacity: .88;
+}
+.hamnoor-wrap .hamnoor-google-visibility input:disabled + .hamnoor-choice-text {
+    color: var(--hamnoor-muted);
+}
+.hamnoor-wrap .hamnoor-schedule-field-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: .35rem;
+}
+.hamnoor-wrap .hamnoor-schedule-field-actions .hamnoor-link-button {
+    min-height: 36px;
+    padding: .3rem .6rem;
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 9px;
+    background: var(--hamnoor-surface);
+}
+.hamnoor-wrap .hamnoor-jalali-input {
+    direction: ltr;
+    text-align: left;
+}
+
+.hamnoor-wrap .hamnoor-list-tools {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) auto;
+    gap: .75rem 1rem;
+    align-items: center;
+    margin: 0 0 1rem;
+    padding: .85rem;
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius);
+}
+.hamnoor-wrap .hamnoor-list-search {
+    display: grid;
+    gap: .3rem;
+    min-width: 0;
+}
+.hamnoor-wrap .hamnoor-list-search input {
+    width: 100%;
+    min-width: 0;
+}
+.hamnoor-wrap .hamnoor-list-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    justify-content: flex-end;
+}
+.hamnoor-wrap .hamnoor-list-filter {
+    min-height: 40px;
+    padding: .4rem .72rem;
+    color: var(--hamnoor-primary);
+    background: var(--hamnoor-soft);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 999px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.hamnoor-wrap .hamnoor-list-filter.is-active,
+.hamnoor-wrap .hamnoor-list-filter[aria-pressed="true"] {
+    color: #fff;
+    background: var(--hamnoor-primary);
+    border-color: var(--hamnoor-primary);
+}
+.hamnoor-wrap .hamnoor-list-results-status {
+    grid-column: 1 / -1;
+    margin: -.15rem 0 0;
+    color: var(--hamnoor-muted);
+    font-size: .875rem;
+}
+.hamnoor-wrap [data-hamnoor-khatm-card][hidden] { display: none !important; }
+.hamnoor-wrap .hamnoor-list-no-results {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
+    color: var(--hamnoor-muted);
+    background: var(--hamnoor-soft);
+    border: 1px dashed var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+}
+@media (max-width: 680px) {
+    .hamnoor-wrap .hamnoor-dashboard-khatm-item > .hamnoor-row-card {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "body" "quick" "more";
+    }
+    .hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions { justify-self: start; }
+    .hamnoor-wrap .hamnoor-list-tools { grid-template-columns: minmax(0, 1fr); }
+    .hamnoor-wrap .hamnoor-list-filters { justify-content: stretch; }
+    .hamnoor-wrap .hamnoor-list-filter { flex: 1 1 auto; }
+}
+
+/* Guided owner onboarding */
+
+.hamnoor-wrap .hamnoor-success-panel-guided { display: grid; gap: 1rem; }
+.hamnoor-wrap .hamnoor-success-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+}
+.hamnoor-wrap .hamnoor-success-hero h2,
+.hamnoor-wrap .hamnoor-success-hero p { margin: 0; }
+.hamnoor-wrap .hamnoor-success-hero p { margin-top: .3rem; color: var(--hamnoor-muted); }
+.hamnoor-wrap .hamnoor-success-mark {
+    display: grid;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--hamnoor-success-soft, #ecfdf3);
+    color: var(--hamnoor-success, #157347);
+    font-size: 1.25rem;
+    font-weight: 900;
+}
+.hamnoor-wrap .hamnoor-success-journey,
+.hamnoor-wrap .hamnoor-mini-journey {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.hamnoor-wrap .hamnoor-success-journey li {
+    display: flex;
+    gap: .55rem;
+    min-width: 0;
+    padding: .75rem;
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    background: var(--hamnoor-surface, #fff);
+}
+.hamnoor-wrap .hamnoor-success-journey li > span,
+.hamnoor-wrap .hamnoor-mini-journey li > span {
+    display: grid;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--hamnoor-soft);
+    color: var(--hamnoor-muted);
+    font-weight: 800;
+}
+.hamnoor-wrap .hamnoor-success-journey li > div { display: grid; gap: .15rem; min-width: 0; }
+.hamnoor-wrap .hamnoor-success-journey small { color: var(--hamnoor-muted); line-height: 1.65; }
+.hamnoor-wrap .hamnoor-success-journey li.is-done > span,
+.hamnoor-wrap .hamnoor-mini-journey li.is-done > span { background: var(--hamnoor-success-soft, #ecfdf3); color: var(--hamnoor-success, #157347); }
+.hamnoor-wrap .hamnoor-success-journey li.is-current,
+.hamnoor-wrap .hamnoor-mini-journey li.is-current { border-color: var(--hamnoor-primary); background: var(--hamnoor-soft); }
+.hamnoor-wrap .hamnoor-success-journey li.is-current > span,
+.hamnoor-wrap .hamnoor-mini-journey li.is-current > span { background: var(--hamnoor-primary); color: #fff; }
+.hamnoor-wrap .hamnoor-success-share-box { margin-top: 0; }
+.hamnoor-wrap .hamnoor-success-actions { align-items: center; }
+.hamnoor-wrap .hamnoor-success-actions .hamnoor-link-button { margin-inline-start: auto; }
+
+.hamnoor-wrap .hamnoor-action-empty-state {
+    display: grid;
+    justify-items: start;
+    gap: .6rem;
+    padding: 1.25rem;
+    border: 1px dashed var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius);
+    background: var(--hamnoor-soft);
+}
+.hamnoor-wrap .hamnoor-action-empty-state h3,
+.hamnoor-wrap .hamnoor-action-empty-state p { margin: 0; }
+.hamnoor-wrap .hamnoor-action-empty-state p { max-width: 62ch; color: var(--hamnoor-muted); line-height: 1.9; }
+.hamnoor-wrap .hamnoor-empty-eyebrow {
+    color: var(--hamnoor-primary);
+    font-size: .78rem;
+    font-weight: 800;
+}
+.hamnoor-wrap .hamnoor-empty-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .2rem; }
+
+.hamnoor-wrap .hamnoor-first-participant-guide { display: grid; gap: .75rem; }
+.hamnoor-wrap .hamnoor-first-participant-head {
+    display: flex;
+    justify-content: space-between;
+    gap: .75rem;
+    align-items: flex-start;
+}
+.hamnoor-wrap .hamnoor-first-participant-head p { margin: .25rem 0 0; }
+.hamnoor-wrap .hamnoor-first-participant-badge {
+    flex: 0 0 auto;
+    padding: .2rem .55rem;
+    border-radius: 999px;
+    background: var(--hamnoor-primary);
+    color: #fff;
+    font-size: .76rem;
+    font-weight: 800;
+}
+.hamnoor-wrap .hamnoor-mini-journey li {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    min-width: 0;
+    padding: .45rem .55rem;
+    border: 1px solid var(--hamnoor-border);
+    border-radius: var(--hamnoor-radius-sm);
+    background: var(--hamnoor-surface, #fff);
+    font-size: .82rem;
+    font-weight: 700;
+}
+.hamnoor-wrap .hamnoor-mini-journey li > span { flex-basis: 24px; width: 24px; height: 24px; font-size: .75rem; }
+.hamnoor-wrap .hamnoor-first-participant-actions { margin-top: 0; }
+
+@media (max-width: 782px) {
+    .hamnoor-wrap .hamnoor-success-journey,
+    .hamnoor-wrap .hamnoor-mini-journey { grid-template-columns: minmax(0, 1fr); }
+    .hamnoor-wrap .hamnoor-success-actions .hamnoor-link-button { margin-inline-start: 0; }
+    .hamnoor-wrap .hamnoor-empty-actions { width: 100%; }
+    .hamnoor-wrap .hamnoor-empty-actions .hamnoor-btn { flex: 1 1 100%; }
+    .hamnoor-wrap .hamnoor-first-participant-head { display: grid; }
+    .hamnoor-wrap .hamnoor-first-participant-badge { justify-self: start; }
+}
+
+/* UX Phase 7: every wizard transition lands at the top of its active step. */
+.hamnoor-wrap .hamnoor-wizard-step { scroll-margin-top: 96px; }
+
+/* UX Phase 8: dashboard information architecture — three clear domains. */
+.hamnoor-wrap .hamnoor-dashboard-primary-groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .7rem;
+    margin: 1rem 0 .55rem;
+}
+.hamnoor-wrap .hamnoor-dashboard-group-button {
+    display: grid;
+    gap: .2rem;
+    min-width: 0;
+    min-height: 70px;
+    padding: .8rem .95rem;
+    color: var(--hamnoor-text);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 16px;
+    text-align: start;
+    cursor: pointer;
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.hamnoor-wrap .hamnoor-dashboard-group-button strong {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    min-width: 0;
+    font-size: .98rem;
+}
+.hamnoor-wrap .hamnoor-dashboard-group-button small {
+    color: var(--hamnoor-muted);
+    font-size: .78rem;
+    font-weight: 600;
+    line-height: 1.55;
+}
+.hamnoor-wrap .hamnoor-dashboard-group-button.is-active {
+    color: var(--hamnoor-primary);
+    background: color-mix(in srgb, var(--hamnoor-primary) 7%, var(--hamnoor-surface));
+    border-color: color-mix(in srgb, var(--hamnoor-primary) 45%, var(--hamnoor-border));
+    box-shadow: 0 7px 22px color-mix(in srgb, var(--hamnoor-primary) 10%, transparent);
+}
+.hamnoor-wrap .hamnoor-dashboard-group-button.is-active small { color: color-mix(in srgb, var(--hamnoor-primary) 70%, var(--hamnoor-muted)); }
+.hamnoor-wrap .hamnoor-dashboard-subnav {
+    margin: 0 0 1.15rem;
+    padding: .15rem 0 .35rem;
+    overflow-x: visible;
+    scrollbar-width: none;
+}
+.hamnoor-wrap .hamnoor-dashboard-subnav[hidden] { display: none !important; }
+.hamnoor-wrap .hamnoor-dashboard-subnav button,
+.hamnoor-wrap .hamnoor-dashboard-subnav a {
+    min-height: 38px;
+    padding: .42rem .78rem;
+    font-size: .86rem;
+}
+@media (min-width: 783px) and (max-width: 1040px) {
+    .hamnoor-wrap .hamnoor-dashboard-primary-groups { gap: .5rem; }
+    .hamnoor-wrap .hamnoor-dashboard-group-button { min-height: 64px; padding: .65rem .7rem; }
+    .hamnoor-wrap .hamnoor-dashboard-group-button small { font-size: .72rem; }
+}
+
+/* UX Phase 9: compact dashboard rail + quiet owner campaign cards. */
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-desktop-brand-panel {
+        grid-row: 1 / span 2;
+        position: sticky;
+        top: 1rem;
+        align-self: start;
+        max-height: calc(100vh - 2rem);
+        overflow: auto;
+        gap: .6rem;
+        padding: .7rem;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        box-shadow: 0 8px 28px rgba(15,23,42,.05);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand {
+        padding: .65rem .7rem;
+        color: #fff;
+        background: var(--hamnoor-primary);
+        border-radius: 14px;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand:hover { color: #fff; }
+    .hamnoor-wrap .hamnoor-desktop-create-shortcut {
+        color: var(--hamnoor-primary);
+        background: color-mix(in srgb, var(--hamnoor-primary) 7%, #fff);
+        border: 1px solid color-mix(in srgb, var(--hamnoor-primary) 18%, var(--hamnoor-border));
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-primary-groups {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: .22rem;
+        margin: .2rem 0 0;
+        padding: .25rem 0;
+        border-top: 1px solid var(--hamnoor-border);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button {
+        min-height: 0;
+        padding: .58rem .65rem;
+        gap: .05rem;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 11px;
+        box-shadow: none;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button strong { font-size: .9rem; }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button small {
+        font-size: .7rem;
+        line-height: 1.45;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button.is-active {
+        color: var(--hamnoor-primary);
+        background: color-mix(in srgb, var(--hamnoor-primary) 7%, var(--hamnoor-surface));
+        border-color: color-mix(in srgb, var(--hamnoor-primary) 20%, var(--hamnoor-border));
+        box-shadow: none;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-context-nav {
+        padding-top: .45rem;
+        border-top: 1px solid var(--hamnoor-border);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs {
+        position: static;
+        display: grid;
+        grid-column: auto;
+        grid-row: auto;
+        gap: .18rem;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs button,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs a {
+        min-height: 36px;
+        padding: .42rem .62rem;
+        font-size: .79rem;
+        border-radius: 9px;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs button::before,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs a::before {
+        width: 5px;
+        height: 5px;
+        flex-basis: 5px;
+        margin-inline-end: .45rem;
+    }
+}
+
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-khatms"] .hamnoor-dashboard-list {
+    gap: .75rem;
+}
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-khatms"] .hamnoor-dashboard-khatm-item {
+    display: block;
+}
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-khatms"] .hamnoor-dashboard-khatm-item > .hamnoor-row-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "body" "quick" "more";
+    gap: .72rem;
+    padding: .85rem;
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    border-radius: 15px;
+    box-shadow: none;
+}
+.hamnoor-wrap .hamnoor-owner-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: .65rem;
+}
+.hamnoor-wrap .hamnoor-owner-card-head > strong {
+    min-width: 0;
+    font-size: .96rem;
+    line-height: 1.65;
+}
+.hamnoor-wrap .hamnoor-owner-card-head > strong a {
+    color: var(--hamnoor-text);
+    text-decoration: none;
+}
+.hamnoor-wrap .hamnoor-owner-card-head > strong a:hover { color: var(--hamnoor-primary); }
+
+/* Participation IA and campaign discovery */
+.hamnoor-wrap .hamnoor-unified-share-filters{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 1rem;padding:.3rem;background:var(--hamnoor-soft);border-radius:14px}
+.hamnoor-wrap .hamnoor-unified-share-filters button{min-height:40px;padding:.45rem .9rem;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--hamnoor-text);font:inherit;font-weight:750;cursor:pointer}
+.hamnoor-wrap .hamnoor-unified-share-filters button.is-active{color:#fff;background:var(--hamnoor-primary);border-color:var(--hamnoor-primary)}
+.hamnoor-wrap .hamnoor-unified-share-filters button:focus-visible{outline:3px solid var(--hamnoor-focus);outline-offset:2px}
+.hamnoor-wrap .hamnoor-contribution-history-list{display:grid;gap:.75rem}
+.hamnoor-wrap .hamnoor-contribution-history-card{display:grid;gap:.65rem;padding:1rem;border:1px solid var(--hamnoor-border);border-radius:14px;background:var(--hamnoor-surface)}
+.hamnoor-wrap .hamnoor-contribution-history-card-head,.hamnoor-wrap .hamnoor-contribution-history-meta{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.hamnoor-wrap .hamnoor-contribution-history-type,.hamnoor-wrap .hamnoor-content-type-label{display:inline-flex;padding:.2rem .55rem;border:1px solid var(--hamnoor-primary-border);border-radius:999px;background:var(--hamnoor-primary-tint);color:var(--hamnoor-primary);font-size:.78rem;font-weight:850}
+.hamnoor-wrap .hamnoor-contribution-history-status,.hamnoor-wrap .hamnoor-khatm-purpose{color:var(--hamnoor-muted)}
+.hamnoor-wrap .hamnoor-khatm-purpose{margin:.2rem 0 .65rem;font-size:.86rem}
+.hamnoor-wrap .hamnoor-khatm-card .hamnoor-card-meta{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.hamnoor-wrap .hamnoor-khatm-card .hamnoor-card-meta strong{color:var(--hamnoor-primary)}
+.hamnoor-modal [data-hamnoor-personal-quota]{display:grid;gap:.65rem}
+.hamnoor-modal .hamnoor-quota-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+.hamnoor-modal .hamnoor-quota-item{display:grid;gap:.2rem;padding:.7rem;border:1px solid var(--hamnoor-border);border-radius:12px;background:var(--hamnoor-surface)}
+.hamnoor-modal .hamnoor-quota-item small{color:var(--hamnoor-muted)}
+.hamnoor-modal .hamnoor-quota-available{padding:.65rem .75rem;border-radius:10px;background:var(--hamnoor-primary-tint);color:var(--hamnoor-primary);font-weight:800}
+.hamnoor-modal .hamnoor-quota-available.is-blocked{background:#fef2f2;color:var(--hamnoor-danger)}
+.hamnoor-modal .hamnoor-claim-later{min-height:44px}
+
+/* Desktop claim-success secondary actions align with the full-width reading CTA. */
+@media (min-width: 783px) {
+    .hamnoor-modal .hamnoor-claim-success-actions .hamnoor-claim-later,
+    .hamnoor-wrap .hamnoor-claim-success-actions .hamnoor-claim-later,
+    .hamnoor-modal .hamnoor-claim-reminder-cta > .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-claim-reminder-cta > .hamnoor-btn {
+        width: 100%;
+        flex: 1 1 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+@media(max-width:720px){.hamnoor-wrap .hamnoor-action-buttons--claim{display:grid;grid-template-columns:1fr;width:100%}.hamnoor-wrap .hamnoor-action-buttons--claim>.hamnoor-claim-primary{width:100%;min-height:48px}.hamnoor-wrap .hamnoor-action-buttons--claim>.hamnoor-claim-more{width:100%;text-align:center}.hamnoor-wrap .hamnoor-action-buttons--claim>.hamnoor-claim-more>summary{min-height:44px;display:flex;align-items:center;justify-content:center}.hamnoor-modal .hamnoor-quota-grid{grid-template-columns:1fr}.hamnoor-modal .hamnoor-success-actions .hamnoor-btn{width:100%;min-height:46px}}
+.hamnoor-wrap .hamnoor-owner-card-head .hamnoor-status {
+    flex: 0 0 auto;
+    padding: .18rem .5rem;
+    font-size: .72rem;
+    box-shadow: none;
+}
+.hamnoor-wrap .hamnoor-owner-progress { display: grid; gap: .32rem; }
+.hamnoor-wrap .hamnoor-owner-progress-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    color: var(--hamnoor-muted);
+    font-size: .78rem;
+}
+.hamnoor-wrap .hamnoor-owner-progress-meta b { color: var(--hamnoor-text); font-size: .78rem; }
+.hamnoor-wrap .hamnoor-owner-progress-track {
+    height: 6px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--hamnoor-border) 72%, transparent);
+    border-radius: 999px;
+}
+.hamnoor-wrap .hamnoor-owner-progress-track > span {
+    display: block;
+    height: 100%;
+    background: var(--hamnoor-primary);
+    border-radius: inherit;
+}
+.hamnoor-wrap .hamnoor-owner-next-hint {
+    color: var(--hamnoor-muted);
+    font-size: .76rem;
+    line-height: 1.7;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-quick-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .38rem;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-quick-actions .hamnoor-btn {
+    min-height: 38px;
+    padding: .4rem .5rem;
+    color: var(--hamnoor-primary);
+    background: var(--hamnoor-surface);
+    border: 1px solid var(--hamnoor-border);
+    box-shadow: none;
+    font-size: .78rem;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-quick-actions .hamnoor-owner-copy-link {
+    background: color-mix(in srgb, var(--hamnoor-primary) 7%, var(--hamnoor-surface));
+    border-color: color-mix(in srgb, var(--hamnoor-primary) 22%, var(--hamnoor-border));
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions {
+    grid-area: more;
+    width: 100%;
+    justify-self: stretch;
+    padding-top: .15rem;
+    border-top: 1px solid color-mix(in srgb, var(--hamnoor-border) 75%, transparent);
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions > summary {
+    width: 100%;
+    min-height: 34px;
+    padding: .35rem 0;
+    color: var(--hamnoor-muted);
+    background: transparent;
+    border: 0;
+    font-size: .78rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions[open] > summary {
+    color: var(--hamnoor-primary);
+    margin-bottom: .55rem;
+}
+.hamnoor-wrap .hamnoor-owner-secondary-divider {
+    height: 1px;
+    margin: .55rem 0;
+    background: var(--hamnoor-border);
+}
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions .hamnoor-notice,
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions .hamnoor-feature-request,
+.hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-more-actions .hamnoor-completion-summary {
+    margin-top: .55rem;
+}
+@media (max-width: 600px) {
+    .hamnoor-wrap .hamnoor-dashboard-khatm-item .hamnoor-owner-quick-actions { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Personal Quran is a private reading journey, not a group campaign card. */
+.hamnoor-wrap .hamnoor-personal-quran-card {
+    min-width: 0;
+    border: 1px solid color-mix(in srgb, var(--hamnoor-primary) 18%, var(--hamnoor-border));
+    background: linear-gradient(145deg, color-mix(in srgb, var(--hamnoor-soft) 76%, #fff), var(--hamnoor-surface));
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(15,23,42,.05);
+}
+.hamnoor-wrap .hamnoor-personal-quran-kicker {
+    display: inline-flex;
+    width: fit-content;
+    padding: .24rem .58rem;
+    color: var(--hamnoor-primary);
+    background: color-mix(in srgb, var(--hamnoor-primary) 9%, #fff);
+    border: 1px solid color-mix(in srgb, var(--hamnoor-primary) 16%, var(--hamnoor-border));
+    border-radius: 999px;
+    font-size: .75rem;
+    font-weight: 900;
+}
+.hamnoor-wrap .hamnoor-personal-quran-progress {
+    height: 8px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--hamnoor-primary) 10%, #fff);
+    border-radius: 999px;
+}
+.hamnoor-wrap .hamnoor-personal-quran-progress > span {
+    display: block;
+    height: 100%;
+    background: var(--hamnoor-primary);
+    border-radius: inherit;
+}
+.hamnoor-wrap .hamnoor-personal-quran-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    color: var(--hamnoor-muted);
+    font-size: .78rem;
+}
+.hamnoor-wrap .hamnoor-personal-quran-meta strong { color: var(--hamnoor-primary); font-size: .95rem; }
+.hamnoor-wrap .hamnoor-personal-quran-start-form { margin: 0; min-width: 0; }
+.hamnoor-wrap .hamnoor-personal-quran-start-form button { width: 100%; font: inherit; cursor: pointer; }
+.hamnoor-wrap .hamnoor-personal-quran-card-actions details { position: relative; }
+.hamnoor-wrap .hamnoor-personal-quran-card-actions summary { color: var(--hamnoor-muted); font-size: .78rem; font-weight: 800; cursor: pointer; }
+.hamnoor-wrap .hamnoor-personal-quran-card-actions details > div { display: grid; gap: .35rem; margin-top: .45rem; }
+.hamnoor-wrap .hamnoor-personal-quran-card-actions form { margin: 0; }
+.hamnoor-wrap .hamnoor-personal-quran-card-actions form button {
+    width: 100%; min-height: 34px; padding: .35rem .55rem; color: var(--hamnoor-text);
+    background: var(--hamnoor-surface); border: 1px solid var(--hamnoor-border); border-radius: 9px;
+    font: inherit; font-size: .74rem; font-weight: 800; cursor: pointer;
+}
+.hamnoor-wrap .hamnoor-personal-quran-card-actions form button.is-danger { color: #b42318; }
+
+/* Foundation 3.5 — Personal Quran reminder preferences */
+.hamnoor-wrap .hamnoor-personal-reminder-badge{display:inline-flex;align-items:center;gap:.35rem;width:max-content;max-width:100%;padding:.3rem .58rem;border-radius:999px;background:rgba(31,99,195,.08);color:#174c8f;font-size:.78rem;font-weight:800}
+.hamnoor-wrap .hamnoor-personal-reminder-settings{display:grid;gap:1rem;border:1px solid rgba(31,99,195,.18);background:linear-gradient(180deg,#fff,#f8fbff)}
+.hamnoor-wrap .hamnoor-personal-reminder-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+.hamnoor-wrap .hamnoor-personal-reminder-head>div{display:flex;align-items:flex-start;gap:.75rem;min-width:0}
+.hamnoor-wrap .hamnoor-personal-reminder-head h3{margin:0 0 .28rem;font-size:1.05rem}
+.hamnoor-wrap .hamnoor-personal-reminder-head p{margin:0;color:var(--hamnoor-muted);line-height:1.8;font-size:.88rem}
+.hamnoor-wrap .hamnoor-personal-reminder-icon{display:grid;place-items:center;width:2.45rem;height:2.45rem;border-radius:.8rem;background:rgba(31,99,195,.1);font-size:1.1rem;flex:0 0 auto}
+.hamnoor-wrap .hamnoor-personal-reminder-form{display:grid;gap:1rem;margin:0}
+.hamnoor-wrap .hamnoor-personal-reminder-switch{display:flex;align-items:flex-start;gap:.7rem;padding:.8rem;border:1px solid rgba(15,55,100,.12);border-radius:.8rem;background:#fff;cursor:pointer}
+.hamnoor-wrap .hamnoor-personal-reminder-switch input{margin:.2rem 0 0;width:1.1rem;height:1.1rem;flex:0 0 auto}
+.hamnoor-wrap .hamnoor-personal-reminder-switch span{display:grid;gap:.2rem}
+.hamnoor-wrap .hamnoor-personal-reminder-switch small{color:var(--hamnoor-muted);line-height:1.7}
+.hamnoor-wrap .hamnoor-personal-reminder-grid{display:grid;grid-template-columns:minmax(180px,.42fr) minmax(0,1fr);gap:1rem;align-items:start}
+.hamnoor-wrap .hamnoor-personal-reminder-grid>label,.hamnoor-wrap .hamnoor-personal-reminder-days{display:grid;gap:.45rem}
+.hamnoor-wrap .hamnoor-personal-reminder-grid>label>span,.hamnoor-wrap .hamnoor-personal-reminder-days>span{font-size:.83rem;font-weight:800;color:#334155}
+.hamnoor-wrap .hamnoor-personal-reminder-grid input[type="time"]{min-height:2.8rem;border:1px solid rgba(15,55,100,.18);border-radius:.7rem;background:#fff;padding:.5rem .7rem;font:inherit}
+.hamnoor-wrap .hamnoor-personal-reminder-days>div{display:flex;flex-wrap:wrap;gap:.42rem}
+.hamnoor-wrap .hamnoor-personal-reminder-days label{position:relative;cursor:pointer}
+.hamnoor-wrap .hamnoor-personal-reminder-days input{position:absolute;opacity:0;pointer-events:none}
+.hamnoor-wrap .hamnoor-personal-reminder-days label span{display:inline-flex;align-items:center;justify-content:center;min-height:2.35rem;padding:.38rem .7rem;border:1px solid rgba(15,55,100,.14);border-radius:999px;background:#fff;color:#475569;font-size:.8rem;font-weight:700;transition:.16s ease}
+.hamnoor-wrap .hamnoor-personal-reminder-days input:checked+span{border-color:rgba(31,99,195,.45);background:rgba(31,99,195,.09);color:#174c8f}
+.hamnoor-wrap .hamnoor-personal-reminder-days input:focus-visible+span{outline:2px solid #1f63c3;outline-offset:2px}
+.hamnoor-wrap .hamnoor-personal-reminder-next,.hamnoor-wrap .hamnoor-personal-reminder-snoozed{margin:0;padding:.65rem .8rem;border-radius:.7rem;background:rgba(31,99,195,.07);color:#174c8f;font-size:.83rem;font-weight:700;line-height:1.7}
+.hamnoor-wrap .hamnoor-personal-reminder-snoozed{background:#fff7e6;color:#8a5a00}
+.hamnoor-wrap .hamnoor-personal-reminder-snooze{display:flex;align-items:center;gap:.42rem;flex-wrap:wrap;margin:0;padding-top:.2rem}
+.hamnoor-wrap .hamnoor-personal-reminder-snooze>span{font-size:.82rem;color:var(--hamnoor-muted);font-weight:700;margin-inline-end:.15rem}
+.hamnoor-wrap .hamnoor-personal-reminder-snooze button{border:1px solid rgba(15,55,100,.14);border-radius:999px;background:#fff;color:#174c8f;padding:.4rem .7rem;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
+.hamnoor-wrap .hamnoor-personal-reminder-snooze button:hover{background:rgba(31,99,195,.07)}
+.hamnoor-wrap .hamnoor-personal-reminder-form.is-disabled .hamnoor-personal-reminder-grid{opacity:.55}
+.hamnoor-wrap .hamnoor-personal-reminder-form.is-disabled .hamnoor-personal-reminder-grid input{pointer-events:none}
+.hamnoor-wrap .hamnoor-personal-reminder-empty{display:grid;gap:.4rem}
+.hamnoor-wrap .hamnoor-personal-reminder-empty h3,.hamnoor-wrap .hamnoor-personal-reminder-empty p{margin:0}
+.hamnoor-wrap .hamnoor-personal-reminder-empty p{color:var(--hamnoor-muted);line-height:1.8}
+@media(max-width:700px){
+  .hamnoor-wrap .hamnoor-personal-reminder-head{display:grid;gap:.65rem}
+  .hamnoor-wrap .hamnoor-personal-reminder-grid{grid-template-columns:1fr}
+  .hamnoor-wrap .hamnoor-personal-reminder-days>div{gap:.35rem}
+  .hamnoor-wrap .hamnoor-personal-reminder-days label span{padding:.36rem .6rem}
+  .hamnoor-wrap .hamnoor-personal-reminder-form>.hamnoor-btn{width:100%}
 }

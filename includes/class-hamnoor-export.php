@@ -3,10 +3,10 @@ if (!defined('ABSPATH')) { exit; }
 
 class Hamnoor_Export {
     public static function headers($include_contacts = true) {
-        $headers = array('شماره سهم', 'شماره ختم/دوره', 'عنوان سهم', 'وضعیت فارسی', 'نام شرکت‌کننده');
-        if ($include_contacts) { $headers[] = 'موبایل'; $headers[] = 'ایمیل'; }
-        $headers = array_merge($headers, array('لینک قرآن', 'زمان رزرو', 'زمان ثبت قرائت'));
-        return apply_filters('hamnoor_export_columns', $headers, $include_contacts, get_current_user_id());
+        $headers = array('شماره سهم', 'شماره پویش/دوره', 'عنوان سهم', 'وضعیت فارسی', 'نام شرکت‌کننده');
+        if ($include_contacts) { $headers[] = 'موبایل'; }
+        $headers = array_merge($headers, array('زمان رزرو', 'زمان ثبت قرائت'));
+        return apply_filters('hamnoor_export_columns', $headers, $include_contacts, Hamnoor_Mobile_Access::current_user_id());
     }
 
     public static function row_for_part($part, $include_contacts = true) {
@@ -19,13 +19,11 @@ class Hamnoor_Export {
         );
         if ($include_contacts) {
             $row[] = isset($part->participant_phone) ? $part->participant_phone : '';
-            $row[] = isset($part->participant_email) ? $part->participant_email : '';
         }
-        $row[] = isset($part->quran_url) ? $part->quran_url : '';
         $row[] = Hamnoor_Jalali::to_jalali(isset($part->claimed_at) ? $part->claimed_at : '', true);
         $row[] = Hamnoor_Jalali::to_jalali(isset($part->done_at) ? $part->done_at : '', true);
-        $row = apply_filters('hamnoor_participant_export_row', $row, $part, $include_contacts, get_current_user_id());
-        return apply_filters('hamnoor_export_rows', $row, $part, $include_contacts, get_current_user_id());
+        $row = apply_filters('hamnoor_participant_export_row', $row, $part, $include_contacts, Hamnoor_Mobile_Access::current_user_id());
+        return apply_filters('hamnoor_export_rows', $row, $part, $include_contacts, Hamnoor_Mobile_Access::current_user_id());
     }
 
     public static function rows_for_khatm($khatm_id, $include_contacts = true) {
@@ -36,8 +34,8 @@ class Hamnoor_Export {
             foreach ($parts as $part) { $rows[] = self::row_for_part($part, $include_contacts); }
             $offset += $limit;
         } while (count($parts) === $limit);
-        $rows = apply_filters('hamnoor_participant_export_fields', $rows, $khatm_id, get_current_user_id());
-        return apply_filters('hamnoor_report_data', $rows, $khatm_id, get_current_user_id());
+        $rows = apply_filters('hamnoor_participant_export_fields', $rows, $khatm_id, Hamnoor_Mobile_Access::current_user_id());
+        return apply_filters('hamnoor_report_data', $rows, $khatm_id, Hamnoor_Mobile_Access::current_user_id());
     }
 
     public static function status_label($status) { return Hamnoor_Helpers::status_label($status, 'part'); }
@@ -49,19 +47,19 @@ class Hamnoor_Export {
     }
 
     public static function can_export($khatm_id, $user_id) {
-        if ($user_id && user_can((int)$user_id, 'manage_options')) { return true; }
+        if (current_user_can('manage_options') || current_user_can('hamnoor_manage_all_khatms')) { return true; }
         if (!Hamnoor_DB::user_can_manage_khatm($khatm_id, $user_id)) { return false; }
         return 'disabled' !== self::owner_export_mode();
     }
 
     public static function can_include_contacts($khatm_id, $user_id) {
-        if ($user_id && user_can((int)$user_id, 'manage_options')) { return true; }
-        return 'full' === self::owner_export_mode() && Hamnoor_DB::user_can_manage_khatm($khatm_id, $user_id);
+        if (current_user_can('manage_options') || current_user_can('hamnoor_manage_all_khatms')) { return true; }
+        return 'full' === self::owner_export_mode() && Hamnoor_DB::user_can_manage_khatm($khatm_id, $user_id) && Hamnoor_Mobile_Access::has_sensitive_access((int)$user_id);
     }
 
     public static function download_csv($khatm_id) {
-        $khatm = Hamnoor_DB::get_khatm((int)$khatm_id); if (!$khatm) { wp_die(esc_html__('ختم پیدا نشد.', 'hamnoor')); }
-        $user_id = get_current_user_id(); $include_contacts = self::can_include_contacts($khatm_id, $user_id);
+        $khatm = Hamnoor_DB::get_khatm((int)$khatm_id); if (!$khatm) { wp_die(esc_html__('پویش پیدا نشد.', 'hamnoor')); }
+        $user_id = Hamnoor_Mobile_Access::current_user_id(); $include_contacts = self::can_include_contacts($khatm_id, $user_id);
         Hamnoor_DB::log((int)$khatm_id, 0, 0, $user_id, 'export_csv', __('خروجی CSV دریافت شد.', 'hamnoor'));
         do_action('hamnoor_export_downloaded', (int)$khatm_id, (int)$user_id, 'csv');
         self::clean_output_buffers();
@@ -83,8 +81,8 @@ class Hamnoor_Export {
 
     public static function download_xlsx($khatm_id) {
         if (!class_exists('ZipArchive')) { self::download_csv($khatm_id); }
-        $khatm = Hamnoor_DB::get_khatm((int)$khatm_id); if (!$khatm) { wp_die(esc_html__('ختم پیدا نشد.', 'hamnoor')); }
-        $user_id = get_current_user_id(); $include_contacts = self::can_include_contacts($khatm_id, $user_id);
+        $khatm = Hamnoor_DB::get_khatm((int)$khatm_id); if (!$khatm) { wp_die(esc_html__('پویش پیدا نشد.', 'hamnoor')); }
+        $user_id = Hamnoor_Mobile_Access::current_user_id(); $include_contacts = self::can_include_contacts($khatm_id, $user_id);
         Hamnoor_DB::log((int)$khatm_id, 0, 0, $user_id, 'export_xlsx', __('خروجی Excel دریافت شد.', 'hamnoor'));
         do_action('hamnoor_export_downloaded', (int)$khatm_id, (int)$user_id, 'xlsx');
 

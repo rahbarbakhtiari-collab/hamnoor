@@ -1,0 +1,1339 @@
+/*
+ * Hamnoor Desktop UI — 3.9.52 / Phase 1
+ * Loaded only for (min-width: 783px). Mobile and reading layers are untouched.
+ */
+
+@media (min-width: 783px) {
+    .hamnoor-wrap:has(.hamnoor-dashboard),
+    .hamnoor-wrap:has(.hamnoor-create-template),
+    .hamnoor-wrap:has(.hamnoor-khatm-grid) {
+        --hamnoor-max: 1320px;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-ui { display: initial; }
+
+    /* Shared desktop page header for non-dashboard screens. */
+    .hamnoor-wrap .hamnoor-desktop-page-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.25rem;
+        margin: 0 0 1.35rem;
+        padding: .9rem 1rem;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 20px;
+        box-shadow: 0 8px 28px rgba(15,23,42,.055);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        min-width: 0;
+        color: var(--hamnoor-text);
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand:hover { text-decoration: none; }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand > span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 82px;
+        min-width: 82px;
+        height: 38px;
+        padding: 5px 8px;
+        background: var(--hamnoor-primary);
+        border-radius: 11px;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand img {
+        display: block;
+        width: auto;
+        max-width: 68px;
+        height: auto;
+        max-height: 23px;
+        object-fit: contain;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand div {
+        display: grid;
+        gap: .1rem;
+        min-width: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand strong {
+        font-size: 1.02rem;
+        font-weight: 900;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand small {
+        color: var(--hamnoor-muted);
+        font-size: .78rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-actions {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: .55rem .85rem;
+        color: var(--hamnoor-primary);
+        background: var(--hamnoor-soft);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 12px;
+        font-size: .86rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-actions a.is-primary {
+        color: #fff;
+        background: var(--hamnoor-primary);
+        border-color: var(--hamnoor-primary);
+    }
+
+    /* Dashboard becomes a true desktop app shell. */
+    .hamnoor-wrap .hamnoor-dashboard {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 268px;
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: 1rem 1.15rem;
+        align-items: start;
+        min-width: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand-panel {
+        grid-column: 2;
+        grid-row: 1;
+        display: grid;
+        gap: .8rem;
+        padding: 1rem;
+        background: linear-gradient(150deg, var(--hamnoor-primary), color-mix(in srgb, var(--hamnoor-primary) 82%, #000));
+        border: 1px solid color-mix(in srgb, var(--hamnoor-primary) 72%, #fff);
+        border-radius: 22px;
+        box-shadow: 0 14px 34px color-mix(in srgb, var(--hamnoor-primary) 18%, transparent);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand:hover { color: #fff; text-decoration: none; }
+
+    .hamnoor-wrap .hamnoor-desktop-brand-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 78px;
+        min-width: 78px;
+        height: 38px;
+        padding: 5px 7px;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.18);
+        border-radius: 11px;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand-mark img {
+        display: block;
+        width: auto;
+        max-width: 65px;
+        height: auto;
+        max-height: 22px;
+        object-fit: contain;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand > span:last-child {
+        display: grid;
+        gap: .08rem;
+        min-width: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand strong {
+        font-size: 1.03rem;
+        font-weight: 900;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand small {
+        color: rgba(255,255,255,.72);
+        font-size: .72rem;
+        white-space: nowrap;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-create-shortcut {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .45rem;
+        min-height: 43px;
+        padding: .55rem .7rem;
+        color: var(--hamnoor-primary);
+        background: #fff;
+        border-radius: 13px;
+        font-size: .85rem;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-create-shortcut:hover { text-decoration: none; }
+    .hamnoor-wrap .hamnoor-desktop-create-shortcut span { font-size: 1.25rem; line-height: 1; }
+
+    .hamnoor-wrap .hamnoor-dashboard-head {
+        grid-column: 1;
+        grid-row: 1;
+        min-height: 116px;
+        margin: 0;
+        padding: 1.25rem 1.35rem;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 22px;
+        box-shadow: 0 8px 28px rgba(15,23,42,.05);
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-head h2 {
+        margin: 0 0 .25rem;
+        font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+        font-weight: 950;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-head p {
+        color: var(--hamnoor-muted);
+        font-size: .88rem;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-actions {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        width: auto;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-actions .hamnoor-btn {
+        width: auto;
+        min-height: 43px;
+        padding-inline: 1rem;
+        border-radius: 12px;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs {
+        grid-column: 2;
+        grid-row: 2;
+        position: sticky;
+        top: 1rem;
+        display: grid;
+        gap: .35rem;
+        margin: 0;
+        padding: .65rem;
+        overflow: visible;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 20px;
+        box-shadow: 0 8px 28px rgba(15,23,42,.05);
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs button,
+    .hamnoor-wrap .hamnoor-dashboard-tabs a {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        min-height: 45px;
+        padding: .62rem .82rem;
+        color: var(--hamnoor-muted);
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        font-size: .84rem;
+        font-weight: 800;
+        text-align: right;
+        transition: background .16s ease, color .16s ease, transform .16s ease;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs button::before,
+    .hamnoor-wrap .hamnoor-dashboard-tabs a::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        margin-inline-end: .65rem;
+        background: color-mix(in srgb, var(--hamnoor-muted) 46%, transparent);
+        border-radius: 999px;
+        flex: 0 0 7px;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs button:hover,
+    .hamnoor-wrap .hamnoor-dashboard-tabs a:hover {
+        color: var(--hamnoor-primary);
+        background: var(--hamnoor-soft);
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs button.is-active,
+    .hamnoor-wrap .hamnoor-dashboard-tabs a.is-active {
+        color: var(--hamnoor-primary);
+        background: color-mix(in srgb, var(--hamnoor-primary) 9%, #fff);
+        border-color: color-mix(in srgb, var(--hamnoor-primary) 18%, var(--hamnoor-border));
+        box-shadow: inset -3px 0 0 var(--hamnoor-primary);
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs button.is-active::before,
+    .hamnoor-wrap .hamnoor-dashboard-tabs a.is-active::before {
+        background: var(--hamnoor-primary);
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-panels {
+        grid-column: 1;
+        grid-row: 2;
+        min-width: 0;
+        gap: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-panel {
+        min-width: 0;
+        padding: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-panel > h3 {
+        margin: 0 0 .85rem;
+        font-size: 1.12rem;
+        font-weight: 900;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-summary {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-summary-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.55fr) minmax(330px, .9fr);
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-card {
+        display: grid;
+        gap: .7rem;
+        min-height: 260px;
+        padding: 1.4rem;
+        color: #fff;
+        background: linear-gradient(145deg, var(--hamnoor-primary), color-mix(in srgb, var(--hamnoor-primary) 72%, #050b18));
+        border: 1px solid color-mix(in srgb, var(--hamnoor-primary) 65%, #fff);
+        border-radius: 24px;
+        box-shadow: 0 18px 46px color-mix(in srgb, var(--hamnoor-primary) 20%, transparent);
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap a.hamnoor-desktop-focus-card:hover {
+        color: #fff;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-card.is-empty {
+        color: var(--hamnoor-text);
+        background: var(--hamnoor-surface);
+        border-color: var(--hamnoor-border);
+        box-shadow: 0 8px 28px rgba(15,23,42,.05);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-kicker {
+        width: fit-content;
+        padding: .28rem .62rem;
+        color: inherit;
+        background: rgba(255,255,255,.13);
+        border: 1px solid rgba(255,255,255,.17);
+        border-radius: 999px;
+        font-size: .74rem;
+        font-weight: 900;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-card.is-empty .hamnoor-desktop-focus-kicker {
+        color: var(--hamnoor-primary);
+        background: var(--hamnoor-soft);
+        border-color: var(--hamnoor-border);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-copy {
+        display: grid;
+        align-content: center;
+        gap: .18rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-copy small { color: rgba(255,255,255,.68); font-size: .78rem; }
+    .hamnoor-wrap .hamnoor-desktop-focus-card.is-empty .hamnoor-desktop-focus-copy small { color: var(--hamnoor-muted); }
+    .hamnoor-wrap .hamnoor-desktop-focus-copy strong { font-size: clamp(1.35rem,2vw,1.75rem); line-height: 1.55; }
+    .hamnoor-wrap .hamnoor-desktop-focus-copy span { color: rgba(255,255,255,.78); font-size: .86rem; }
+    .hamnoor-wrap .hamnoor-desktop-focus-card.is-empty .hamnoor-desktop-focus-copy span { color: var(--hamnoor-muted); }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-progress {
+        align-self: end;
+        height: 8px;
+        overflow: hidden;
+        background: rgba(255,255,255,.2);
+        border-radius: 999px;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-progress span {
+        display: block;
+        height: 100%;
+        background: #fff;
+        border-radius: inherit;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-size: .82rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-foot span { font-weight: 900; }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-empty-actions {
+        display: flex;
+        gap: .55rem;
+        align-self: end;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-focus-empty-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: .5rem .8rem;
+        color: var(--hamnoor-primary);
+        background: var(--hamnoor-soft);
+        border-radius: 11px;
+        font-size: .8rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-stat-stack {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap: .75rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-stat-card {
+        display: grid;
+        align-content: center;
+        gap: .1rem;
+        min-width: 0;
+        min-height: 122px;
+        padding: 1rem;
+        color: var(--hamnoor-text);
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 18px;
+        box-shadow: 0 7px 22px rgba(15,23,42,.045);
+        text-align: right;
+        cursor: pointer;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-stat-card:hover {
+        border-color: color-mix(in srgb, var(--hamnoor-primary) 26%, var(--hamnoor-border));
+        transform: translateY(-1px);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-stat-card span { color: var(--hamnoor-muted); font-size: .76rem; font-weight: 700; }
+    .hamnoor-wrap .hamnoor-desktop-stat-card strong { color: var(--hamnoor-primary); font-size: 1.8rem; line-height: 1.15; }
+    .hamnoor-wrap .hamnoor-desktop-stat-card small { color: var(--hamnoor-muted); font-size: .7rem; }
+
+    .hamnoor-wrap .hamnoor-desktop-summary-bottom {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(300px, .75fr);
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-summary-bottom > .hamnoor-card {
+        margin: 0;
+        padding: 1.15rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 28px rgba(15,23,42,.045);
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: .8rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-card-head h3,
+    .hamnoor-wrap .hamnoor-desktop-card-head p { margin: 0; }
+    .hamnoor-wrap .hamnoor-desktop-card-head h3 { font-size: .98rem; }
+    .hamnoor-wrap .hamnoor-desktop-card-head p { margin-top: .12rem; color: var(--hamnoor-muted); font-size: .72rem; }
+
+    .hamnoor-wrap .hamnoor-desktop-card-head > button {
+        min-height: 36px;
+        padding: .4rem .65rem;
+        color: var(--hamnoor-primary);
+        background: var(--hamnoor-soft);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 10px;
+        font-size: .74rem;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-pending-list {
+        display: grid;
+        gap: .5rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-pending-list > a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .8rem;
+        min-height: 58px;
+        padding: .65rem .75rem;
+        color: var(--hamnoor-text);
+        background: color-mix(in srgb, var(--hamnoor-soft) 72%, #fff);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 13px;
+        text-decoration: none;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-pending-list > a:hover { border-color: color-mix(in srgb,var(--hamnoor-primary) 24%,var(--hamnoor-border)); text-decoration: none; }
+    .hamnoor-wrap .hamnoor-desktop-pending-list div { display: grid; gap: .08rem; min-width: 0; }
+    .hamnoor-wrap .hamnoor-desktop-pending-list strong { overflow: hidden; font-size: .84rem; text-overflow: ellipsis; white-space: nowrap; }
+    .hamnoor-wrap .hamnoor-desktop-pending-list small { overflow: hidden; color: var(--hamnoor-muted); font-size: .7rem; text-overflow: ellipsis; white-space: nowrap; }
+    .hamnoor-wrap .hamnoor-desktop-pending-list > a > span { flex: 0 0 auto; min-width: 48px; padding: .2rem .45rem; color: var(--hamnoor-primary); background: #fff; border-radius: 999px; font-size: .72rem; font-weight: 900; text-align: center; }
+    .hamnoor-wrap .hamnoor-desktop-empty-note { margin: .75rem 0 0; color: var(--hamnoor-muted); font-size: .8rem; }
+
+    .hamnoor-wrap .hamnoor-desktop-quick-grid {
+        display: grid;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: .55rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-quick-grid > :is(a,button) {
+        display: grid;
+        grid-template-columns: 34px minmax(0,1fr);
+        align-items: center;
+        gap: .55rem;
+        min-width: 0;
+        min-height: 66px;
+        padding: .65rem;
+        color: var(--hamnoor-text);
+        background: var(--hamnoor-soft);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 13px;
+        text-align: right;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-quick-grid b {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        color: var(--hamnoor-primary);
+        background: #fff;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-quick-grid span { display: grid; min-width: 0; gap: .08rem; }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid strong { font-size: .78rem; }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid small { color: var(--hamnoor-muted); font-size: .66rem; }
+
+    /* Other dashboard tabs: denser, desktop-friendly surfaces. */
+    .hamnoor-wrap .hamnoor-dashboard-panel:not([data-tab-panel="summary"]) {
+        padding: 1.15rem;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 22px;
+        box-shadow: 0 8px 28px rgba(15,23,42,.045);
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-panel .hamnoor-card {
+        border-radius: 16px;
+        box-shadow: none;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-list {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: .8rem;
+    }
+
+    .hamnoor-wrap .hamnoor-dashboard-list .hamnoor-row-card {
+        height: 100%;
+        padding: .9rem;
+        border-radius: 15px;
+    }
+
+    .hamnoor-wrap .hamnoor-my-parts-grid {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: .8rem;
+    }
+
+    /* Public khatm list gets a wider two-column desktop rhythm. */
+    .hamnoor-wrap .hamnoor-list-head {
+        align-items: end;
+        margin-bottom: 1rem;
+        padding: 1rem 1.1rem;
+        background: var(--hamnoor-surface);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 18px;
+    }
+
+    .hamnoor-wrap .hamnoor-list-head h2 { margin-bottom: .2rem; font-size: 1.45rem; }
+    .hamnoor-wrap .hamnoor-list-head p { margin: 0; color: var(--hamnoor-muted); }
+    .hamnoor-wrap .hamnoor-khatm-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+    .hamnoor-wrap .hamnoor-khatm-card { min-height: 100%; border-radius: 20px; }
+
+    /* Desktop create wizard: steps become a sticky right rail. */
+    .hamnoor-wrap .hamnoor-create-template {
+        max-width: 1180px;
+        margin-inline: auto;
+    }
+
+    .hamnoor-wrap .hamnoor-create-card {
+        padding: 1.2rem;
+        border-radius: 22px;
+        box-shadow: 0 10px 34px rgba(15,23,42,.055);
+    }
+
+    .hamnoor-wrap .hamnoor-create-card > h2 {
+        margin: 0 0 1rem;
+        font-size: 1.35rem;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form.hamnoor-wizard {
+        display: grid;
+        grid-template-columns: 230px minmax(0,1fr);
+        column-gap: 1.25rem;
+        row-gap: .85rem;
+        align-items: start;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-global-form-error {
+        grid-column: 1 / -1;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-steps {
+        grid-column: 1;
+        grid-row: 1 / span 3;
+        position: sticky;
+        top: 1rem;
+        display: grid;
+        gap: .4rem;
+        margin: 0;
+        padding: .65rem;
+        background: var(--hamnoor-soft);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 16px;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-steps span {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        width: 100%;
+        min-height: 42px;
+        padding: .48rem .58rem;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 11px;
+        font-size: .8rem;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-steps span.is-active {
+        color: var(--hamnoor-primary);
+        background: #fff;
+        border-color: color-mix(in srgb,var(--hamnoor-primary) 18%,var(--hamnoor-border));
+        box-shadow: 0 4px 14px rgba(15,23,42,.04);
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-steps span b {
+        display: inline;
+        font-size: .76rem;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-current-step-title,
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-step,
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-nav {
+        grid-column: 2;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-current-step-title {
+        margin: 0;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-step {
+        min-height: 460px;
+        margin: 0;
+        padding: 1rem 1.1rem;
+        background: color-mix(in srgb,var(--hamnoor-soft) 38%,#fff);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 16px;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-step legend {
+        padding: 0 .4rem;
+        font-size: 1.05rem;
+        font-weight: 900;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-nav {
+        position: static;
+        display: flex;
+        justify-content: flex-end;
+        gap: .6rem;
+        margin: 0;
+        padding: .75rem 0 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-nav .hamnoor-btn {
+        min-width: 140px;
+        width: auto;
+    }
+}
+
+@media (min-width: 783px) and (max-width: 1040px) {
+    .hamnoor-wrap .hamnoor-dashboard {
+        grid-template-columns: minmax(0,1fr) 225px;
+    }
+    .hamnoor-wrap .hamnoor-desktop-summary-top,
+    .hamnoor-wrap .hamnoor-desktop-summary-bottom {
+        grid-template-columns: minmax(0,1fr);
+    }
+    .hamnoor-wrap .hamnoor-desktop-stat-stack {
+        grid-template-columns: repeat(4,minmax(0,1fr));
+    }
+    .hamnoor-wrap .hamnoor-desktop-stat-card { min-height: 105px; }
+    .hamnoor-wrap .hamnoor-dashboard-list,
+    .hamnoor-wrap .hamnoor-my-parts-grid,
+    .hamnoor-wrap .hamnoor-khatm-grid { grid-template-columns: minmax(0,1fr); }
+    .hamnoor-wrap .hamnoor-create-form.hamnoor-wizard {
+        grid-template-columns: 190px minmax(0,1fr);
+    }
+}
+
+/* 3.9.53 — Desktop Phase 2: direction-safe shell, access flows and density. */
+@media (min-width: 783px) {
+    /* Grid tracks are physical on desktop: keep the navigation rail on the right
+       regardless of the page's RTL writing direction. */
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) {
+        direction: ltr;
+        grid-template-columns: minmax(0, 1fr) 252px;
+        column-gap: 1.25rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) > * { direction: rtl; }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel,
+    .hamnoor-wrap .hamnoor-dashboard-tabs { grid-column: 2; }
+    .hamnoor-wrap .hamnoor-dashboard-head,
+    .hamnoor-wrap .hamnoor-dashboard-panels { grid-column: 1; }
+
+    .hamnoor-wrap .hamnoor-dashboard-tabs {
+        top: 1.25rem;
+        padding: .55rem;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-brand-panel {
+        padding: .85rem;
+        border-radius: 20px;
+    }
+
+    /* One shared desktop navigation language for all non-reading app screens. */
+    .hamnoor-wrap .hamnoor-desktop-page-head {
+        max-width: 1180px;
+        margin-inline: auto;
+        margin-bottom: 1rem;
+        padding: .78rem .9rem;
+        border-radius: 18px;
+    }
+
+    .hamnoor-wrap .hamnoor-desktop-page-brand > span {
+        width: 72px;
+        min-width: 72px;
+        height: 34px;
+        padding: 4px 7px;
+        border-radius: 10px;
+    }
+    .hamnoor-wrap .hamnoor-desktop-page-brand img {
+        max-width: 59px;
+        max-height: 20px;
+    }
+    .hamnoor-wrap .hamnoor-desktop-page-brand strong { font-size: .96rem; }
+    .hamnoor-wrap .hamnoor-desktop-page-brand small { font-size: .72rem; }
+
+    .hamnoor-wrap .hamnoor-desktop-primary-nav { gap: .35rem; }
+    .hamnoor-wrap .hamnoor-desktop-primary-nav a {
+        min-height: 38px;
+        padding: .45rem .7rem;
+        border-radius: 10px;
+        font-size: .78rem;
+    }
+    .hamnoor-wrap .hamnoor-desktop-primary-nav a.is-active {
+        color: var(--hamnoor-primary);
+        background: color-mix(in srgb, var(--hamnoor-primary) 9%, #fff);
+        border-color: color-mix(in srgb, var(--hamnoor-primary) 22%, var(--hamnoor-border));
+    }
+    .hamnoor-wrap .hamnoor-desktop-primary-nav a.is-primary.is-active,
+    .hamnoor-wrap .hamnoor-desktop-primary-nav a.is-primary {
+        color: #fff;
+        background: var(--hamnoor-primary);
+        border-color: var(--hamnoor-primary);
+    }
+
+    /* Guest dashboard: informative side card + focused recovery card, not the
+       logged-in sidebar shell. */
+    .hamnoor-wrap .hamnoor-dashboard-guest {
+        direction: ltr;
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        gap: 1rem;
+        max-width: 1120px;
+        margin-inline: auto;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest > * { direction: rtl; }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-dashboard-head {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        min-height: 100px;
+        padding: 1rem 1.15rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-dashboard-empty-state {
+        grid-column: 1;
+        grid-row: 2;
+        align-self: stretch;
+        margin: 0;
+        padding: 1.15rem;
+        border-radius: 18px;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-recovery-card {
+        grid-column: 2;
+        grid-row: 2;
+        margin: 0;
+        padding: 1.25rem 1.35rem;
+        border-radius: 18px;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-recovery-card > h3 { margin-top: 0; }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-recovery-card [data-recovery-phone-step] {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: .7rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-recovery-card label {
+        display: grid;
+        gap: .35rem;
+        margin: 0;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-recovery-card input { min-height: 46px; }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-recovery-card .hamnoor-btn {
+        width: auto;
+        min-width: 155px;
+        min-height: 46px;
+    }
+
+    /* First-time create / OTP screens now belong to the same desktop app. */
+    .hamnoor-wrap .hamnoor-create-access-card {
+        width: min(820px, 100%);
+        margin: 0 auto;
+        padding: 1.4rem 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 34px rgba(15,23,42,.055);
+    }
+    .hamnoor-wrap .hamnoor-create-access-card > h2 {
+        margin: 0 0 .35rem;
+        font-size: 1.35rem;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card > p {
+        margin: 0 0 1rem;
+        color: var(--hamnoor-muted);
+        font-size: .88rem;
+        line-height: 1.9;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card [data-create-identity-step] {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .75rem 1rem;
+        align-items: end;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card [data-create-identity-step] > p,
+    .hamnoor-wrap .hamnoor-create-access-card [data-create-identity-step] > button {
+        grid-column: 1 / -1;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card [data-create-identity-step] > button {
+        justify-self: start;
+        width: auto;
+        min-width: 220px;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card label {
+        display: grid;
+        gap: .35rem;
+        margin: 0;
+        font-weight: 800;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card input {
+        width: 100%;
+        min-height: 46px;
+        margin: 0;
+        padding: .55rem .7rem;
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 11px;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card [data-create-code-step] {
+        padding: 1rem;
+        background: color-mix(in srgb, var(--hamnoor-soft) 72%, #fff);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 14px;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card .hamnoor-create-code-actions,
+    .hamnoor-wrap .hamnoor-create-access-card .hamnoor-inline-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .55rem;
+        align-items: center;
+        margin-top: .65rem;
+    }
+    .hamnoor-wrap .hamnoor-create-access-card .hamnoor-create-code-actions .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-create-access-card .hamnoor-inline-actions .hamnoor-btn {
+        width: auto;
+        min-height: 42px;
+    }
+
+    /* Create wizard: more compact desktop proportions. */
+    .hamnoor-wrap .hamnoor-create-template { max-width: 1120px; }
+    .hamnoor-wrap .hamnoor-create-card { padding: 1rem; }
+    .hamnoor-wrap .hamnoor-create-form.hamnoor-wizard {
+        grid-template-columns: 210px minmax(0, 1fr);
+        column-gap: 1rem;
+    }
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-step {
+        min-height: 410px;
+        padding: .9rem 1rem;
+    }
+    .hamnoor-wrap .hamnoor-create-form .hamnoor-wizard-nav {
+        padding-top: .55rem;
+        border-top: 1px solid color-mix(in srgb, var(--hamnoor-border) 75%, transparent);
+    }
+
+    /* Public list: avoid one huge full-width card and keep a readable measure. */
+    .hamnoor-wrap:has(.hamnoor-khatm-grid) { --hamnoor-max: 1180px; }
+    .hamnoor-wrap .hamnoor-list-head {
+        max-width: 1180px;
+        margin-inline: auto;
+        padding: .9rem 1rem;
+    }
+    .hamnoor-wrap .hamnoor-khatm-grid {
+        width: min(1180px, 100%);
+        margin-inline: auto;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .85rem;
+    }
+    .hamnoor-wrap .hamnoor-khatm-grid > .hamnoor-khatm-card:only-child {
+        width: min(760px, 100%);
+        justify-self: start;
+    }
+    .hamnoor-wrap .hamnoor-khatm-card {
+        padding: 1rem;
+        border-radius: 18px;
+    }
+    .hamnoor-wrap .hamnoor-khatm-card .hamnoor-btn { min-height: 42px; }
+}
+
+@media (min-width: 783px) and (max-width: 1040px) {
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) {
+        grid-template-columns: minmax(0,1fr) 220px;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest {
+        grid-template-columns: 260px minmax(0,1fr);
+    }
+}
+
+/* 3.9.54 — Desktop Phase 3: participation density and cleanup. */
+@media (min-width: 783px) {
+    /* The desktop app already exposes reading actions in-context. Keep the
+       global floating launcher as a mobile affordance only. */
+    .hamnoor-floating-continue,
+    .hamnoor-floating-wrap { display: none !important; }
+
+    /* My participations: one deliberate horizontal card per row. This avoids
+       the empty holes produced by mixed-height two-column cards. */
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: .72rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid .hamnoor-part-card {
+        direction: ltr;
+        grid-template-columns: minmax(0, 1fr) 235px;
+        align-items: start;
+        align-content: start;
+        gap: 1rem;
+        padding: 1rem 1.05rem;
+        border-radius: 17px;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card > * { direction: rtl; }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card-main {
+        grid-column: 1;
+        min-width: 0;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-actions {
+        grid-column: 2;
+        display: grid;
+        gap: .48rem;
+        align-content: start;
+        margin: 0;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-actions .hamnoor-btn {
+        width: 100%;
+        min-height: 40px;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-engagement {
+        margin-top: .45rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card--completed {
+        min-height: 0;
+    }
+
+    /* Guest/recovery shell: slightly calmer proportions on wide screens. */
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-dashboard-empty-state h3 {
+        font-size: 1.15rem;
+        line-height: 1.7;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-guest .hamnoor-dashboard-empty-state p {
+        margin-bottom: 0;
+        line-height: 2;
+    }
+}
+
+@media (min-width: 783px) and (max-width: 1100px) {
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid .hamnoor-part-card {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card-main,
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-actions {
+        grid-column: 1;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* 3.9.55 — Desktop Phase 4: final density, progress center and public cards. */
+@media (min-width: 783px) {
+    /* Dashboard navigation: the JS now owns the single active state. Prevent
+       visited links from looking like an additional selected tab. */
+    .hamnoor-wrap .hamnoor-dashboard-tabs a:visited:not(.is-active) {
+        color: var(--hamnoor-muted);
+        background: transparent;
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+    /* Progress center: a management view must not turn into a several-screen
+       document. Keep the summary visible and make the rows a contained table. */
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="progress"] {
+        display: grid;
+        gap: .85rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="progress"] .hamnoor-progress-center-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0;
+        padding: .95rem 1rem;
+        background: #fff;
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 18px;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="progress"] .hamnoor-progress-center-head h3,
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="progress"] .hamnoor-progress-center-head p {
+        margin: 0;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="progress"] .hamnoor-progress-center-head p {
+        margin-top: .2rem;
+        font-size: .78rem;
+    }
+    .hamnoor-wrap .hamnoor-progress-khatm-select select {
+        min-width: 230px;
+        min-height: 42px;
+        border-radius: 11px;
+    }
+    .hamnoor-wrap .hamnoor-progress-summary-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: .6rem;
+        margin: 0;
+    }
+    .hamnoor-wrap .hamnoor-progress-summary-grid > div {
+        min-height: 92px;
+        display: grid;
+        place-content: center;
+        gap: .18rem;
+        text-align: center;
+        background: #fff;
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 16px;
+    }
+    .hamnoor-wrap .hamnoor-progress-summary-grid strong {
+        color: var(--hamnoor-primary);
+        font-size: 1.55rem;
+        line-height: 1;
+    }
+    .hamnoor-wrap .hamnoor-progress-summary-grid span {
+        color: var(--hamnoor-muted);
+        font-size: .76rem;
+        font-weight: 700;
+    }
+    .hamnoor-wrap .hamnoor-progress-table-wrap {
+        max-height: 690px;
+        overflow: auto;
+        margin: 0;
+        background: #fff;
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 18px;
+        scrollbar-gutter: stable;
+    }
+    .hamnoor-wrap .hamnoor-progress-table {
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        min-width: 860px;
+    }
+    .hamnoor-wrap .hamnoor-progress-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: color-mix(in srgb, var(--hamnoor-soft) 94%, #fff);
+        box-shadow: 0 1px 0 var(--hamnoor-border);
+    }
+    .hamnoor-wrap .hamnoor-progress-table th,
+    .hamnoor-wrap .hamnoor-progress-table td {
+        padding: .62rem .72rem;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+    .hamnoor-wrap .hamnoor-progress-table td:first-child { min-width: 170px; }
+    .hamnoor-wrap .hamnoor-progress-table td:nth-child(2) { min-width: 150px; }
+    .hamnoor-wrap .hamnoor-progress-table td small { display: block; margin-top: .18rem; }
+    .hamnoor-wrap .hamnoor-progress-pagination {
+        margin-top: .1rem;
+        justify-self: center;
+    }
+
+    /* Public khatm list: old featured 12-column spans must not leak into the
+       new two-column desktop grid. */
+    .hamnoor-wrap .hamnoor-khatm-grid,
+    .hamnoor-wrap .hamnoor-khatm-grid.hamnoor-featured-count-1,
+    .hamnoor-wrap .hamnoor-khatm-grid.hamnoor-featured-count-2,
+    .hamnoor-wrap .hamnoor-khatm-grid.hamnoor-featured-count-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+    .hamnoor-wrap .hamnoor-khatm-grid > .hamnoor-khatm-card,
+    .hamnoor-wrap .hamnoor-featured-count-1 > .hamnoor-featured-position-1,
+    .hamnoor-wrap .hamnoor-featured-count-2 > :is(.hamnoor-featured-position-1, .hamnoor-featured-position-2),
+    .hamnoor-wrap .hamnoor-featured-count-3 > :is(.hamnoor-featured-position-1, .hamnoor-featured-position-2, .hamnoor-featured-position-3) {
+        grid-column: auto !important;
+        width: auto;
+        min-width: 0;
+    }
+    .hamnoor-wrap .hamnoor-khatm-grid > .hamnoor-khatm-card:only-child {
+        width: min(720px, 100%);
+        grid-column: 1 / -1 !important;
+        justify-self: center;
+    }
+    .hamnoor-wrap .hamnoor-khatm-card-media {
+        aspect-ratio: 1200 / 630;
+        max-height: none;
+    }
+    .hamnoor-wrap .hamnoor-khatm-card-media .hamnoor-khatm-card-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    .hamnoor-wrap .hamnoor-khatm-card-body {
+        gap: .5rem;
+        padding: .85rem .95rem .95rem;
+    }
+    .hamnoor-wrap .hamnoor-khatm-card h3 { font-size: 1rem; }
+    .hamnoor-wrap .hamnoor-khatm-card-intention {
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        min-height: 0;
+    }
+
+    /* Claim dialogs: keep the same visual language as the desktop shell. */
+    .hamnoor-modal .hamnoor-modal-card,
+    .hamnoor-modal .hamnoor-modal-dialog {
+        width: min(520px, calc(100vw - 48px));
+        border-radius: 20px;
+        box-shadow: 0 24px 70px rgba(15,23,42,.22);
+    }
+}
+
+@media (min-width: 783px) and (max-width: 1040px) {
+    .hamnoor-wrap .hamnoor-progress-summary-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .hamnoor-wrap .hamnoor-khatm-grid,
+    .hamnoor-wrap .hamnoor-khatm-grid.hamnoor-featured-count-1,
+    .hamnoor-wrap .hamnoor-khatm-grid.hamnoor-featured-count-2,
+    .hamnoor-wrap .hamnoor-khatm-grid.hamnoor-featured-count-3 {
+        grid-template-columns: minmax(0,1fr);
+    }
+    .hamnoor-wrap .hamnoor-khatm-grid > .hamnoor-khatm-card:only-child { grid-column: auto !important; }
+}
+
+/* UX Phase 9: the information architecture lives in the right rail, never below page content. */
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) {
+        grid-template-columns: minmax(0, 1fr) 260px;
+        grid-template-rows: auto minmax(0, 1fr);
+    }
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) > .hamnoor-desktop-brand-panel {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+    }
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) > .hamnoor-dashboard-head,
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) > .hamnoor-dashboard-panels {
+        grid-column: 1;
+    }
+}
+
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-personal-quran-card--desktop {
+        display: grid;
+        grid-template-columns: minmax(0,1fr) auto;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 1.1rem 1.25rem;
+    }
+    .hamnoor-wrap .hamnoor-personal-quran-card-copy { display: grid; gap: .45rem; min-width: 0; }
+    .hamnoor-wrap .hamnoor-personal-quran-card-copy h3,
+    .hamnoor-wrap .hamnoor-personal-quran-card-copy p { margin: 0; }
+    .hamnoor-wrap .hamnoor-personal-quran-card-copy h3 { font-size: 1.02rem; }
+    .hamnoor-wrap .hamnoor-personal-quran-card-copy p { color: var(--hamnoor-muted); font-size: .78rem; }
+    .hamnoor-wrap .hamnoor-personal-quran-card-actions { display: grid; gap: .55rem; min-width: 150px; }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid > .hamnoor-personal-quran-start-form > button {
+        display: grid;
+        grid-template-columns: 34px minmax(0,1fr);
+        align-items: center;
+        gap: .55rem;
+        min-width: 0;
+        min-height: 66px;
+        padding: .65rem;
+        color: var(--hamnoor-text);
+        background: var(--hamnoor-soft);
+        border: 1px solid var(--hamnoor-border);
+        border-radius: 13px;
+        text-align: right;
+    }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid > .hamnoor-personal-quran-start-form > button > b {
+        display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+        color: var(--hamnoor-primary); background: var(--hamnoor-surface); border-radius: 10px; font-size: 1rem;
+    }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid > .hamnoor-personal-quran-start-form > button > span { display: grid; gap: .06rem; min-width: 0; }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid > .hamnoor-personal-quran-start-form strong { font-size: .8rem; }
+    .hamnoor-wrap .hamnoor-desktop-quick-grid > .hamnoor-personal-quran-start-form small { color: var(--hamnoor-muted); font-size: .68rem; }
+}
+
+/* Phase 1 foundation: nested rail navigation and read-only dashboard zero state. */
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-dashboard-primary-groups > .hamnoor-dashboard-subnav {
+        margin: 0 0 .35rem;
+        padding: .1rem .45rem .35rem;
+        border-inline-start: 2px solid rgba(255,255,255,.28);
+    }
+    .hamnoor-wrap .hamnoor-dashboard-zero-state {
+        direction: ltr;
+        display: grid;
+        grid-template-columns: minmax(0,1fr) 260px;
+        grid-template-rows: auto minmax(0,1fr);
+        gap: 1rem 1.15rem;
+    }
+    .hamnoor-wrap .hamnoor-dashboard-zero-state > * { direction: rtl; }
+    .hamnoor-wrap .hamnoor-dashboard-zero-state > .hamnoor-desktop-brand-panel { grid-column: 2; grid-row: 1 / span 2; }
+    .hamnoor-wrap .hamnoor-dashboard-zero-state > .hamnoor-dashboard-head,
+    .hamnoor-wrap .hamnoor-dashboard-zero-state > .hamnoor-dashboard-panels { grid-column: 1; }
+    .hamnoor-wrap .hamnoor-zero-navigation { display:grid; gap:.25rem; }
+    .hamnoor-wrap .hamnoor-zero-navigation a { min-height:40px; padding:.55rem .7rem; color:rgba(255,255,255,.88); border-radius:10px; text-decoration:none; }
+    .hamnoor-wrap .hamnoor-zero-navigation a:hover,
+    .hamnoor-wrap .hamnoor-zero-navigation a:focus-visible { color:#fff; background:rgba(255,255,255,.12); }
+    .hamnoor-wrap .hamnoor-zero-navigation a.is-active { color:var(--hamnoor-primary); background:#fff; }
+    .hamnoor-wrap .hamnoor-zero-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+}
+/* 4.0.0 — Accessible contrast for the desktop dashboard rail. */
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-dashboard:not(.hamnoor-dashboard-guest) > .hamnoor-desktop-brand-panel {
+        color: #fff;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-desktop-brand small {
+        color: rgba(255,255,255,.86);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-primary-groups,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-context-nav {
+        border-color: rgba(255,255,255,.24);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button {
+        color: #fff;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button small {
+        color: rgba(255,255,255,.82);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button:hover,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button:focus-visible {
+        color: #fff;
+        background: rgba(255,255,255,.12);
+        border-color: rgba(255,255,255,.32);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button.is-active {
+        color: var(--hamnoor-primary);
+        background: #fff;
+        border-color: #fff;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-group-button.is-active small {
+        color: #40556f;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs button,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs a {
+        color: rgba(255,255,255,.84);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs button::before,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs a::before {
+        background: rgba(255,255,255,.72);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs button:hover,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs a:hover,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs button:focus-visible,
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs a:focus-visible {
+        color: #fff;
+        background: rgba(255,255,255,.12);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs .is-active {
+        color: var(--hamnoor-primary);
+        background: #fff;
+        border-color: #fff;
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel .hamnoor-dashboard-tabs .is-active::before {
+        background: var(--hamnoor-primary);
+    }
+    .hamnoor-wrap .hamnoor-desktop-brand-panel :is(button,a):focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 2px;
+    }
+}

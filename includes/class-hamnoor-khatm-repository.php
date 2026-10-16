@@ -15,6 +15,6 @@ class Hamnoor_Khatm_Repository {
     public static function query($args = array()) { return Hamnoor_DB::get_khatms($args); }
     public static function count($args = array()) { return Hamnoor_DB::count_khatms($args); }
     public static function progress($id) { return Hamnoor_DB::get_progress((int) $id); }
-    public static function change_status($id, $status) { return Hamnoor_DB::change_status((int) $id, $status); }
+    public static function change_status($id, $status, $review_note = '', $context = 'auto') { return Hamnoor_DB::change_status((int) $id, $status, $review_note, $context); }
     public static function can_manage($id, $user_id = 0) { return Hamnoor_DB::user_can_manage_khatm((int) $id, (int) $user_id); }
 }

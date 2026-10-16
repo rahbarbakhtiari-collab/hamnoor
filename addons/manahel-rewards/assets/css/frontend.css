@@ -1,0 +1,180 @@
+.manahel-rewards-app{--mr-primary:#1F63C3;--mr-primary-soft:#eef5ff;--mr-text:#172033;--mr-muted:#667085;--mr-border:#e5eaf1;--mr-bg:#f7f9fc;--mr-success:#0f7a45;--mr-warn:#8a5a00;--mr-danger:#b42318;--mr-touch-min:44px;--mr-control-height:48px;--mr-radius-control:10px;--mr-radius-card:16px;--mr-radius-large:24px;--mr-radius-pill:999px;font-family:inherit;color:var(--mr-text);max-width:780px;margin:0 auto;padding:14px 0;line-height:1.7;box-sizing:border-box}.manahel-rewards-app *{box-sizing:border-box}.mr-hero{background:linear-gradient(145deg,var(--mr-primary),#174b91);color:#fff;border-radius:24px;padding:24px 20px;text-align:center;box-shadow:0 12px 30px rgba(31,99,195,.16)}.mr-hero__eyebrow{font-size:15px;font-weight:700;opacity:.94}.mr-hero__balance{font-size:52px;line-height:1.15;font-weight:800;letter-spacing:-1.5px;margin-top:4px;font-variant-numeric:tabular-nums}.mr-hero__unit{font-size:14px;opacity:.9}.mr-hero__today{display:inline-flex;gap:5px;align-items:center;margin-top:14px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-size:13px}.mr-section{margin-top:22px}.mr-section__head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px;padding:0 2px}.mr-section__head h2{font:inherit;font-size:18px;font-weight:800;margin:0;color:var(--mr-text)}.mr-section__head span{font-size:12px;color:var(--mr-muted)}.mr-policy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.mr-policy-card{background:#fff;border:1px solid var(--mr-border);border-radius:18px;padding:15px;min-width:0;box-shadow:0 5px 18px rgba(26,40,72,.04)}.mr-policy-card.is-inactive{opacity:.68}.mr-policy-card__top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.mr-policy-card h3{margin:0;font:inherit;font-size:15px;font-weight:800}.mr-policy-card p{margin:3px 0 0;font-size:12px;color:var(--mr-muted)}.mr-policy-card__points{font-size:20px;font-weight:800;color:var(--mr-primary);white-space:nowrap}.mr-policy-card__points small{display:block;font-size:12px;font-weight:600;color:var(--mr-muted);text-align:center}.mr-progress{height:7px;background:#edf0f4;border-radius:999px;overflow:hidden;margin-top:14px}.mr-progress span{display:block;height:100%;background:var(--mr-primary);border-radius:inherit}.mr-policy-card__meta{font-size:12px;color:var(--mr-muted);margin-top:5px}.mr-policy-state{font-size:12px;color:var(--mr-success);margin-top:9px}.mr-policy-state--limit{color:var(--mr-warn)}.mr-policy-state--muted{color:var(--mr-muted)}.mr-policy-state span,.mr-policy-state strong{display:block}.mr-policy-state strong{font-size:13px;color:var(--mr-text);margin-top:2px}.mr-policy-note{font-size:12px;color:var(--mr-muted);background:var(--mr-bg);padding:9px 12px;border-radius:12px;margin:10px 0 0}.mr-history{display:grid;gap:8px}.mr-history-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--mr-border);border-radius:16px;padding:12px 14px}.mr-history-item__delta{direction:ltr;min-width:56px;font-size:18px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums}.mr-history-item__delta.is-positive{color:var(--mr-success)}.mr-history-item__delta.is-negative{color:#b42318}.mr-history-item__body{display:flex;flex-direction:column;min-width:0}.mr-history-item__body strong{font-size:13px}.mr-history-item__body span{font-size:12px;color:var(--mr-muted);white-space:normal}.mr-history-item__body small{font-size:12px;color:var(--mr-muted);margin-top:2px}.mr-no-reward{margin-top:16px;background:var(--mr-bg);border:1px solid var(--mr-border);border-radius:15px;padding:10px 13px}.mr-no-reward summary{cursor:pointer;font-weight:700;font-size:12px}.mr-no-reward__list{display:grid;gap:8px;margin-top:10px}.mr-no-reward__item{display:grid;gap:1px;background:#fff;border-radius:11px;padding:9px 10px}.mr-no-reward__item strong{font-size:12px}.mr-no-reward__item span{font-size:12px;color:var(--mr-muted)}.mr-no-reward__item small{font-size:12px;color:var(--mr-muted)}.mr-empty{background:#fff;border:1px solid var(--mr-border);border-radius:18px;padding:24px;text-align:center;color:var(--mr-muted)}.mr-empty strong{display:block;color:var(--mr-text);font-size:18px}.mr-empty p{margin:5px 0 0}.manahel-rewards-balance{font-variant-numeric:tabular-nums}@media(max-width:680px){.manahel-rewards-app{padding:8px 0}.mr-hero{border-radius:20px;padding:20px 16px}.mr-hero__balance{font-size:46px}.mr-policy-grid{grid-template-columns:1fr}.mr-policy-card{padding:14px}.mr-section{margin-top:18px}.mr-section__head{align-items:center}.mr-history-item{padding:11px 12px}.mr-history-item__delta{min-width:50px;font-size:17px}}@media(max-width:360px){.mr-hero{border-radius:18px}.mr-hero__balance{font-size:42px}.mr-section__head{display:block}.mr-section__head span{display:block;margin-top:2px}.mr-history-item{gap:8px}.mr-history-item__delta{min-width:44px}}
+
+/* Hamnoor dashboard integration (Phase 4). Scoped and read-only. */
+.mr-hamnoor-dashboard-card{--mr-primary:#1F63C3;--mr-primary-soft:#eef5ff;--mr-text:#172033;--mr-muted:#667085;box-sizing:border-box;display:flex;align-items:center;gap:14px;width:100%;min-width:0;margin:12px 0;padding:14px 16px;border:1px solid rgba(31,99,195,.16);border-radius:18px;background:linear-gradient(135deg,#fff 0%,var(--mr-primary-soft) 100%);color:var(--mr-text);box-shadow:0 5px 18px rgba(31,99,195,.06);font-family:inherit;line-height:1.6}.mr-hamnoor-dashboard-card *{box-sizing:border-box}.mr-hamnoor-dashboard-card__main{display:flex;align-items:center;gap:12px;min-width:0;flex:1}.mr-hamnoor-dashboard-card__eyebrow{font-size:13px;font-weight:800;white-space:nowrap}.mr-hamnoor-dashboard-card__balance{display:flex;align-items:baseline;gap:5px;min-width:0}.mr-hamnoor-dashboard-card__balance strong{font-size:25px;line-height:1;font-weight:900;color:var(--mr-primary);font-variant-numeric:tabular-nums}.mr-hamnoor-dashboard-card__balance small{font-size:12px;color:var(--mr-muted)}.mr-hamnoor-dashboard-card__today{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;color:var(--mr-muted);font-size:12px;white-space:nowrap}.mr-hamnoor-dashboard-card__today strong{color:#0f7a45;font-size:13px;font-variant-numeric:tabular-nums}.mr-hamnoor-dashboard-card__link{display:inline-flex;align-items:center;gap:4px;min-height:44px;padding:8px 12px;border-radius:11px;background:var(--mr-primary);color:#fff!important;text-decoration:none!important;font-size:12px;font-weight:800;white-space:nowrap}.mr-hamnoor-dashboard-card__link:hover,.mr-hamnoor-dashboard-card__link:focus{background:#174b91;color:#fff!important}.mr-hamnoor-dashboard-card--mobile{margin:10px 0 14px;padding:13px 14px;gap:9px;flex-wrap:wrap}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__main{width:100%;flex:1 1 100%;justify-content:space-between}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__eyebrow{font-size:12px}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__balance strong{font-size:24px}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__today{margin-inline-start:0}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__link{margin-inline-start:auto}@media(max-width:360px){.mr-hamnoor-dashboard-card--mobile{padding:12px}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__main{align-items:center}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__balance strong{font-size:22px}.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__today,.mr-hamnoor-dashboard-card--mobile .mr-hamnoor-dashboard-card__link{font-size:12px}}
+
+/* Phase 5: immediate, accessible Reward feedback. */
+.mr-feedback-region{position:fixed;z-index:999999;inset-inline:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}.mr-feedback-toast{--mr-feedback-primary:#1F63C3;--mr-feedback-success:#0f7a45;box-sizing:border-box;position:relative;width:min(100%,390px);display:flex;gap:10px;align-items:flex-start;padding:14px 58px 14px 14px;border:1px solid #dfe6ef;border-radius:16px;background:#fff;color:#172033;box-shadow:0 14px 40px rgba(23,32,51,.18);font-family:inherit;line-height:1.65;opacity:0;transform:translateY(10px);transition:opacity .18s ease,transform .18s ease;pointer-events:auto}.mr-feedback-toast.is-visible{opacity:1;transform:translateY(0)}.mr-feedback-toast.is-leaving{opacity:0;transform:translateY(8px)}.mr-feedback-toast--success{border-inline-start:4px solid var(--mr-feedback-success)}.mr-feedback-toast--info{border-inline-start:4px solid var(--mr-feedback-primary)}.mr-feedback-toast__body{display:flex;flex-direction:column;min-width:0;flex:1}.mr-feedback-toast__title{font-size:16px;font-weight:900;color:#172033}.mr-feedback-toast--success .mr-feedback-toast__title{color:var(--mr-feedback-success)}.mr-feedback-toast__message{font-size:12px;color:#475467;margin-top:2px;white-space:normal;overflow-wrap:anywhere}.mr-feedback-toast__balance{font-size:12px;color:#667085;margin-top:5px}.mr-feedback-toast__close{position:absolute;inset-inline-start:6px;top:4px;width:44px;height:44px;border:0;border-radius:999px;background:transparent;color:#667085;font:inherit;font-size:20px;line-height:1;cursor:pointer}.mr-feedback-toast__close:hover,.mr-feedback-toast__close:focus{background:#f2f4f7;color:#172033;outline:none}.mr-feedback-toast__close:focus-visible{box-shadow:0 0 0 3px rgba(31,99,195,.18)}@media(max-width:430px){.mr-feedback-region{inset-inline:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));align-items:stretch}.mr-feedback-toast{width:100%;padding:13px 56px 13px 12px;border-radius:15px}.mr-feedback-toast__title{font-size:15px}.mr-feedback-toast__message{font-size:12px}}@media(prefers-reduced-motion:reduce){.mr-feedback-toast{transition:none;transform:none}.mr-feedback-toast.is-visible,.mr-feedback-toast.is-leaving{transform:none}}
+
+/* Phase 10: clearer earning guidance and referral discovery. */
+.mr-identity-notice{display:grid;gap:4px;margin-top:14px;padding:13px 14px;border:1px solid #f0d38c;border-radius:15px;background:#fff9e8;color:#6d4b00}.mr-identity-notice strong{font-size:13px}.mr-identity-notice span{font-size:12px;line-height:1.8}.mr-identity-notice a{justify-self:start;margin-top:4px;font-size:12px;font-weight:800;text-decoration:none}.mr-policy-card--referral{grid-column:span 3;background:linear-gradient(145deg,#fff,#f7fbff)}.mr-referral-stats{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.mr-referral-stats span{padding:5px 9px;border-radius:999px;background:var(--mr-primary-soft);color:#315e90;font-size:12px}.mr-policy-card__cta{display:inline-flex;align-items:center;gap:4px;margin-top:12px;padding:8px 11px;border-radius:11px;background:var(--mr-primary);color:#fff!important;text-decoration:none!important;font-size:12px;font-weight:800}.mr-policy-card__cta:hover,.mr-policy-card__cta:focus{background:#174b91;color:#fff!important}@media(max-width:680px){.mr-policy-card--referral{grid-column:auto}.mr-identity-notice{margin-top:10px}.mr-policy-card__cta{width:100%;justify-content:center}}
+
+
+/* 0.8.0 — points redemption */
+.mr-redemption-section{margin-top:20px}.mr-reward-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.mr-reward-card{background:#fff;border:1px solid #e7e9ee;border-radius:18px;padding:16px;box-shadow:0 3px 12px rgba(15,23,42,.04)}.mr-reward-card.is-disabled{opacity:.78}.mr-reward-card__head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.mr-reward-card__head h3{margin:0;font-size:16px}.mr-reward-cost{display:flex;flex-direction:column;align-items:center;background:#f6f7fb;border-radius:14px;padding:8px 12px;min-width:72px}.mr-reward-cost strong{font-size:21px}.mr-reward-cost span{font-size:12px;color:#667085}.mr-reward-card>p{color:#667085;line-height:1.8}.mr-reward-meta{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.mr-reward-meta span{font-size:12px;background:#f6f7fb;border-radius:999px;padding:5px 8px}.mr-redeem-form textarea{width:100%;margin:8px 0;border-radius:10px}.mr-redeem-form label{display:block;font-size:12px;font-weight:600}.mr-redeem-form .mr-policy-card__cta{border:0;width:100%;cursor:pointer}.mr-redeem-form .mr-policy-card__cta[disabled]{cursor:not-allowed;opacity:.5}.mr-redemptions{margin-top:14px}.mr-redemptions>summary{cursor:pointer;font-weight:700}.mr-redemption-history{display:grid;gap:10px;margin-top:10px}.mr-redemption-item{border:1px solid #e7e9ee;border-radius:14px;padding:12px;background:#fff;display:grid;grid-template-columns:1fr auto;gap:10px}.mr-redemption-item small{display:block;color:#667085;margin-top:4px}.mr-redemption-item__status{text-align:left}.mr-redemption-item__status span{display:block;font-size:12px}.mr-redemption-item__status strong{display:block;color:#b42318;margin-top:4px}.mr-fulfillment{grid-column:1/-1;background:#f0fdf4;border-radius:10px;padding:10px;line-height:1.8}.mr-redemption-notice{margin:14px 0;border-radius:12px;padding:12px 14px}.mr-redemption-notice.is-success{background:#ecfdf3;color:#067647}.mr-redemption-notice.is-warning{background:#fffaeb;color:#b54708}.mr-redemption-notice.is-error{background:#fef3f2;color:#b42318}@media(max-width:640px){.mr-reward-grid{grid-template-columns:1fr}.mr-redemption-item{grid-template-columns:1fr}.mr-redemption-item__status{text-align:right}}
+
+
+/* 0.8.1 — reward catalog UX: available/near/all, growth-aware progress, confirmation sheet. */
+.manahel-rewards-app{max-width:980px}.mr-redemption-section{scroll-margin-top:18px}.mr-reward-catalog{display:grid;gap:14px}.mr-reward-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.mr-reward-summary>div,.mr-reward-summary>a{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:76px;padding:10px;border:1px solid var(--mr-border);border-radius:16px;background:#fff;text-align:center;text-decoration:none}.mr-reward-summary strong{font-size:23px;line-height:1.15;color:var(--mr-primary);font-variant-numeric:tabular-nums}.mr-reward-summary span{margin-top:4px;font-size:12px;color:var(--mr-muted)}.mr-reward-filters{display:flex;gap:7px;overflow:auto;padding:2px 1px 5px;scrollbar-width:none}.mr-reward-filters::-webkit-scrollbar{display:none}.mr-reward-filters button{flex:0 0 auto;min-height:44px;padding:8px 13px;border:1px solid var(--mr-border);border-radius:999px;background:#fff;color:var(--mr-text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}.mr-reward-filters button.is-active{border-color:var(--mr-primary);background:var(--mr-primary-soft);color:var(--mr-primary)}.mr-reward-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.mr-reward-card{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr);gap:11px;padding:14px;border-radius:18px;box-shadow:0 4px 16px rgba(15,23,42,.045);transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}.mr-reward-card:hover{transform:translateY(-1px);border-color:#d7e4f4;box-shadow:0 8px 24px rgba(15,23,42,.07)}.mr-reward-card[hidden]{display:none!important}.mr-reward-card--available{border-color:#b7e5ca}.mr-reward-card--near{border-color:#c8dcf8}.mr-reward-card--unavailable{opacity:.68}.mr-reward-card__visual{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:15px;background:var(--mr-primary-soft);font-size:25px}.mr-reward-card__body{min-width:0}.mr-reward-card__titleline{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.mr-reward-card__titleline h3{margin:0;font:inherit;font-size:14px;font-weight:900;line-height:1.65}.mr-reward-card__body>p{margin:4px 0 7px;color:var(--mr-muted);font-size:12px;line-height:1.75;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.mr-reward-badge{flex:0 0 auto;padding:3px 7px;border-radius:999px;font-size:12px;font-weight:900}.mr-reward-badge.is-available{background:#ecfdf3;color:#067647}.mr-reward-badge.is-near{background:#eef5ff;color:#1f63c3}.mr-reward-card__facts{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px}.mr-reward-card__facts strong{font-size:13px;color:var(--mr-text);font-variant-numeric:tabular-nums}.mr-reward-card__facts span{font-size:12px;color:var(--mr-muted)}.mr-reward-progress{height:8px;margin-top:11px;overflow:hidden;border-radius:999px;background:#e8edf4}.mr-reward-progress span{display:block;height:100%;border-radius:inherit;background:var(--mr-primary)}.mr-reward-progress__meta{display:flex;justify-content:space-between;gap:6px;margin-top:5px;color:var(--mr-muted);font-size:12px}.mr-reward-progress__meta strong{color:var(--mr-text);font-size:12px}.mr-reward-growth-hint{margin-top:9px;padding:7px 9px;border-radius:10px;background:#f2f8ff;color:#315e90;font-size:12px;font-weight:800;text-align:center}.mr-reward-growth-cta,.mr-reward-secondary-cta,.mr-redeem-primary{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-top:8px;border:0;border-radius:11px;text-decoration:none!important;font:inherit;font-size:13px;font-weight:900;cursor:pointer}.mr-reward-growth-cta,.mr-redeem-primary{background:var(--mr-primary);color:#fff!important}.mr-reward-growth-cta:hover,.mr-reward-growth-cta:focus,.mr-redeem-primary:hover,.mr-redeem-primary:focus{background:#174b91;color:#fff!important}.mr-reward-secondary-cta{background:#f4f6f8;color:var(--mr-primary)!important}.mr-reward-blocked{margin-top:10px;padding:8px 9px;border-radius:10px;background:#f4f6f8;color:var(--mr-muted);font-size:12px;font-weight:800;text-align:center}.mr-reward-meta{margin:8px 0 0}.mr-reward-meta span{padding:4px 7px;font-size:12px}.mr-redeem-form label{margin-top:8px;font-size:12px}.mr-redeem-form textarea{min-height:58px;padding:7px 9px;border:1px solid var(--mr-border);font:inherit;font-size:13px}.mr-reward-filter-empty{padding:20px;border:1px dashed var(--mr-border);border-radius:16px;color:var(--mr-muted);text-align:center;font-size:12px}.mr-redeem-dialog[hidden]{display:none!important}.mr-redeem-dialog{position:fixed;z-index:1000000;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:16px}.mr-redeem-dialog__backdrop{position:absolute;inset:0;background:rgba(15,23,42,.46);backdrop-filter:blur(2px)}.mr-redeem-dialog__sheet{position:relative;width:min(100%,430px);padding:22px 18px 16px;border-radius:24px 24px 18px 18px;background:#fff;box-shadow:0 24px 70px rgba(15,23,42,.25);text-align:center}.mr-redeem-dialog__close{position:absolute;inset-inline-start:8px;top:8px;width:44px;height:44px;border:0;border-radius:999px;background:#f4f6f8;color:#667085;font-size:22px;cursor:pointer}.mr-redeem-dialog__icon{display:flex;align-items:center;justify-content:center;width:54px;height:54px;margin:0 auto 8px;border-radius:17px;background:var(--mr-primary-soft);font-size:26px}.mr-redeem-dialog h3{margin:0;font:inherit;font-size:17px;font-weight:900}.mr-redeem-dialog__calc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:15px 0}.mr-redeem-dialog__calc div{padding:9px 5px;border-radius:12px;background:#f7f9fc}.mr-redeem-dialog__calc span,.mr-redeem-dialog__calc strong{display:block}.mr-redeem-dialog__calc span{font-size:12px;color:var(--mr-muted)}.mr-redeem-dialog__calc strong{margin-top:2px;font-size:13px;font-variant-numeric:tabular-nums}.mr-redeem-dialog__confirm,.mr-redeem-dialog__cancel{width:100%;min-height:44px;border:0;border-radius:12px;font:inherit;font-size:12px;font-weight:900;cursor:pointer}.mr-redeem-dialog__confirm{background:var(--mr-primary);color:#fff}.mr-redeem-dialog__cancel{margin-top:6px;background:transparent;color:var(--mr-muted)}body.mr-dialog-open{overflow:hidden}@media(min-width:681px){.mr-redeem-dialog{align-items:center}.mr-redeem-dialog__sheet{border-radius:24px}}@media(max-width:860px){.mr-reward-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:680px){.manahel-rewards-app{max-width:100%}.mr-reward-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.mr-reward-summary>div,.mr-reward-summary>a{min-height:68px;padding:8px 4px}.mr-reward-summary strong{font-size:19px}.mr-reward-summary span{font-size:12px}.mr-reward-grid{grid-template-columns:1fr}.mr-reward-card{grid-template-columns:48px minmax(0,1fr);padding:13px}.mr-reward-card__visual{width:48px;height:48px}.mr-reward-filters{margin-inline:-2px}.mr-reward-filters button{min-height:44px;padding:8px 11px}.mr-redeem-dialog{padding:0;align-items:flex-end}.mr-redeem-dialog__sheet{width:100%;border-radius:22px 22px 0 0;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}}@media(max-width:380px){.mr-reward-summary{grid-template-columns:1fr 1fr}.mr-reward-summary>a{grid-column:1/-1;min-height:54px}.mr-reward-card__titleline{display:block}.mr-reward-badge{display:inline-block;margin-top:4px}}
+
+/* 0.8.2 — Unified Hamnoor Growth Hub */
+.mr-growth-hub{width:100%;max-width:1180px;margin:0 auto;padding:0;box-sizing:border-box}
+.mr-growth-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:8px;margin:0 0 16px;background:#fff;border:1px solid #e7ebf0;border-radius:16px;box-shadow:0 6px 24px rgba(24,39,75,.05)}
+.mr-growth-tabs a{display:flex;align-items:center;justify-content:center;min-height:46px;padding:8px 12px;border-radius:11px;color:#45515f;text-decoration:none;font-weight:700;font-size:14px;transition:.18s ease;background:transparent}
+.mr-growth-tabs a:hover{background:#f4f7fa;color:#126dc2}
+.mr-growth-tabs a.is-active{background:#eaf4ff;color:#0869bd;box-shadow:inset 0 0 0 1px #b9dcfb}
+.mr-growth-hub__content{min-width:0}
+.mr-growth-hub .manahel-rewards-app,.mr-growth-hub .manahel-referral-app{max-width:none;margin:0}
+.mr-growth-section{padding-top:0}
+.mr-growth-balance-strip{display:flex;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(135deg,#f6fbff,#edf6ff);border:1px solid #d7eafc;border-radius:16px;padding:18px 20px;margin:0 0 16px}
+.mr-growth-balance-strip span{font-size:14px;color:#52606d}
+.mr-growth-balance-strip strong{font-size:20px;color:#075da8}
+.mr-hero--compact{padding-block:18px}
+
+@media (max-width:782px){
+  .mr-growth-hub{padding:0 10px 18px}
+  .mr-growth-tabs{display:flex;overflow-x:auto;scrollbar-width:none;gap:6px;padding:6px;position:sticky;top:0;z-index:12;border-radius:13px;margin:0 -2px 12px}
+  .mr-growth-tabs::-webkit-scrollbar{display:none}
+  .mr-growth-tabs a{flex:0 0 auto;min-width:112px;min-height:42px;font-size:13px;padding:7px 10px}
+  .mr-growth-balance-strip{padding:14px 15px;border-radius:13px}
+  .mr-growth-balance-strip strong{font-size:17px}
+}
+
+
+/* 0.8.3 — Mobile/Eitaa edge-to-edge Growth Hub + unmistakable tabs. */
+.mr-growth-tab__short{display:none}
+@media (max-width:782px){
+  .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="growth"]{padding-inline:0!important;padding-top:0!important}
+  .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="growth"]>h3{margin-inline:12px}
+  .mr-growth-hub{width:100%;max-width:none;margin:0;padding:0 0 18px}
+  .mr-growth-hub__content{padding-inline:10px}
+  .mr-growth-tabs{
+    position:sticky;top:0;z-index:30;
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    width:100%;overflow:visible;gap:0;
+    margin:0 0 12px;padding:0 6px;
+    border:0;border-bottom:1px solid #dfe6ee;border-radius:0;
+    background:rgba(255,255,255,.97);
+    box-shadow:0 5px 14px rgba(15,23,42,.045);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+  }
+  .mr-growth-tabs a{
+    position:relative;display:flex;align-items:center;justify-content:center;
+    min-width:0;min-height:50px;padding:8px 3px;
+    border-radius:0;background:transparent!important;box-shadow:none!important;
+    color:#596575;text-align:center;font-size:12px;font-weight:800;line-height:1.25;
+    white-space:nowrap
+  }
+  .mr-growth-tabs a::after{
+    content:"";position:absolute;inset-inline:18%;bottom:-1px;height:3px;
+    border-radius:999px 999px 0 0;background:transparent
+  }
+  .mr-growth-tabs a.is-active{color:#0869bd;font-weight:950}
+  .mr-growth-tabs a.is-active::after{background:#1683df}
+  .mr-growth-tabs a:focus-visible{outline:2px solid #8ec9f8;outline-offset:-4px}
+  .mr-growth-tab__full{display:none}
+  .mr-growth-tab__short{display:inline}
+  .mr-growth-hub .manahel-rewards-app,.mr-growth-hub .manahel-referral-app{width:100%;max-width:none}
+}
+@media (max-width:380px){
+  .mr-growth-hub__content{padding-inline:8px}
+  .mr-growth-tabs{padding-inline:2px}
+  .mr-growth-tabs a{font-size:11.5px;padding-inline:1px}
+}
+
+
+/* 0.8.4 — Compact embedded Referral UX inside the Hamnoor Growth Hub only. */
+@media (max-width:782px){
+  .mr-growth-hub[data-mr-growth-section="invite"] .mr-growth-hub__content{padding-inline:6px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .manahel-referral-app{
+    width:100%;max-width:none;margin:0!important;padding:0!important;font-size:13px
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-hero{
+    margin:0;padding:14px 12px;border-radius:14px;box-shadow:0 4px 14px rgba(18,61,104,.04)
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-hero__eyebrow{
+    margin-bottom:4px;font-size:12px;line-height:1.5
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-hero>strong{
+    font-size:18px;line-height:1.55
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-hero p{
+    margin-top:6px;font-size:13px;line-height:1.75
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .manahel-referral-invite--inside{
+    margin:10px 0 0;padding:12px;border-radius:14px
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-invite-head{gap:8px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-invite-head span{font-size:12px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-invite-head h2,
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-invite-head h3{
+    margin-top:2px;font-size:15px;line-height:1.55
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-invite-badge{
+    margin-top:6px;padding:5px 8px;font-size:12px!important
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .manahel-referral-invite p{
+    margin:7px 0;font-size:12.5px;line-height:1.7
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-link-box{padding:5px;border-radius:11px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-link-box input{padding:6px 5px;font-size:12px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-invite-actions{gap:6px;margin-top:8px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-btn{
+    min-height:44px;padding:9px 12px;border-radius:10px;font-size:13px
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-referral-copy-status{
+    min-height:1.2em;margin-top:5px!important;font-size:12px
+  }
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-section{margin-top:14px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-section__head{margin-bottom:7px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-section__head h2{font-size:15px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-stat{padding:11px;border-radius:13px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-stat strong{font-size:20px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-stat span{margin-top:5px;font-size:12px;line-height:1.45}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-earned{padding:10px 11px;border-radius:12px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-earned strong{font-size:15px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-history-item{padding:11px 12px;border-radius:13px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-history-item__main strong{font-size:13px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-history-item__main span{font-size:12px;line-height:1.55}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-history-item__main small,
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-status-badge,
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-history-points{font-size:10.5px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-policy-note{
+    margin-top:12px;padding:9px 10px;border-radius:11px;font-size:11.5px;line-height:1.65
+  }
+}
+@media (max-width:380px){
+  .mr-growth-hub[data-mr-growth-section="invite"] .mr-growth-hub__content{padding-inline:4px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-hero{padding:12px 10px}
+  .mr-growth-hub[data-mr-growth-section="invite"] .mrf-hero>strong{font-size:17px}
+}
+
+/* 0.8.10 — critical UI accessibility hardening. */
+.manahel-rewards-app :where(.mr-reward-filters button,.mr-reward-growth-cta,.mr-reward-secondary-cta,.mr-redeem-primary,.mr-redeem-dialog__close,.mr-redeem-dialog__confirm,.mr-redeem-dialog__cancel,.mr-hamnoor-dashboard-card__link,.mrf-btn):focus-visible{outline:3px solid rgba(31,99,195,.28);outline-offset:2px}
+
+
+/* 0.8.11 — Hamnoor Shared UI Token Contract v1 bridge.
+ * This bridge is deliberately opt-in. Hamnoor 4.0.14 does not yet expose every
+ * v1 canonical token with the exact contract values, so enabling aliases
+ * unconditionally could change the current Rewards appearance. The existing
+ * --mr-* defaults above therefore remain the active standalone/current values.
+ * A host may opt in after its canonical tokens are contract-stable by setting
+ * data-hamnoor-ui-contract="v1" on .hamnoor-wrap (or on the Rewards root). */
+.hamnoor-wrap[data-hamnoor-ui-contract~="v1"] .manahel-rewards-app,
+.manahel-rewards-app[data-hamnoor-ui-contract~="v1"] {
+    --mr-primary: var(--hamnoor-primary, #1F63C3);
+    --mr-primary-soft: var(--hamnoor-primary-soft, #eef5ff);
+    --mr-text: var(--hamnoor-text, #172033);
+    --mr-muted: var(--hamnoor-muted, #667085);
+    --mr-border: var(--hamnoor-border, #e5eaf1);
+    --mr-bg: var(--hamnoor-bg, #f7f9fc);
+    --mr-success: var(--hamnoor-success, #0f7a45);
+    --mr-warn: var(--hamnoor-warning, #8a5a00);
+    --mr-danger: var(--hamnoor-danger, #b42318);
+    --mr-touch-min: var(--hamnoor-touch-min, 44px);
+    --mr-control-height: var(--hamnoor-control-height, 48px);
+    --mr-radius-control: var(--hamnoor-radius-control, 10px);
+    --mr-radius-card: var(--hamnoor-radius-card, 16px);
+    --mr-radius-large: var(--hamnoor-radius-large, 24px);
+    --mr-radius-pill: var(--hamnoor-radius-pill, 999px);
+}

@@ -1,0 +1,5 @@
+(function($){'use strict';
+  $(document).on('click','[data-audio-up],[data-audio-down]',function(){var row=$(this).closest('[data-audio-row]');if($(this).is('[data-audio-up]')){row.insertBefore(row.prev('[data-audio-row]'));}else{row.insertAfter(row.next('[data-audio-row]'));}});
+  $(document).on('click','[data-audio-media-picker]',function(){var form=$(this).closest('[data-audio-media-form]'),frame=wp.media({title:'انتخاب فایل صوتی موجود',button:{text:'انتخاب این صوت'},library:{type:'audio'},multiple:false});frame.on('select',function(){var item=frame.state().get('selection').first().toJSON();form.find('[data-audio-attachment]').val(item.id);form.find('[data-audio-media-save]').prop('hidden',false).trigger('focus');});frame.open();});
+  $(document).on('submit','[data-audio-order-form]',function(){var fields=$(this).find('[data-audio-order-fields]').empty();$('[data-dua-audio-sortable] [data-audio-order-value]').each(function(){fields.append($('<input>',{type:'hidden',name:'audio_order[]',value:this.value}));});});
+}(jQuery));

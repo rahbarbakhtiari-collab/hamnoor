@@ -1,0 +1,37 @@
+html.hamnoor-eitaa-app,
+body.hamnoor-eitaa-app-page {
+    margin: 0 !important;
+    min-height: var(--tg-viewport-stable-height, 100vh);
+    background: var(--tg-theme-bg-color, #f6f7f9);
+    color: var(--tg-theme-text-color, inherit);
+    overscroll-behavior-y: contain;
+}
+
+body.hamnoor-eitaa-app-page {
+    padding-top: var(--tg-content-safe-area-inset-top, 0px) !important;
+    padding-right: var(--tg-content-safe-area-inset-right, 0px) !important;
+    padding-bottom: var(--tg-content-safe-area-inset-bottom, 0px) !important;
+    padding-left: var(--tg-content-safe-area-inset-left, 0px) !important;
+}
+
+body.hamnoor-eitaa-app-page #wpadminbar {
+    display: none !important;
+}
+
+html.hamnoor-eitaa-app {
+    margin-top: 0 !important;
+}
+
+.hamnoor-eitaa-app-shell {
+    width: 100%;
+    min-height: var(--tg-viewport-stable-height, 100vh);
+    margin: 0;
+    padding: 0;
+}
+
+/* Shortcode pages are rendered without the active theme's header/footer. Keep
+   Hamnoor itself full-width while preserving its own responsive spacing. */
+.hamnoor-eitaa-app-page .hamnoor-wrap,
+.hamnoor-eitaa-app-page .hamnoor-app-shell {
+    max-width: none;
+}
