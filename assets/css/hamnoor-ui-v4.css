@@ -1,0 +1,700 @@
+/* Hamnoor 4 UI foundation — final, accessible override layer. */
+.hamnoor-wrap {
+    --hn-bg: #f5f7fb;
+    --hn-surface: #fff;
+    --hn-surface-soft: #eef3f9;
+    --hn-text: #172033;
+    --hn-muted: #5d6878;
+    --hn-border: #d8e0ea;
+    --hn-primary: #174b86;
+    --hn-primary-hover: #103965;
+    --hn-focus: #f2a900;
+    --hn-success: #087a55;
+    --hn-danger: #b42318;
+    --hn-radius-sm: 10px;
+    --hn-radius: 16px;
+    --hn-radius-lg: 24px;
+    --hn-shadow: 0 12px 32px rgba(23, 32, 51, .09);
+    color: var(--hn-text);
+    line-height: 1.75;
+    background: var(--hn-bg);
+}
+
+.hamnoor-wrap *,
+.hamnoor-wrap *::before,
+.hamnoor-wrap *::after { box-sizing: border-box; }
+
+.hamnoor-wrap :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid var(--hn-focus) !important;
+    outline-offset: 3px;
+}
+
+/* 4.0.13 - Keep the desktop dashboard focus indicator inside the rail item.
+   The generic outward focus ring can look like horizontal/vertical scrollbars
+   on the last sidebar item. Accessibility remains intact. */
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-desktop-brand-panel :where(a, button):focus-visible {
+        outline-offset: -3px !important;
+    }
+}
+
+/* 4.0.14 - Keep the desktop dashboard rail in the document scroll flow.
+   Avoid an unnecessary nested scroll container while preserving sticky positioning. */
+@media (min-width: 783px) {
+    .hamnoor-wrap .hamnoor-desktop-brand-panel {
+        max-height: none;
+        overflow: visible;
+        min-width: 0;
+    }
+}
+
+.hamnoor-wrap :where(button, input[type="submit"], .button, .hamnoor-btn) {
+    min-height: 44px;
+    border-radius: var(--hn-radius-sm);
+}
+
+.hamnoor-wrap :where(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    min-height: 48px;
+    border: 1px solid #aeb9c8;
+    border-radius: var(--hn-radius-sm);
+    color: var(--hn-text);
+    background: #fff;
+}
+
+.hamnoor-wrap :where(input, select, textarea):hover { border-color: #77869a; }
+.hamnoor-wrap :where(input, select, textarea)[aria-invalid="true"] { border-color: var(--hn-danger); }
+.hamnoor-wrap a { text-underline-offset: .2em; }
+
+/* First visit: explain the value before asking for a mobile number. */
+.hamnoor-dashboard-guest {
+    width: min(1120px, calc(100% - 24px));
+    min-height: min(760px, calc(100dvh - 130px));
+    margin: 24px auto;
+    padding: clamp(20px, 5vw, 64px);
+    display: grid;
+    align-items: center;
+    gap: clamp(28px, 6vw, 72px);
+    background: var(--hn-surface);
+    border: 1px solid var(--hn-border);
+    border-radius: var(--hn-radius-lg);
+    box-shadow: var(--hn-shadow);
+}
+
+.hamnoor-guest-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--hn-text);
+    text-decoration: none;
+}
+
+.hamnoor-guest-brand img { width: 52px; height: 52px; object-fit: contain; }
+.hamnoor-guest-brand span { display: grid; line-height: 1.35; }
+.hamnoor-guest-brand strong { font-size: 1.2rem; }
+.hamnoor-guest-brand small { color: var(--hn-muted); }
+.hamnoor-guest-copy { margin-top: clamp(28px, 5vw, 56px); }
+
+.hamnoor-guest-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--hn-primary);
+    font-weight: 700;
+}
+
+.hamnoor-guest-copy h1 {
+    max-width: 18ch;
+    margin: 0;
+    color: var(--hn-text);
+    font-size: clamp(1.75rem, 4.6vw, 3rem);
+    line-height: 1.35;
+}
+
+.hamnoor-guest-copy > p { max-width: 58ch; margin: 18px 0; color: var(--hn-muted); font-size: 1.05rem; }
+.hamnoor-guest-benefits { display: grid; gap: 10px; margin: 24px 0 0; padding: 0; list-style: none; }
+.hamnoor-guest-benefits li { position: relative; padding-inline-start: 30px; }
+.hamnoor-guest-benefits li::before { content: "✓"; position: absolute; inset-inline-start: 0; color: var(--hn-success); font-weight: 800; }
+
+.hamnoor-guest-entry { padding: clamp(18px, 4vw, 32px); background: var(--hn-surface-soft); border-radius: var(--hn-radius); }
+.hamnoor-guest-entry .hamnoor-recovery-card { margin: 0; padding: 0; background: transparent; border: 0; box-shadow: none; }
+.hamnoor-guest-entry h2 { margin: 0 0 8px; color: var(--hn-text); font-size: clamp(1.25rem, 3vw, 1.55rem); }
+.hamnoor-guest-entry label { display: block; margin: 18px 0 6px; color: var(--hn-text); font-weight: 700; }
+.hamnoor-guest-entry [data-recovery-phone-step] { display: grid; gap: 12px; }
+.hamnoor-guest-entry [data-recovery-phone-step] button { width: 100%; color: #fff; background: var(--hn-primary); border-color: var(--hn-primary); font-weight: 700; }
+.hamnoor-guest-entry [data-recovery-phone-step] button:hover { background: var(--hn-primary-hover); }
+.hamnoor-guest-entry :where(.hamnoor-recovery-hint, .hamnoor-recovery-privacy) { display: block; margin-top: 12px; color: var(--hn-muted); font-size: .9rem; }
+.hamnoor-guest-discover { margin: 18px 0 0; text-align: center; color: var(--hn-muted); }
+.hamnoor-guest-discover a { color: var(--hn-primary); font-weight: 700; }
+
+/* Dashboard hierarchy: one calm surface language across phone and desktop. */
+.hamnoor-dashboard :where(.hamnoor-mobile-card, .hamnoor-card, .hamnoor-dashboard-card) {
+    border-color: var(--hn-border);
+    border-radius: var(--hn-radius);
+    box-shadow: 0 4px 18px rgba(23, 32, 51, .06);
+}
+
+.hamnoor-mobile-bottom-nav {
+    min-height: 68px;
+    border-top: 1px solid var(--hn-border);
+    box-shadow: 0 -8px 24px rgba(23, 32, 51, .08);
+}
+
+.hamnoor-mobile-bottom-nav > a { min-width: 0; min-height: 56px; color: var(--hn-muted); }
+.hamnoor-mobile-bottom-nav > a.is-active { color: var(--hn-primary); font-weight: 700; }
+.hamnoor-mobile-bottom-nav > a svg { width: 22px; height: 22px; }
+
+@media (min-width: 900px) {
+    .hamnoor-dashboard-guest { grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr); }
+    .hamnoor-guest-entry [data-recovery-phone-step] { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+    .hamnoor-guest-entry [data-recovery-phone-step] label,
+    .hamnoor-guest-entry [data-recovery-phone-step] .hamnoor-recovery-hint { grid-column: 1 / -1; }
+    .hamnoor-guest-entry [data-recovery-phone-step] button { width: auto; min-width: 150px; }
+}
+
+@media (max-width: 640px) {
+    .hamnoor-dashboard-guest { width: 100%; min-height: calc(100dvh - 72px); margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+    .hamnoor-guest-brand img { width: 44px; height: 44px; }
+    .hamnoor-mobile-bottom-nav > a span { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hamnoor-wrap *, .hamnoor-wrap *::before, .hamnoor-wrap *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+@media (forced-colors: active) {
+    .hamnoor-dashboard-guest, .hamnoor-guest-entry { border: 1px solid CanvasText; }
+    .hamnoor-guest-benefits li::before { color: CanvasText; }
+}
+
+/* UX Phase 6 — one share-card system across Hamnoor.
+ * Every part card carries the campaign appearance selected in wizard step 3. */
+.hamnoor-wrap .hamnoor-part-card--unified {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: .75rem;
+    min-width: 0;
+    width: 100%;
+    padding: 1rem;
+    overflow: hidden;
+    border: 1px solid var(--hamnoor-border, #d8e0ea);
+    border-inline-start-width: 1px;
+    border-top: 4px solid var(--hamnoor-accent, var(--hamnoor-primary, #174b86));
+    border-radius: 16px;
+    background: var(--hamnoor-surface, #fff);
+    box-shadow: 0 7px 22px rgba(23, 32, 51, .065);
+    direction: rtl;
+}
+.hamnoor-wrap .hamnoor-part-card--unified:hover {
+    border-color: color-mix(in srgb, var(--hamnoor-primary, #174b86) 28%, #d8e0ea);
+    box-shadow: 0 10px 26px rgba(23, 32, 51, .09);
+}
+.hamnoor-wrap .hamnoor-part-card--unified.hamnoor-part-card--mine {
+    outline: 2px solid color-mix(in srgb, var(--hamnoor-primary, #174b86) 30%, transparent);
+    outline-offset: 1px;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-card-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+        "khatm status"
+        "title status"
+        "person person"
+        "progress progress"
+        "engagement engagement";
+    gap: .22rem .65rem;
+    align-items: start;
+    min-width: 0;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-khatm-title {
+    grid-area: khatm;
+    min-width: 0;
+    margin: 0;
+    color: var(--hamnoor-primary, #174b86);
+    font-size: .78rem;
+    font-weight: 800;
+    line-height: 1.55;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-khatm-title a {
+    color: inherit;
+    text-decoration: none;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-title {
+    grid-area: title;
+    min-width: 0;
+    margin: 0;
+    color: var(--hamnoor-text, #172033);
+    font-size: 1rem;
+    font-weight: 900;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-card-main > .hamnoor-status {
+    grid-area: status;
+    align-self: start;
+    justify-self: end;
+    margin: 0;
+    white-space: nowrap;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-participant {
+    grid-area: person;
+    margin: 0;
+    color: var(--hamnoor-muted, #5d6878);
+    font-size: .8rem;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-reading-state {
+    grid-area: progress;
+    min-width: 0;
+    margin-top: .35rem;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-reading-progress {
+    overflow: hidden;
+    height: 6px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--hamnoor-primary, #174b86) 10%, #eef3f9);
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-reading-progress > span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--hamnoor-primary, #174b86);
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-reading-state small {
+    display: block;
+    margin-top: .3rem;
+    color: var(--hamnoor-muted, #5d6878);
+    font-size: .75rem;
+    line-height: 1.6;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-engagement {
+    grid-area: engagement;
+    min-width: 0;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
+    gap: .5rem;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-actions:empty { display: none; }
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-actions form { display: contents; }
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-actions .hamnoor-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    margin: 0;
+    padding: .55rem .7rem;
+    white-space: normal;
+}
+.hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-actions .hamnoor-btn-primary {
+    background: var(--hamnoor-primary, #174b86);
+    border-color: var(--hamnoor-primary, #174b86);
+}
+.hamnoor-wrap .hamnoor-part-card--unified.hamnoor-part-card--completed {
+    opacity: .94;
+    background: color-mix(in srgb, var(--hamnoor-success-soft, #ecfdf3) 34%, #fff);
+}
+.hamnoor-wrap .hamnoor-part-card--unified.hamnoor-part-card--ready {
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--hamnoor-primary, #174b86) 16%, transparent), 0 9px 24px rgba(23, 32, 51, .07);
+}
+
+/* Public campaign: use real cards on desktop too; the old row header/table
+ * presentation is intentionally retired so the wizard appearance survives. */
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-public-parts-row-head { display: none; }
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 245px), 1fr));
+    gap: .75rem;
+}
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .7rem;
+    min-height: 0;
+    margin: 0;
+    padding: .9rem;
+    border: 1px solid var(--hamnoor-border, #d8e0ea);
+    border-top: 4px solid var(--hamnoor-accent, var(--hamnoor-primary, #174b86));
+    border-radius: 16px;
+    background: var(--hamnoor-surface, #fff);
+    box-shadow: 0 7px 22px rgba(23, 32, 51, .055);
+}
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-single .hamnoor-part-card-main {
+    grid-column: auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title status" "person person";
+    gap: .25rem .55rem;
+}
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions {
+    grid-column: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    min-width: 0;
+}
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions .hamnoor-btn {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    border-radius: 10px;
+    font-size: .84rem;
+}
+
+/* Claim button carries separate desktop/mobile labels. Keep exactly one visible
+ * even when the standalone stylesheet is not loaded in theme-compatible mode. */
+body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-claim-label-mobile {
+    display: none;
+}
+
+/* My shares: same component, richer content. */
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-row-head { display: none; }
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: .8rem;
+}
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid > .hamnoor-part-card--unified {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: .75rem;
+    width: 100%;
+    min-height: 0;
+    padding: 1rem;
+    border-radius: 16px;
+    direction: rtl;
+}
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card--unified > * { direction: rtl; }
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card--unified .hamnoor-part-card-main,
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card--unified .hamnoor-part-actions {
+    grid-column: auto;
+}
+.hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-part-card--unified .hamnoor-part-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr));
+}
+
+/* Phase 6B — action-oriented My Shares hierarchy. */
+.hamnoor-wrap .hamnoor-my-parts-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: .75rem;
+}
+.hamnoor-wrap .hamnoor-my-parts-heading h3,
+.hamnoor-wrap .hamnoor-my-parts-heading p { margin: 0; }
+.hamnoor-wrap .hamnoor-my-parts-heading p {
+    margin-top: .2rem;
+    color: var(--hamnoor-muted, #5d6878);
+    font-size: .88rem;
+}
+.hamnoor-wrap .hamnoor-my-parts-open-badge {
+    flex: 0 0 auto;
+    padding: .3rem .65rem;
+    color: var(--hamnoor-primary, #174b86);
+    background: color-mix(in srgb, var(--hamnoor-primary, #174b86) 8%, #fff);
+    border: 1px solid color-mix(in srgb, var(--hamnoor-primary, #174b86) 18%, #d8e0ea);
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+@media (max-width: 782px) {
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-claim-label-desktop { display: none; }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-claim-label-mobile { display: inline; }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid,
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .hamnoor-wrap .hamnoor-part-card--unified,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified,
+    .hamnoor-wrap .hamnoor-dashboard-panel[data-tab-panel="my-parts"] .hamnoor-my-parts-grid > .hamnoor-part-card--unified {
+        gap: .62rem;
+        padding: .82rem;
+        border-radius: 15px;
+    }
+    .hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-title { font-size: .95rem; }
+    .hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-khatm-title { font-size: .75rem; }
+    .hamnoor-wrap .hamnoor-part-card--unified .hamnoor-part-actions { grid-template-columns: minmax(0, 1fr); }
+    .hamnoor-wrap .hamnoor-my-parts-heading { align-items: center; }
+    .hamnoor-wrap .hamnoor-my-parts-heading p { font-size: .82rem; }
+}
+
+
+/* Public campaign AJAX claim returns the richer dashboard-context card.
+ * Keep its full metadata/progress grid, and give the share title a full row on mobile. */
+@media (max-width: 782px) {
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-card-main {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "khatm status"
+            "title title"
+            "person person"
+            "progress progress"
+            "engagement engagement";
+        gap: .3rem .55rem;
+        width: 100%;
+        min-width: 0;
+        align-items: start;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-title {
+        min-width: 0;
+        max-width: 100%;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-reading-state,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-reading-progress,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-engagement {
+        width: 100%;
+        min-width: 0;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-reminder-toggle {
+        display: inline-flex !important;
+        align-items: center;
+        gap: .45rem;
+        margin: 0;
+    }
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-reminder-toggle input[type="checkbox"] {
+        width: 18px !important;
+        height: 18px;
+        flex: 0 0 18px;
+        margin: 0;
+    }
+}
+
+/* Mobile selected-share card correction.
+ * Keep the unified share card readable after AJAX claim and in My Shares. */
+@media (max-width: 782px) {
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-card-main {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            "khatm status"
+            "title status"
+            "person person"
+            "progress progress"
+            "engagement engagement";
+        column-gap: .65rem;
+        row-gap: .28rem;
+        align-items: start;
+        width: 100%;
+        min-width: 0;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-khatm-title,
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-title,
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-participant {
+        min-width: 0;
+        max-width: 100%;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-title {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        overflow-wrap: normal;
+        word-break: normal;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-card-main > .hamnoor-status {
+        align-self: start;
+        justify-self: end;
+        max-width: none;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-reading-state {
+        width: 100%;
+        max-width: none;
+        margin-top: .42rem;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-reading-progress {
+        width: 100%;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-reading-state small {
+        margin-top: .35rem;
+        font-size: .72rem;
+        line-height: 1.55;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-part-engagement {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        margin-top: .18rem;
+        padding-top: .12rem;
+        border-top: 0;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-reminder-toggle {
+        display: inline-flex !important;
+        align-items: center;
+        gap: .48rem;
+        min-height: 32px;
+        margin: 0;
+        line-height: 1.55;
+        font-size: .78rem;
+    }
+    .hamnoor-wrap .hamnoor-my-parts-grid .hamnoor-part-card--unified .hamnoor-reminder-toggle input[type="checkbox"] {
+        width: 18px !important;
+        height: 18px;
+        flex: 0 0 18px;
+        margin: 0;
+        accent-color: var(--hamnoor-primary, #1f63c3);
+    }
+}
+
+/* The immediate claim confirmation belongs to the same share surface language. */
+.hamnoor-modal .hamnoor-claim-success-card.hamnoor-share-surface,
+.hamnoor-wrap .hamnoor-claim-success-card.hamnoor-share-surface {
+    padding-top: 1rem;
+    border-top: 4px solid var(--hamnoor-accent, var(--hamnoor-primary, #174b86));
+    border-radius: 16px;
+}
+.hamnoor-modal .hamnoor-claim-success-card.hamnoor-share-surface h3,
+.hamnoor-wrap .hamnoor-claim-success-card.hamnoor-share-surface h3 {
+    color: var(--hamnoor-primary, #174b86);
+}
+.hamnoor-modal .hamnoor-claim-success-card.hamnoor-share-surface .hamnoor-claim-reading-primary,
+.hamnoor-wrap .hamnoor-claim-success-card.hamnoor-share-surface .hamnoor-claim-reading-primary {
+    background: var(--hamnoor-primary, #174b86);
+    border-color: var(--hamnoor-primary, #174b86);
+}
+
+/* 4.0.0 mobile claimed-share card hard reset.
+ * Legacy public-row/mobile grid rules still target .hamnoor-part-card. Once a claim
+ * is replaced by AJAX with the richer unified card, those rules can create phantom
+ * grid space or compress metadata. Keep the unified mobile card content-sized and
+ * vertically stacked regardless of the older row system. */
+@media (max-width: 782px) {
+    /* Prevent CSS Grid's default stretch behavior from making an AJAX-
+     * replaced share card inherit the tallest sibling row height. */
+    .hamnoor-wrap .hamnoor-parts-grid {
+        align-items: start !important;
+        align-content: start !important;
+    }
+    .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified {
+        align-self: start !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        align-content: initial !important;
+        justify-content: flex-start !important;
+        gap: .62rem !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: .82rem !important;
+        overflow: hidden !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-card-main,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-card-main {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        grid-template-areas:
+            "title status"
+            "person person"
+            "progress progress"
+            "engagement engagement" !important;
+        grid-auto-rows: auto !important;
+        align-items: start !important;
+        align-content: start !important;
+        gap: .26rem .55rem !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        margin: 0 !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-card-main,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-track .hamnoor-part-card-main,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-dashboard .hamnoor-part-card-main,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified.hamnoor-part-card-context-track .hamnoor-part-card-main {
+        grid-template-areas:
+            "khatm status"
+            "title status"
+            "person person"
+            "progress progress"
+            "engagement engagement" !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-khatm-title,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-title,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-participant,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-khatm-title,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-title,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-participant {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        white-space: normal !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-card-main > .hamnoor-status,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-card-main > .hamnoor-status {
+        display: inline-flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        grid-area: status !important;
+        align-self: start !important;
+        justify-self: end !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-reading-state,
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-engagement,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-reading-state,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-engagement {
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin-inline: 0 !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: .5rem !important;
+        align-self: stretch !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions form,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions form {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    body.hamnoor-public-khatm-page .hamnoor-wrap .hamnoor-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions .hamnoor-btn,
+    .hamnoor-wrap .hamnoor-my-parts-grid > .hamnoor-part-card--unified .hamnoor-part-actions .hamnoor-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 46px !important;
+        margin: 0 !important;
+        white-space: normal !important;
+    }
+}

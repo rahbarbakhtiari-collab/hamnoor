@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>هم‌نور در بله</title>
+  <!-- Bale requires its SDK before every other script. -->
+  <script src="https://tapi.bale.ai/miniapp.js?3"></script>
+  <style>
+    html,body{margin:0;padding:0;background:#f7f8fb;color:#172033;font-family:Tahoma,Arial,sans-serif}
+    .app{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box}
+    .card{width:min(520px,100%);background:#fff;border:1px solid #e2e6ef;border-radius:18px;padding:24px;box-sizing:border-box;box-shadow:0 8px 30px rgba(0,0,0,.06);text-align:center}
+    .brand-logo{display:inline-flex;align-items:center;justify-content:center;min-width:116px;min-height:48px;margin:0 auto 14px;padding:8px 14px;background:#14407f;border-radius:15px;box-sizing:border-box}.brand-logo img{display:block;width:94px;height:auto;max-height:34px;object-fit:contain}.status p,.connect p{line-height:1.9;margin:8px 0}.intro{text-align:right;line-height:1.9;background:#f5f8fd;border-radius:12px;padding:12px 16px;margin:12px 0}.intro strong{display:block;text-align:center}.intro ul{margin:8px 0;padding-right:20px}.err{color:#9e2b2b}
+    .spinner{width:34px;height:34px;border:3px solid #dce2ec;border-top-color:#2355a6;border-radius:50%;animation:spin .8s linear infinite;margin:18px auto}
+    .btn{display:inline-block;margin-top:14px;padding:11px 18px;border:0;border-radius:10px;background:#2355a6;color:#fff;text-decoration:none;cursor:pointer;font:inherit}
+    .diag{font-size:12px;color:#667085;margin-top:16px;direction:ltr;word-break:break-word}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+<div class="app"><main class="card">
+  <div class="brand-logo"><img src="../images/hamnoor-logo.webp" alt="هم‌نور"></div>
+  <div id="status" class="status"><div class="spinner"></div><p>در حال شناسایی امن حساب بله و ورود به هم‌نور…</p></div>
+  <div id="connect" class="connect" hidden>
+    <div class="intro"><strong>پویش ختم قرآن هم‌نور</strong><ul><li>انتخاب سهم از پویش‌های عمومی</li><li>ادامه قرائت و نگهداری پیشرفت</li><li>ایجاد و مدیریت پویش شخصی</li></ul></div>
+    <p>برای ساخت یا بازیابی پنل شخصی، بله فقط یک‌بار اجازه دسترسی به شماره موبایل همین حساب را درخواست می‌کند.</p>
+    <button id="contact" class="btn" type="button">شروع استفاده از هم‌نور</button>
+  </div>
+  <div id="diag" class="diag"></div>
+</main></div>
+<script>
+(function(){
+  'use strict';
+  var status=document.getElementById('status'), connect=document.getElementById('connect'), contact=document.getElementById('contact'), diag=document.getElementById('diag');
+  var qs=new URLSearchParams(location.search), target=(qs.get('tgWebAppStartParam')||qs.get('target')||'dashboard').replace(/[^a-z0-9_]/g,'');
+  var allowedTargets=['dashboard','continue','parts','public','my_khatms','create','notifications','reminders','profile','progress','help'];
+  if(!/^part_[0-9]+$/.test(target) && allowedTargets.indexOf(target)===-1) target='dashboard';
+  var root=location.origin.replace(/\/$/,'');
+  var authUrl=root+'/wp-json/hamnoor/v1/bale-miniapp/auth';
+  var connectUrl=root+'/wp-json/hamnoor/v1/bale-miniapp/connect';
+  var app=null;
+  function esc(v){return String(v==null?'':v).replace(/[&<>\"']/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#039;'})[c];});}
+  function fail(msg,need){status.innerHTML='<p class="err">'+esc(msg||'ورود انجام نشد.')+'</p>';connect.hidden=!need;}
+  function post(url,body){return fetch(url,{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json().catch(function(){return {};}).then(function(j){return{ok:r.ok,data:j};});});}
+  function go(url){if(!url){fail('مقصد هم‌نور مشخص نشد.',false);return;}status.innerHTML='<div class="spinner"></div><p>اتصال تأیید شد؛ در حال ورود به همان پنل هم‌نور…</p>';connect.hidden=true;location.replace(url);}
+  function connectPhone(){
+    if(!app||typeof app.requestContact!=='function'){fail('نسخه بله شما امکان دریافت شماره از Mini App را ندارد. بله را به‌روزرسانی کنید.',false);return;}
+    status.innerHTML='<div class="spinner"></div><p>در انتظار تأیید شماره توسط بله…</p>';connect.hidden=true;
+    app.requestContact(function(ok,phone){
+      if(!ok||!phone){fail('اتصال انجام نشد؛ اجازه دسترسی به شماره داده نشد.',true);return;}
+      var p=(typeof phone==='string'||typeof phone==='number')?String(phone):(phone.phone_number||phone.phone||'');
+      if(!p){fail('شماره موبایل از بله دریافت نشد.',true);return;}
+      post(connectUrl,{init_data:app.initData,phone:p,target:target}).then(function(x){
+        if(!x.ok||!x.data||!x.data.ok){fail((x.data&&x.data.message)||'اتصال حساب بله به هم‌نور انجام نشد.',true);return;}
+        go(x.data.redirect);
+      }).catch(function(){fail('ارتباط با سرور هم‌نور برقرار نشد.',true);});
+    });
+  }
+  function boot(){
+    try{
+      app=window.Bale&&window.Bale.WebApp?window.Bale.WebApp:null;
+      if(!app){fail('SDK مینی‌اپ بله در این صفحه فعال نشد.',false);diag.textContent='Bale.WebApp: missing';return;}
+      diag.textContent='Bale WebApp v'+(app.version||'?')+' | iframe='+(app.isIframe?'yes':'no')+' | supported='+(String(app.isMiniAppSupported));
+      if(app.isMiniAppSupported===false){fail('نسخه بله شما از Mini App پشتیبانی نمی‌کند؛ بله را به‌روزرسانی کنید.',false);return;}
+      if(!app.initData){fail('داده هویتی Mini App از بله دریافت نشد. این صفحه باید از دکمه Mini App باز شود.',false);return;}
+      if(app.ready) app.ready(); if(app.expand) app.expand();
+      contact.addEventListener('click',connectPhone);
+      post(authUrl,{init_data:app.initData,target:target}).then(function(x){
+        if(x.ok&&x.data&&x.data.ok&&x.data.redirect){go(x.data.redirect);return;}
+        var d=x.data||{};
+        if(d.needs_connection){status.innerHTML='<p>برای اولین استفاده، اتصال امن حساب را تکمیل کنید.</p>';connect.hidden=false;setTimeout(connectPhone,300);return;}
+        fail(d.message||'ورود از بله انجام نشد.',false);
+      }).catch(function(){fail('ارتباط با API هم‌نور برقرار نشد.',false);});
+    }catch(e){fail('راه‌اندازی Mini App بله انجام نشد: '+(e&&e.message?e.message:'خطای ناشناخته'),false);}
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot,{once:true}); else boot();
+})();
+</script>
+</body>
+</html>

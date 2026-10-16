@@ -1,0 +1,10 @@
+<IfModule mod_headers.c>
+    # Bale Web loads Mini Apps inside a cross-origin iframe. Keep these rules
+    # scoped to this one static shell so the rest of Hamnoor keeps its normal
+    # clickjacking policy.
+    Header always unset X-Frame-Options
+    Header always unset Content-Security-Policy
+    Header always set Content-Security-Policy "frame-src https://*.bale.ai; frame-ancestors https://bale.ai https://*.bale.ai https://ble.ir https://*.ble.ir"
+    Header always set X-Hamnoor-Bale-Static "3.9.42"
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+</IfModule>

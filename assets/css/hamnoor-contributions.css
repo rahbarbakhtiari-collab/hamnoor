@@ -1,0 +1,300 @@
+@font-face{font-family:'OthmanTaha';src:url('https://www.manahel.ir/wp-content/uploads/2025/02/ScheherazadeNew-Medium.woff2') format('woff2');font-display:swap}
+.hamnoor-contribution-page{display:grid;gap:18px}.hamnoor-contribution-content,.hamnoor-contribution-action-card{background:#fff;border:1px solid rgba(20,44,80,.12);border-radius:18px;padding:20px;box-shadow:0 8px 28px rgba(20,44,80,.06)}.hamnoor-contribution-content>h2,.hamnoor-contribution-action-copy h2{margin:0 0 12px}.hamnoor-contribution-content p{line-height:2;margin:.65em 0}.hamnoor-contribution-content-arabic,.hamnoor-contribution-content-text,.hamnoor-contribution-content-body,.hamnoor-contribution-content-content{font-size:1.08rem;line-height:2.2}.hamnoor-contribution-content-translation,.hamnoor-contribution-content-transliteration,.hamnoor-contribution-content-description,.hamnoor-contribution-content-note{opacity:.84;line-height:2}.hamnoor-contribution-content-item{padding:14px 0;border-top:1px solid rgba(20,44,80,.09)}.hamnoor-contribution-content-item:first-of-type{border-top:0}.hamnoor-contribution-form{display:grid;gap:14px}.hamnoor-contribution-identity{display:grid;gap:10px}.hamnoor-contribution-identity label{display:grid;gap:7px;font-weight:700}.hamnoor-contribution-identity input,.hamnoor-contribution-quantity input{width:100%;min-height:46px;border:1px solid rgba(20,44,80,.22);border-radius:12px;padding:9px 12px;font:inherit;background:#fff}.hamnoor-contribution-identity-card{display:grid;gap:4px;padding:14px 16px;border-radius:14px;background:rgba(31,99,195,.07)}.hamnoor-contribution-identity-card span,.hamnoor-contribution-identity-card small{opacity:.78}.hamnoor-contribution-quantity{display:grid;gap:7px;font-weight:700}.hamnoor-contribution-quantity small{font-weight:400;opacity:.72}.hamnoor-contribution-action-card .hamnoor-btn[disabled]{opacity:.55;cursor:not-allowed}.hamnoor-contribution-progress .hamnoor-progress-meta{justify-content:flex-start}.hamnoor-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}.hamnoor-contribution-page .hamnoor-ajax-message:empty{display:none}@media (max-width:782px){.hamnoor-contribution-page{gap:14px}.hamnoor-contribution-content,.hamnoor-contribution-action-card{padding:16px;border-radius:16px}.hamnoor-contribution-content-arabic,.hamnoor-contribution-content-text,.hamnoor-contribution-content-body,.hamnoor-contribution-content-content{font-size:1.04rem;line-height:2.15}}
+.hamnoor-contribution-page .hamnoor-honeypot{position:fixed!important;inset:0 auto auto 0!important;width:1px!important;height:1px!important;clip-path:inset(50%)!important;overflow:hidden!important;white-space:nowrap!important}
+.hamnoor-dua-arabic,.hamnoor-contribution-content-arabic{font-family:'OthmanTaha','Scheherazade New',serif!important;font-size:clamp(1.32rem,2.8vw,1.75rem)!important;line-height:2.35!important;overflow-wrap:anywhere}.hamnoor-dua-persian,.hamnoor-contribution-content-translation,.hamnoor-contribution-content-description,.hamnoor-contribution-content-note{font-family:IRANSansX,IRANSans,Vazirmatn,Tahoma,sans-serif!important;font-size:1rem;line-height:2}.hamnoor-dua-audio{display:grid;gap:12px;margin:16px 0;padding:14px;border-radius:16px;background:rgba(31,99,195,.07);overflow:hidden}.hamnoor-dua-audio-head{display:flex;align-items:center;gap:12px;min-width:0}.hamnoor-dua-audio-head>div{display:grid;min-width:0}.hamnoor-dua-audio-head small{opacity:.72}.hamnoor-dua-audio-play{inline-size:48px;block-size:48px;flex:0 0 48px;border:0;border-radius:50%;background:#17498a;color:#fff;font:inherit;cursor:pointer}.hamnoor-dua-audio-reciter{display:grid;gap:5px}.hamnoor-dua-audio-reciter select{width:100%;min-height:44px;border:1px solid rgba(20,44,80,.2);border-radius:10px;padding:6px 10px;font:inherit}.hamnoor-dua-audio-timeline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center}.hamnoor-dua-audio-timeline input{width:100%;min-width:0}.hamnoor-dua-audio-message{margin:0!important;color:#8a3b1d}.hamnoor-dua-audio-message:empty{display:none}@media(max-width:600px){.hamnoor-dua-audio{padding:12px}.hamnoor-dua-audio-timeline{grid-template-columns:1fr}.hamnoor-dua-arabic,.hamnoor-contribution-content-arabic{font-size:1.28rem!important;line-height:2.25!important}}
+
+
+/* Dua Reader semantic parity with Manahel Mafatih Online 3.3.1.
+ * Hamnoor keeps its campaign shell; the prayer body follows the Mafatih reader model. */
+.hamnoor-dua-reader{
+    --dua-bg:#f4f8ff;
+    --dua-card:#fff;
+    --dua-text:#17243a;
+    --dua-muted:#667085;
+    --dua-heading:#123e7a;
+    --dua-arabic:#132f56;
+    --dua-translation:#314e73;
+    --dua-about:#35445a;
+    --dua-border:#d4e2f7;
+    --dua-audio-bg:#eef5ff;
+    --dua-gold:#b8892d;
+    --hamnoor-dua-scale:1;
+}
+.hamnoor-dua-reader[data-dua-theme="sepia"]{
+    --dua-bg:#efe8d7;--dua-card:#fffaf0;--dua-text:#362f25;--dua-muted:#756b5d;
+    --dua-heading:#4f3d22;--dua-arabic:#2c261e;--dua-translation:#4c4438;--dua-about:#554d42;
+    --dua-border:#d9ceb6;--dua-audio-bg:#f7efdf;
+}
+.hamnoor-dua-reader[data-dua-theme="dark"]{
+    --dua-bg:#0f1815;--dua-card:#17231f;--dua-text:#e7eee9;--dua-muted:#a8b8af;
+    --dua-heading:#ecf7f0;--dua-arabic:#f1f7f3;--dua-translation:#d0ddd5;--dua-about:#c1cec6;
+    --dua-border:#30453d;--dua-audio-bg:#1b2d27;color-scheme:dark;
+}
+.hamnoor-dua-reader .hamnoor-dua-reader-content{
+    width:min(100%,900px);
+    max-width:900px;
+    margin:18px auto;
+    padding:clamp(18px,4.2vw,52px);
+    border:1px solid var(--dua-border);
+    border-radius:24px;
+    background:var(--dua-card);
+    color:var(--dua-text);
+    box-shadow:0 12px 34px rgba(31,99,195,.08);
+    overflow:visible;
+}
+.hamnoor-dua-reader-content>h2{
+    margin:0 0 18px;
+    color:var(--dua-heading);
+    text-align:center;
+    font-size:clamp(1.4rem,3vw,2rem);
+    line-height:1.75;
+}
+.hamnoor-dua-article-content{display:block}
+.hamnoor-dua-block{scroll-margin-top:120px;margin:0}
+.hamnoor-dua-block-body>p{
+    margin:0 0 18px;
+    text-align:justify;
+    text-justify:inter-word;
+    hyphens:none;
+}
+.hamnoor-dua-block-body>p:last-child{margin-bottom:0}
+.hamnoor-dua-block-text{
+    padding-block:7px 17px;
+    color:var(--dua-arabic);
+    font-family:'OthmanTaha','Scheherazade New',serif;
+    font-size:calc(27px * var(--hamnoor-dua-scale));
+    line-height:2.15;
+}
+.hamnoor-dua-block-text+.hamnoor-dua-block-translate{margin-top:-3px}
+.hamnoor-dua-block-translate{
+    margin:6px 0 22px;
+    padding:15px 18px;
+    border-inline-start:3px solid color-mix(in srgb,#1f63c3 35%,transparent);
+    border-radius:11px;
+    background:color-mix(in srgb,#1f63c3 3.8%,transparent);
+    color:var(--dua-translation);
+    font-family:IRANSansX,IRANSans,Vazirmatn,Tahoma,sans-serif;
+    font-size:calc(18px * var(--hamnoor-dua-scale));
+    line-height:2;
+}
+.hamnoor-dua-block-abouttext,.hamnoor-dua-block-other{
+    margin:12px 0 20px;
+    color:var(--dua-about);
+    font-family:IRANSansX,IRANSans,Vazirmatn,Tahoma,sans-serif;
+    font-size:calc(17px * var(--hamnoor-dua-scale));
+    line-height:2.05;
+}
+.hamnoor-dua-block-heading h2,.hamnoor-dua-block-subheading h3{
+    color:var(--dua-heading);
+    line-height:1.65;
+    text-align:start;
+    text-wrap:balance;
+}
+.hamnoor-dua-block-heading h2{
+    margin:36px 0 16px;
+    padding-bottom:10px;
+    border-bottom:1px solid color-mix(in srgb,#1f63c3 22%,var(--dua-border));
+    font-size:calc(clamp(22px,3vw,30px) * var(--hamnoor-dua-scale));
+}
+.hamnoor-dua-block-subheading h3{
+    margin:28px 0 12px;
+    font-size:calc(clamp(19px,2.4vw,24px) * var(--hamnoor-dua-scale));
+}
+.hamnoor-dua-reader.is-translation-hidden .hamnoor-dua-block-translate,
+.hamnoor-dua-reader.is-translation-hidden .hamnoor-contribution-content-translation,
+.hamnoor-dua-reader.is-translation-hidden .hamnoor-contribution-content-transliteration{display:none}
+
+/* Reader toolbar uses the same compact icon-led interaction pattern as Mafatih 3.3.1. */
+.hamnoor-dua-reader-toolbar{
+    position:sticky;
+    top:8px;
+    z-index:80;
+    display:flex;
+    justify-content:center;
+    gap:7px;
+    width:max-content;
+    max-width:min(900px,calc(100% - 12px));
+    margin:0 auto;
+    padding:8px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    border:1px solid var(--dua-border);
+    border-radius:17px;
+    background:color-mix(in srgb,var(--dua-card) 90%,transparent);
+    backdrop-filter:blur(16px);
+}
+.hamnoor-dua-reader-toolbar::-webkit-scrollbar{display:none}
+.hamnoor-dua-reader-toolbar button{
+    appearance:none;
+    display:inline-flex;
+    flex:0 0 auto;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    min-width:62px;
+    min-height:50px;
+    padding:6px 9px;
+    border:1px solid transparent;
+    border-radius:12px;
+    background:transparent;
+    color:var(--dua-text);
+    cursor:pointer;
+    white-space:nowrap;
+}
+.hamnoor-dua-reader-toolbar button span{font-size:.72rem}
+.hamnoor-dua-reader-toolbar button[aria-pressed="true"]{background:#1f63c3;color:#fff}
+.hamnoor-dua-reader-icon{width:21px;height:21px;display:block}
+.hamnoor-dua-reading-progress{position:fixed;inset:0 0 auto;height:4px;z-index:99999;pointer-events:none}
+.hamnoor-dua-reading-progress span{display:block;width:100%;height:100%;background:linear-gradient(90deg,#b8892d,#1f63c3);transform:scaleX(0);transform-origin:right center}
+
+/* Audio follows Mafatih's native, legible reader pattern. */
+.hamnoor-dua-audio{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(132px,210px) minmax(0,1fr);
+    align-items:center;
+    gap:8px 12px;
+    width:100%;
+    max-width:none;
+    margin:8px 0 18px;
+    padding:9px 12px;
+    min-height:58px;
+    border:1px solid color-mix(in srgb,#1f63c3 28%,var(--dua-border));
+    border-radius:14px;
+    background:var(--dua-audio-bg);
+    box-shadow:0 8px 22px rgba(31,99,195,.08);
+    overflow:visible;
+}
+.hamnoor-dua-audio.hamnoor-dua-audio-chooser{
+    grid-template-columns:minmax(122px,190px) minmax(122px,190px) minmax(0,1fr);
+}
+.hamnoor-dua-audio-meta{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:0;
+    min-width:0;
+    text-align:start;
+    line-height:1.45;
+}
+.hamnoor-dua-audio-meta small{color:#1f63c3;font-weight:800;font-size:.76em}
+.hamnoor-dua-audio-meta strong,.hamnoor-dua-audio-meta span{
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.hamnoor-dua-audio-meta strong{font-size:.92em}
+.hamnoor-dua-audio-meta span{color:var(--dua-muted);font-size:.78em}
+.hamnoor-dua-audio-reciter{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    min-width:0;
+    font-weight:700;
+    font-size:.78em;
+}
+.hamnoor-dua-audio-reciter>span{flex:0 0 auto}
+.hamnoor-dua-audio-reciter select{
+    width:100%;
+    min-width:0;
+    min-height:38px;
+    border:1px solid var(--dua-border);
+    border-radius:9px;
+    background:var(--dua-card);
+    color:var(--dua-text);
+    padding:5px 8px;
+    font:inherit;
+}
+.hamnoor-dua-audio audio{
+    grid-column:auto;
+    width:100%;
+    min-width:0;
+    height:40px;
+    display:block;
+}
+.hamnoor-dua-audio-segment{border-inline-start:4px solid var(--dua-gold)}
+.hamnoor-dua-audio-message{grid-column:1/-1;margin:0!important;color:#8a3b1d}
+.hamnoor-dua-audio-message:empty{display:none}
+.hamnoor-dua-audio-placeholder{border:1px dashed var(--dua-border);border-radius:16px}
+.hamnoor-dua-audio.is-sticky{
+    position:fixed!important;
+    top:8px;
+    left:50%;
+    width:min(880px,calc(100vw - 16px));
+    z-index:99990;
+    margin:0;
+    transform:translateX(-50%);
+    border-radius:0 0 16px 16px;
+    box-shadow:0 16px 42px rgba(0,0,0,.23);
+}
+
+.hamnoor-dua-read-later-top{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:max-content;
+    max-width:100%;
+    margin:10px auto 0;
+    min-height:40px;
+    padding:7px 14px;
+    border:1px solid var(--dua-border);
+    border-radius:999px;
+    background:var(--dua-card);
+    color:#1f63c3;
+}
+.hamnoor-dua-read-later-top.is-pending{color:#20744a}
+body.hamnoor-dua-focus{overflow:hidden}
+.hamnoor-dua-reader.is-focus-mode{
+    position:fixed;
+    inset:0;
+    z-index:2147482000;
+    overflow:auto;
+    border-radius:0;
+    padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
+}
+.hamnoor-dua-reader.is-focus-mode>.hamnoor-khatm-header,
+.hamnoor-dua-reader.is-focus-mode>.hamnoor-progress-card,
+.hamnoor-dua-reader.is-focus-mode>.hamnoor-share-panel{display:none}
+.hamnoor-dua-reader .hamnoor-contribution-action-card{scroll-margin-bottom:120px;margin-bottom:calc(70px + env(safe-area-inset-bottom))}
+
+@media(max-width:1024px){
+    .hamnoor-dua-block-text{font-size:calc(25px * var(--hamnoor-dua-scale))}
+    .hamnoor-dua-block-translate{font-size:calc(17px * var(--hamnoor-dua-scale))}
+    .hamnoor-dua-block-abouttext,.hamnoor-dua-block-other{font-size:calc(16px * var(--hamnoor-dua-scale))}
+    .hamnoor-dua-audio{grid-template-columns:minmax(110px,170px) minmax(0,1fr)}
+    .hamnoor-dua-audio.hamnoor-dua-audio-chooser{grid-template-columns:minmax(105px,150px) minmax(110px,160px) minmax(0,1fr)}
+}
+@media(max-width:720px){
+    .hamnoor-dua-reader{margin-inline:-10px;padding:8px;border-radius:0}
+    .hamnoor-dua-reader-toolbar{
+        top:auto;
+        bottom:max(8px,env(safe-area-inset-bottom));
+        justify-content:flex-start;
+        max-width:calc(100% - 12px);
+        padding:6px;
+        border-radius:16px;
+    }
+    .hamnoor-dua-reader-toolbar button{flex:0 0 51px;min-width:51px;min-height:48px;padding:4px}
+    .hamnoor-dua-reader-toolbar button span{font-size:.67em}
+    .hamnoor-dua-reader .hamnoor-dua-reader-content{
+        width:100%;
+        max-width:none;
+        margin:14px 0 80px;
+        padding:20px 14px;
+        border-radius:18px;
+    }
+    .hamnoor-dua-block-text{font-size:calc(23px * var(--hamnoor-dua-scale));line-height:2.05}
+    .hamnoor-dua-block-translate{font-size:calc(16px * var(--hamnoor-dua-scale));padding:13px 14px}
+    .hamnoor-dua-block-abouttext,.hamnoor-dua-block-other{font-size:calc(15px * var(--hamnoor-dua-scale))}
+    .hamnoor-dua-audio{grid-template-columns:minmax(78px,104px) minmax(0,1fr);gap:5px;padding:7px 8px;width:100%;min-height:50px}
+    .hamnoor-dua-audio.hamnoor-dua-audio-chooser{grid-template-columns:minmax(72px,92px) minmax(88px,112px) minmax(0,1fr)}
+    .hamnoor-dua-audio-meta small{display:none}
+    .hamnoor-dua-audio-meta strong{font-size:.78em}
+    .hamnoor-dua-audio-meta span{font-size:.68em}
+    .hamnoor-dua-audio-reciter>span{display:none}
+    .hamnoor-dua-audio-reciter select{min-height:34px;padding:3px 5px;font-size:.72em}
+    .hamnoor-dua-audio audio{height:36px}
+    .hamnoor-dua-audio.is-sticky{top:4px;border-radius:0;padding:6px 8px;gap:5px}
+    .hamnoor-dua-audio.is-sticky .hamnoor-dua-audio-meta{display:none}
+    .hamnoor-dua-audio.is-sticky.hamnoor-dua-audio-single{grid-template-columns:minmax(0,1fr)}
+    .hamnoor-dua-audio.is-sticky.hamnoor-dua-audio-chooser{grid-template-columns:minmax(88px,112px) minmax(0,1fr)}
+}

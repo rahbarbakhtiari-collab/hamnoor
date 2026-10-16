@@ -213,6 +213,22 @@
     padding: 0 18px;
 }
 
+.hamnoor-admin-wrap .hamnoor-settings-save {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.hamnoor-admin-wrap .hamnoor-settings-save .description,
+.hamnoor-admin-wrap .hamnoor-settings-save .submit {
+    margin: 0;
+}
+
+.hamnoor-admin-wrap > .notice {
+    margin: 14px 0 0;
+}
+
 .hamnoor-admin-wrap .hamnoor-admin-panel .form-table {
     margin: 0;
 }

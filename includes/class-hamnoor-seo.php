@@ -70,15 +70,15 @@ class Hamnoor_SEO {
     public function document_title($parts) {
         $khatm = $this->current_khatm();
         if ($khatm) {
-            $parts['title'] = !empty($GLOBALS['hamnoor_unpublished_restricted']) ? __('ختم در انتظار انتشار | هم‌نور', 'hamnoor') : sprintf(__('ختم قرآن %s | هم‌نور', 'hamnoor'), $khatm->title);
+            $parts['title'] = !empty($GLOBALS['hamnoor_unpublished_restricted']) ? __('پویش در انتظار انتشار | هم‌نور', 'hamnoor') : sprintf(__('پویش ختم قرآن %s | هم‌نور', 'hamnoor'), $khatm->title);
         }
         return $parts;
     }
 
     private function description($khatm) {
         $desc = wp_strip_all_tags($khatm->description ? $khatm->description : $khatm->intention);
-        if (mb_strlen(trim($desc)) < 40) {
-            $desc = sprintf(__('دعوت به مشارکت در ختم جمعی قرآن کریم با عنوان «%s» در سامانه هم‌نور.', 'hamnoor'), $khatm->title);
+        if (Hamnoor_Validator::text_length(trim($desc)) < 40) {
+            $desc = sprintf(__('دعوت به مشارکت در پویش ختم قرآن کریم با عنوان «%s» در سامانه هم‌نور.', 'hamnoor'), $khatm->title);
         }
         return wp_trim_words($desc, 28, '');
     }
@@ -92,7 +92,7 @@ class Hamnoor_SEO {
             return;
         }
         $desc = $this->description($khatm);
-        $title = sprintf(__('ختم قرآن %s', 'hamnoor'), $khatm->title);
+        $title = sprintf(__('پویش ختم قرآن %s', 'hamnoor'), $khatm->title);
         echo '<link rel="canonical" href="' . esc_url($url) . '" />' . "\n";
         if (!empty($_GET['part']) || !empty($_GET['access'])) {
             echo '<meta name="referrer" content="no-referrer" />' . "\n";

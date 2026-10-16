@@ -107,10 +107,10 @@ class Hamnoor_Featured_Service {
 
     public static function save_admin_settings($khatm_id, $data, $user_id = 0) {
         global $wpdb;
-        $user_id = $user_id ? (int) $user_id : get_current_user_id();
-        if (!$user_id || !user_can($user_id, 'manage_options')) { return new WP_Error('hamnoor_feature_denied', __('فقط مدیر سایت می‌تواند وضعیت ویژه بودن را تغییر دهد.', 'hamnoor')); }
+        $user_id = $user_id ? (int) $user_id : Hamnoor_Mobile_Access::current_user_id();
+        if (!current_user_can('manage_options')) { return new WP_Error('hamnoor_feature_denied', __('فقط مدیر سایت می‌تواند وضعیت ویژه بودن را تغییر دهد.', 'hamnoor')); }
         $khatm = Hamnoor_DB::get_khatm((int) $khatm_id);
-        if (!$khatm) { return new WP_Error('hamnoor_not_found', __('ختم پیدا نشد.', 'hamnoor')); }
+        if (!$khatm) { return new WP_Error('hamnoor_not_found', __('پویش پیدا نشد.', 'hamnoor')); }
         $data = self::sanitize_admin_input($data);
         $valid = self::validate_admin_data($data);
         if (is_wp_error($valid)) { return $valid; }
@@ -151,7 +151,7 @@ class Hamnoor_Featured_Service {
         if (false === $updated) { return new WP_Error('hamnoor_feature_save_failed', __('ذخیره تنظیمات ویژه بودن انجام نشد.', 'hamnoor')); }
 
         $current = Hamnoor_DB::get_khatm((int) $khatm_id);
-        Hamnoor_DB::log((int) $khatm_id, 0, 0, $user_id, 'khatm_feature_' . $new_status, sprintf(__('وضعیت ویژه بودن ختم به %s تغییر کرد.', 'hamnoor'), self::status_label($current)));
+        Hamnoor_DB::log((int) $khatm_id, 0, 0, $user_id, 'khatm_feature_' . $new_status, sprintf(__('وضعیت ویژه بودن پویش به %s تغییر کرد.', 'hamnoor'), self::status_label($current)));
         if ('normal' === $new_status && 'normal' !== $old_status) {
             do_action('hamnoor_after_unfeature_khatm', (int) $khatm_id, $current, $khatm);
         } elseif ('normal' !== $new_status) {
@@ -164,7 +164,7 @@ class Hamnoor_Featured_Service {
     }
 
     public static function can_request($khatm, $user_id = 0) {
-        $user_id = $user_id ? (int) $user_id : get_current_user_id();
+        $user_id = $user_id ? (int) $user_id : Hamnoor_Mobile_Access::current_user_id();
         if (!$khatm || !$user_id || (int) $khatm->owner_user_id !== $user_id) { return false; }
         if ('active' !== (string) $khatm->status || self::is_configured($khatm)) { return false; }
         return 'pending' !== self::normalize_request_status(isset($khatm->featured_request_status) ? $khatm->featured_request_status : 'none');
@@ -172,16 +172,16 @@ class Hamnoor_Featured_Service {
 
     public static function create_request($khatm_id, $message, $user_id = 0) {
         global $wpdb;
-        $user_id = $user_id ? (int) $user_id : get_current_user_id();
+        $user_id = $user_id ? (int) $user_id : Hamnoor_Mobile_Access::current_user_id();
         $khatm = Hamnoor_DB::get_khatm((int) $khatm_id);
         if (!$khatm || !$user_id || (int) $khatm->owner_user_id !== $user_id) {
-            return new WP_Error('hamnoor_feature_request_denied', __('فقط ایجادکننده ختم می‌تواند برای همان ختم درخواست ویژه شدن ثبت کند.', 'hamnoor'));
+            return new WP_Error('hamnoor_feature_request_denied', __('فقط ایجادکننده پویش می‌تواند برای همان پویش درخواست ویژه شدن ثبت کند.', 'hamnoor'));
         }
         if ('pending' === self::normalize_request_status(isset($khatm->featured_request_status) ? $khatm->featured_request_status : 'none')) {
             return new WP_Error('hamnoor_feature_request_pending', Hamnoor_Texts::get('feature_request_pending'));
         }
         if (!self::can_request($khatm, $user_id)) {
-            return new WP_Error('hamnoor_feature_request_unavailable', __('برای این ختم در وضعیت فعلی امکان ثبت درخواست ویژه شدن وجود ندارد.', 'hamnoor'));
+            return new WP_Error('hamnoor_feature_request_unavailable', __('برای این پویش در وضعیت فعلی امکان ثبت درخواست ویژه شدن وجود ندارد.', 'hamnoor'));
         }
         $message = Hamnoor_Validator::trim_len(sanitize_textarea_field($message), 500);
         $now = current_time('mysql');
@@ -193,17 +193,17 @@ class Hamnoor_Featured_Service {
             'featured_request_reviewed_by' => null,
         ), array('id' => (int) $khatm_id, 'owner_user_id' => $user_id), array('%s','%s','%s','%s','%d'), array('%d','%d'));
         if (!$updated) { return new WP_Error('hamnoor_feature_request_failed', __('ثبت درخواست ویژه شدن انجام نشد.', 'hamnoor')); }
-        Hamnoor_DB::log((int) $khatm_id, 0, 0, $user_id, 'feature_request_created', __('درخواست ویژه شدن ختم ثبت شد.', 'hamnoor'));
+        Hamnoor_DB::log((int) $khatm_id, 0, 0, $user_id, 'feature_request_created', __('درخواست ویژه شدن پویش ثبت شد.', 'hamnoor'));
         do_action('hamnoor_after_feature_request_created', (int) $khatm_id, $user_id, $message);
         return true;
     }
 
     public static function approve_request($khatm_id, $user_id = 0) {
-        $user_id = $user_id ? (int) $user_id : get_current_user_id();
-        if (!$user_id || !user_can($user_id, 'manage_options')) { return new WP_Error('hamnoor_feature_denied', __('فقط مدیر سایت می‌تواند درخواست را تأیید کند.', 'hamnoor')); }
+        $user_id = $user_id ? (int) $user_id : Hamnoor_Mobile_Access::current_user_id();
+        if (!current_user_can('manage_options')) { return new WP_Error('hamnoor_feature_denied', __('فقط مدیر سایت می‌تواند درخواست را تأیید کند.', 'hamnoor')); }
         $khatm = Hamnoor_DB::get_khatm((int) $khatm_id);
         if (!$khatm || 'pending' !== self::normalize_request_status(isset($khatm->featured_request_status) ? $khatm->featured_request_status : 'none')) {
-            return new WP_Error('hamnoor_feature_request_not_pending', __('درخواست در انتظار بررسی برای این ختم وجود ندارد.', 'hamnoor'));
+            return new WP_Error('hamnoor_feature_request_not_pending', __('درخواست در انتظار بررسی برای این پویش وجود ندارد.', 'hamnoor'));
         }
         return self::save_admin_settings((int) $khatm_id, array(
             'featured_status' => 'featured',
@@ -217,11 +217,11 @@ class Hamnoor_Featured_Service {
 
     public static function reject_request($khatm_id, $user_id = 0) {
         global $wpdb;
-        $user_id = $user_id ? (int) $user_id : get_current_user_id();
-        if (!$user_id || !user_can($user_id, 'manage_options')) { return new WP_Error('hamnoor_feature_denied', __('فقط مدیر سایت می‌تواند درخواست را رد کند.', 'hamnoor')); }
+        $user_id = $user_id ? (int) $user_id : Hamnoor_Mobile_Access::current_user_id();
+        if (!current_user_can('manage_options')) { return new WP_Error('hamnoor_feature_denied', __('فقط مدیر سایت می‌تواند درخواست را رد کند.', 'hamnoor')); }
         $khatm = Hamnoor_DB::get_khatm((int) $khatm_id);
         if (!$khatm || 'pending' !== self::normalize_request_status(isset($khatm->featured_request_status) ? $khatm->featured_request_status : 'none')) {
-            return new WP_Error('hamnoor_feature_request_not_pending', __('درخواست در انتظار بررسی برای این ختم وجود ندارد.', 'hamnoor'));
+            return new WP_Error('hamnoor_feature_request_not_pending', __('درخواست در انتظار بررسی برای این پویش وجود ندارد.', 'hamnoor'));
         }
         $now = current_time('mysql');
         $updated = $wpdb->update(Hamnoor_DB::table('khatms'), array(
@@ -230,7 +230,7 @@ class Hamnoor_Featured_Service {
             'featured_request_reviewed_by' => $user_id,
         ), array('id' => (int) $khatm_id, 'featured_request_status' => 'pending'), array('%s','%s','%d'), array('%d','%s'));
         if (!$updated) { return new WP_Error('hamnoor_feature_request_reject_failed', __('رد درخواست ویژه شدن انجام نشد.', 'hamnoor')); }
-        Hamnoor_DB::log((int) $khatm_id, 0, 0, $user_id, 'feature_request_rejected', __('درخواست ویژه شدن ختم رد شد.', 'hamnoor'));
+        Hamnoor_DB::log((int) $khatm_id, 0, 0, $user_id, 'feature_request_rejected', __('درخواست ویژه شدن پویش رد شد.', 'hamnoor'));
         do_action('hamnoor_after_feature_request_rejected', (int) $khatm_id, Hamnoor_DB::get_khatm((int) $khatm_id), $user_id);
         return true;
     }
